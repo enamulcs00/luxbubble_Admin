@@ -8,18 +8,34 @@
             <!-- Form -->
             <div class="row">
                 <div class="col-12">
-                    <form class="form-horizontal m-t-20" id="loginform" action="index.html">
+                    <form [formGroup]="loginForm"class="form-horizontal m-t-20" id="loginform" >
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="ti-user"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-lg" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" required>
+                            <input type="text" class="form-control form-control-lg" formControlName="email" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" required>
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="loginForm.get('email').hasError('required') && loginForm.controls['email'].touched">
+                                *Email is <strong>required</strong>
+                            </mat-error>
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="loginForm.get('email').hasError('email') &&
+                                  !loginForm.get('email').hasError('required')">
+                            *Email is <strong>not valid</strong>
+                        </mat-error>
                         </div>
+                         
+                        
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon2"><i class="ti-pencil"></i></span>
                             </div>
-                            <input type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
+                            <input type="password" formControlName="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="loginForm.get('password').hasError('required') && loginForm.controls['password'].touched">
+                                *Password is <strong>required</strong>
+                            </mat-error>
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf=" loginForm.get('password').hasError('minlength') &&
+                                  !loginForm.get('password').hasError('required')">
+                                *Minimum 8 Character
+                            </mat-error>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
@@ -32,7 +48,7 @@
                         </div>
                         <div class="form-group text-center">
                             <div class="col-xs-12 p-b-20">
-                                <button class="btn btn-block btn-lg bg-white text-primary" type="submit">Log In</button>
+                    <button  class="btn btn-block btn-lg bg-white text-primary" (click)="  onLogin();" type="submit">Log In</button>
                             </div>
                         </div>
                         <!-- <div class="row">
