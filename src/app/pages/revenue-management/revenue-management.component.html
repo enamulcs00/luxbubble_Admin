@@ -1,0 +1,406 @@
+<div class="card">
+    <div class="card-body">
+        <!-- <div class="row mb-2">
+      <div class="col-md-12 text-right">
+          <div ngbDropdown container="body">
+              <button class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+              <div ngbDropdownMenu>
+                <button ngbDropdownItem>Partner 1</button>
+                <button ngbDropdownItem>Partner 2</button>
+                <button ngbDropdownItem>Partner 3</button>
+                <button ngbDropdownItem>Partner 4</button>
+              </div>
+            </div>
+      </div>
+  </div> -->
+        <div class="row  pt-3">
+            <!-- <div class="col-md-3">
+        <div class="card">
+            <div class="card-body card-box p-2">
+                <div class="d-flex align-items-center">
+                    <div class="m-r-10">
+                        <span class="btn btn-circle btn-lg bg-primary">
+                            <i class="sl-icon-people text-white"></i>
+                        </span>
+                    </div>
+                    <div>
+                        Total Users
+                    </div>
+                    <div class="ml-auto">
+                        <h2 class="m-b-0 font-light">223</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div> -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body card-box p-2">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="btn btn-circle btn-md bg-danger text-white"><i class=" fas fa-credit-card font-16"></i></span>
+                            </div>
+                            <div class="m-l-10">
+                                <h5 class="mb-0 m-t-10"> Total Payment Received </h5>
+                                <h2 class="m-b-0 font-light">$ 4050</h2>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card -->
+            </div>
+            <!-- <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body card-box p-2">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <span class="btn btn-circle btn-md bg-danger text-white"><i class="far fa-money-bill-alt font-16"></i></span>
+                            </div>
+                            <div class="m-l-10">
+                                <h5 class="mb-0 m-t-10"> Total Earning of Vendors</h5>
+                                <h2 class="m-b-0 font-light"> $ 200</h2>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <ngb-tabset type="pills">
+            <ngb-tab title="Manage Payments">
+                <ng-template ngbTabContent>
+                    <div class="row pt-3">
+                        <div class="col-md-3 offset-md-9">
+                            <form class="d-flex">
+                                <div class="form-group hidden">
+                                    <div class="input-group">
+                                        <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1">
+                                        <ng-template #t let-date let-focused="focused">
+                                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                              {{ date.day }}
+                                            </span>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 pl-0  pr-0 mb-2">
+                                    <div class="input-group">
+                                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"><i class=" fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group ml-2 col-6 pl-0 pr-0 mb-2">
+                                    <div class="input-group">
+                                        <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate" [value]="formatter.format(toDate)" (input)="toDate = validateInput(toDate, dpToDate.value)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"><i class=" fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </form>
+                            <!-- <div class="d-flex">
+                                <h5 class="m-b-0 font-light col-6"> <span class="btn btn-circle btn-sm bg-danger text-white p-2"><i
+                  class="far fa-money-bill-alt font-16 "></i></span> Card: &euro; 150</h5>
+                                <h5 class="m-b-0 font-light col-6"> <span class="btn btn-circle btn-sm bg-danger text-white p-2"><i
+                  class="far fa-money-bill-alt font-16 "></i></span> Cash: &euro; 150</h5>
+                            </div> -->
+                        </div>
+                        <div class="col-md-12">
+                            <h3>All Transaction </h3>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        <table class="table v-middle product-overview" id="zero_config">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Services</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Amount</th>
+                                                    <!-- <th>Fees</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td> User 1 </td>
+                                                    <td>
+                                                        <p>Services 1</p>
+                                                        <p>Services 2</p>
+                                                        <p>Services 3</p>
+                                                    </td>
+                                                    <td><label>Paypal</label></td>
+                                                    <td>$250</td>
+                                                    <!-- <td>10%</td> -->
+                                                </tr>
+                                                <tr>
+                                                    <td> User 2 </td>
+                                                    <td>
+                                                        <p>Services 1</p>
+                                                        <p>Services 2</p>
+                                                        <p>Services 3</p>
+                                                    </td>
+                                                    <td><label>Cash</label></td>
+                                                    <td>$250</td>
+                                                    <!-- <td>10%</td> -->
+                                                </tr>
+                                                <tr>
+                                                    <td> User 3 </td>
+                                                    <td>
+                                                        <p>Services 1</p>
+                                                        <p>Services 2</p>
+                                                        <p>Services 3</p>
+                                                    </td>
+                                                    <td><label>Card</label></td>
+                                                    <td>$250</td>
+                                                    <!-- <td>10%</td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <!-- <ngb-tab title="Withdrawal">
+                <ng-template ngbTabContent>
+                    <div class="row pt-3">
+                        <div class="col-md-3 offset-md-9">
+                            <form class="d-flex">
+                                <div class="form-group hidden">
+                                    <div class="input-group">
+                                        <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1">
+                                        <ng-template #t let-date let-focused="focused">
+                                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                            {{ date.day }}
+                                          </span>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 pl-0  pr-0 mb-2">
+                                    <div class="input-group">
+                                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"><i class=" fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-12">
+                            <h3>All Transaction </h3>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        <table class="table v-middle product-overview" id="zero_config">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Vendor ID</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Amount</th>
+                                                    <th>Fees</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>KFC </td>
+                                                    <td>kfc333</td>
+                                                    <td><label class="label label-success">Paypal</label></td>
+                                                    <td>$250</td>
+                                                    <td>10%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Dominos </td>
+                                                    <td>domi333</td>
+                                                    <td><label class="label label-success">Paypal</label></td>
+                                                    <td>$250</td>
+                                                    <td>10%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cafe </td>
+                                                    <td>caf434</td>
+                                                    <td><label class="label label-success">Paypal</label></td>
+                                                    <td>$250</td>
+                                                    <td>10%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab> -->
+            <ngb-tab title="Manage service provider’s Earnings">
+                <ng-template ngbTabContent>
+                    <div class="row pt-3">
+                        <div class="col-md-3 offset-md-9">
+                            <form class="d-flex">
+                                <div class="form-group hidden">
+                                    <div class="input-group">
+                                        <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1">
+                                        <ng-template #t let-date let-focused="focused">
+                                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                          {{ date.day }}
+                                        </span>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 pl-0  pr-0 mb-2">
+                                    <div class="input-group">
+                                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"><i class=" fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-12">
+                            <h3>All Transaction </h3>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        <table class="table v-middle product-overview" id="zero_config">
+                                            <thead>
+                                                <tr>
+                                                    <th>Service Provider</th>
+                                                    <th>Total Orders</th>
+                                                    <th>Total Earnings</th>
+                                                    <th>Commission</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td> Jhon </td>
+                                                    <td> 200 </td>
+                                                    <td>$2000</td>
+                                                    <td>10%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Jhon </td>
+                                                    <td> 150 </td>
+                                                    <td>$1500</td>
+                                                    <td>10%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Jhon </td>
+                                                    <td> 180 </td>
+                                                    <td>$1800</td>
+                                                    <td>10%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Manage Commission">
+                <ng-template ngbTabContent>
+                    <div class="row pt-3">
+                        <div class="col-md-3 offset-md-9">
+                            <form class="d-flex">
+                                <div class="form-group hidden">
+                                    <div class="input-group">
+                                        <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker" [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1">
+                                        <ng-template #t let-date let-focused="focused">
+                                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                        {{ date.day }}
+                                      </span>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 pl-0  pr-0 mb-2">
+                                    <div class="input-group">
+                                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"><i class=" fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-12">
+                            <h3>Manage Commission </h3>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="">
+                                        <table class="table v-middle product-overview" id="zero_config">
+                                            <thead>
+                                                <tr>
+                                                    <th>Service Provider</th>
+                                                    <th>Commission</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td> Jhon </td>
+                                                    <td>10%</td>
+                                                    <td>
+                                                        <a href="javascript:void()" class="btn btn-outline-primary btn-sm">Manage</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Jhon </td>
+                                                    <td>10%</td>
+                                                    <td>
+                                                        <a href="javascript:void()" class="btn btn-outline-primary btn-sm">Manage</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Jhon </td>
+                                                    <td>$50</td>
+                                                    <td>
+                                                        <a href="javascript:void()" class="btn btn-outline-primary btn-sm">Manage</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </div>
+</div>
+<!-- <div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h4>Net Profit</h4>
+            <div>
+                    <span class="btn-circle btn-lg btn btn-outline-secondary">
+                      <i class="ti-shopping-cart"></i>
+                    </span>
+                  </div>
+        </div>
+        <div class=" text-white">
+            <canvas baseChart height="130" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+  </canvas>
+        </div>
+    </div>
+</div> -->

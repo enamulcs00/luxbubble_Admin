@@ -1,0 +1,143 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button class="btn btn-primary mb-2" (click)="addCategoryModel(addCategory)">Add Category</button>
+            </div>
+        </div>
+        <div class="table-reponsive">
+            <table class="table">
+                <thead>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="assets/images/food/1.png" alt="" width="80px"></td>
+                        <td> Category 1 </td>
+                        <td>
+                            <a href="javascript:void()" class="btn btn-sm btn-success" (click)="addCategoryModel(cusinine)"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a href=javascript:void(); class="btn btn-sm btn-danger ml-1" (click)="deleteBoxModal(deleteBox)"><i class="ti-trash"></i> </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="assets/images/food/1.png" alt="" width="80px"></td>
+                        <td> Category 2 </td>
+                        <td>
+                            <a href="javascript:void()" class="btn btn-sm btn-success" (click)="addCategoryModel(cusinine)"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a href=javascript:void(); class="btn btn-sm btn-danger ml-1" (click)="deleteBoxModal(deleteBox)"><i class="ti-trash"></i> </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="assets/images/food/1.png" alt="" width="80px"></td>
+                        <td> Category 3 </td>
+                        <td>
+                            <a href="javascript:void()" class="btn btn-sm btn-success" (click)="addCategoryModel(cusinine)"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a href=javascript:void(); class="btn btn-sm btn-danger ml-1" (click)="deleteBoxModal(deleteBox)"><i class="ti-trash"></i> </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="assets/images/food/1.png" alt="" width="80px"></td>
+                        <td> Category 4 </td>
+                        <td>
+                            <a href="javascript:void()" class="btn btn-sm btn-success" (click)="addCategoryModel(cusinine)"><i class="mdi mdi-lead-pencil"></i></a>
+                            <a href=javascript:void(); class="btn btn-sm btn-danger ml-1" (click)="deleteBoxModal(deleteBox)"><i class="ti-trash"></i> </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>
+</div>
+
+<ng-template #deleteBox let-modal>
+    <div class="modal-body">
+        <p>Are you sure want to delete category?</p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary mr-2" aria-label="Close" (click)="modal.dismiss('Cross click')">Yes</button>
+            <button type="button" class="btn btn-seconadary" aria-label="Close" (click)="modal.dismiss('Cross click')">No</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #addCategory let-modal>
+    <div class="modal-body">
+        <div class="card">
+            <form action="#">
+                <div class="form-body">
+                    <div class="card-body">
+                        <div class="row p-t-20">
+                            <div class="col-12">
+                                <label> Add Category </label>
+                            </div>
+                        </div>
+                        <div class="row p-t-20">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <div class="form-group">
+                                        <label class="control-label">Upload Image</label>
+                                        <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">Choose file</label></div>
+                                        <!-- <p class="constraints-info afu-constraints-info">(.jpg,.png) Size limit- 1.00 MB</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-success mr-3" (click)="modal.dismiss('Cross click')">
+                    <i class="fa fa-check"></i> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+<ng-template #cusinine let-modal>
+    <div class="modal-body">
+        <div class="card">
+            <form action="#">
+                <div class="form-body">
+                    <div class="card-body">
+                        <div class="row p-t-20">
+                            <div class="col-12">
+                                <label> Edit Category </label>
+                            </div>
+                        </div>
+                        <div class="row p-t-20">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <div class="form-group">
+                                        <label class="control-label">Upload Image</label>
+                                        <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">Choose file</label></div>
+                                        <!-- <p class="constraints-info afu-constraints-info">(.jpg,.png) Size limit- 1.00 MB</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-success mr-3" (click)="modal.dismiss('Cross click')">
+                    <i class="fa fa-check"></i> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
