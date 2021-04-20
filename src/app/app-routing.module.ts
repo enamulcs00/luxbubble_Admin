@@ -1,57 +1,62 @@
-import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
-
+import { AuthguardGuard } from './services/authguard.guard';
 
 export const Approutes: Routes = [
   {
     path: '',
     component: FullComponent,
     children: [
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: '/login', pathMatch: 'full' },
       { 
         path: 'dashboard',
-        loadChildren: () => import('./dashboards/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./dashboards/dashboard.module').then(m => m.DashboardModule),
+        canActivate:[AuthguardGuard]
       },
       {
         path: 'starter',
-        loadChildren: () => import('./starter/starter.module').then(m => m.StarterModule)
+        loadChildren: () => import('./starter/starter.module').then(m => m.StarterModule),
+        canActivate:[AuthguardGuard]
       },
       {
         path: 'component',
-        loadChildren: () => import('./component/component.module').then(m => m.ComponentsModule)
+        loadChildren: () => import('./component/component.module').then(m => m.ComponentsModule),
+        canActivate:[AuthguardGuard]
       },
-      { path: 'cards', loadChildren: () => import('./cards/cards.module').then(m => m.CardsModule) },
-      { path: 'icons', loadChildren: () => import('./icons/icons.module').then(m => m.IconsModule) },
-      { path: 'forms', loadChildren: () => import('./form/forms.module').then(m => m.FormModule) },
-      { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
-      { path: 'tables', loadChildren: () => import('./table/tables.module').then(m => m.TablesModule) },
-      { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartModule) },
+      { path: 'cards', loadChildren: () => import('./cards/cards.module').then(m => m.CardsModule),canActivate:[AuthguardGuard] },
+      { path: 'icons', loadChildren: () => import('./icons/icons.module').then(m => m.IconsModule),canActivate:[AuthguardGuard] },
+      { path: 'forms', loadChildren: () => import('./form/forms.module').then(m => m.FormModule),canActivate:[AuthguardGuard] },
+      { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule),canActivate:[AuthguardGuard] },
+      { path: 'tables', loadChildren: () => import('./table/tables.module').then(m => m.TablesModule),canActivate:[AuthguardGuard] },
+      { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartModule),canActivate:[AuthguardGuard] },
       {
         path: 'widgets',
-        loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule)
+        loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule),
+        canActivate:[AuthguardGuard]
       },
-      { path: 'ecom', loadChildren: () => import('./ecommerce/ecom.module').then(m => m.EcomModule) },
+      { path: 'ecom', loadChildren: () => import('./ecommerce/ecom.module').then(m => m.EcomModule),canActivate:[AuthguardGuard] },
       {
         path: 'timeline',
-        loadChildren: () => import('./timeline/timeline.module').then(m => m.TimelineModule)
+        loadChildren: () => import('./timeline/timeline.module').then(m => m.TimelineModule),
+        canActivate:[AuthguardGuard]
       },
       {
         path: 'extra-component',
         loadChildren:
-          () => import('./extra-component/extra-component.module').then(m => m.ExtraComponentModule)
+          () => import('./extra-component/extra-component.module').then(m => m.ExtraComponentModule),
+          canActivate:[AuthguardGuard]
       },
-      { path: 'apps', loadChildren: () => import('./apps/apps.module').then(m => m.AppsModule) },
+      { path: 'apps', loadChildren: () => import('./apps/apps.module').then(m => m.AppsModule),canActivate:[AuthguardGuard] },
       {
         path: 'apps/email',
-        loadChildren: () => import('./apps/email/mail.module').then(m => m.MailModule)
+        loadChildren: () => import('./apps/email/mail.module').then(m => m.MailModule),canActivate:[AuthguardGuard]
       },
-      { path: 'maps', loadChildren: () => import('./maps/maps.module').then(m => m.MapsModule) },
+      { path: 'maps', loadChildren: () => import('./maps/maps.module').then(m => m.MapsModule),canActivate:[AuthguardGuard] },
       {
         path: 'pages',
-        loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
+        loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
+        canActivate:[AuthguardGuard]
       }
     ]
   },

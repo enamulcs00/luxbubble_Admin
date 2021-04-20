@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NotfoundComponent } from './404/not-found.component';
@@ -14,6 +14,8 @@ import { Signup2Component } from './signup2/signup2.component';
 import { AuthenticationRoutes } from './authentication.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,7 @@ import { BrowserModule } from '@angular/platform-browser';
     ReactiveFormsModule,
     RouterModule.forChild(AuthenticationRoutes),
     NgbModule,
-    
+    HttpClientModule,
   ]
 })
 export class AuthenticationModule {}

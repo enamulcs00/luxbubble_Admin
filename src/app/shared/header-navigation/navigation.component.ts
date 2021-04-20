@@ -99,4 +99,8 @@ export class NavigationComponent implements AfterViewInit {
     let element1 = document.getElementById("arrow-close").parentElement;
     element1.classList.remove("sidebar_slide");
   }
+  Logout()
+  {
+    sessionStorage.removeItem("accessToken");
+  }
 }

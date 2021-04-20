@@ -40,7 +40,7 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    <input type="checkbox" (change)="rememberFunc($event)" formControlName="rememberMe" class="custom-control-input" id="customCheck1">
                                     <label class="custom-control-label text-white" for="customCheck1">Remember me</label>
                                     <a (click)="showRecoverForm()" href="javascript:void(0)" id="to-recover" class="text-white float-right"><i class="fa fa-lock m-r-5"></i> Forgot password</a>
                                 </div>
@@ -80,13 +80,20 @@
                     <!-- email -->
                     <div class="form-group row">
                         <div class="col-12">
-                            <input class="form-control form-control-lg" type="email" required="" placeholder="Email">
+                            <input class="form-control form-control-lg" [formControl]="email2" type="email" required="" placeholder="Email">
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 d-block"  *ngIf="email2.hasError('required') && email2.touched">
+                                *Email is <strong>required</strong>
+                            </mat-error>
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 d-block" *ngIf="email2.hasError('email') &&
+                            !email2.hasError('required')">
+                            *Email is <strong>not valid</strong>
+                        </mat-error>
                         </div>
                     </div>
                     <!-- pwd -->
                     <div class="row m-t-20">
                         <div class="col-12">
-                            <button class="btn btn-block btn-lg bg-white text-primary" type="submit" name="action">Reset</button>
+                            <button class="btn btn-block btn-lg bg-white text-primary" (click)="forget()" type="submit" name="action">Reset</button>
                         </div>
                     </div>
                 </form>
