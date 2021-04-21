@@ -21,4 +21,12 @@ export class ApiService {
   {
     return this.http.post<any>(this.url.changepassword,body);
   }
+  httpgetprofile():Observable<any>
+  {
+    return this.http.get<any>(this.url.getprofile);
+  }
+  httpupdateprofile(body:any)
+  {
+    return this.http.put<any>(this.url.updateprofile,body);
+  }
 }
