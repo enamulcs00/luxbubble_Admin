@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Output, OnInit } from '@angular/core';
 import {
   NgbModal,
   ModalDismissReasons,
@@ -6,6 +6,7 @@ import {
   NgbCarouselConfig
 } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { ApiService } from 'src/app/services/api.service';
 declare var $: any;
 
 @Component({
@@ -13,15 +14,31 @@ declare var $: any;
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements AfterViewInit {
+export class NavigationComponent implements AfterViewInit, OnInit {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   public config: PerfectScrollbarConfigInterface = {};
 
   public showSearch = false;
   public element1: any;
-  constructor(private modalService: NgbModal) {}
+  firstname:any;
+  lastname: any;
+  email: any;
+  image: any;
 
+  constructor(private modalService: NgbModal,private apiservice:ApiService) {
+   this.apiservice.httpgetprofile().subscribe(res=>{
+     this.firstname=res.data.firstName;
+     this.lastname=res.data.lastName;
+     this.email=res.data.email;
+     this.image="http://dev.webdevelopmentsolution.net:3008"+res.data.image;
+   });
+
+  }
+ ngOnInit()
+ {
+
+ }
   // This is for Notifications
   notifications: Object[] = [
     {

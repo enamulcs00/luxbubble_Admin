@@ -19,7 +19,7 @@ export class ProfileComponent {
     this.profileform=this.fb.group({
       firstName:["",Validators.required],
       lastName:["",Validators.required],
-      email:["",Validators.required],
+      email:["",[Validators.required,Validators.email]],
       phoneNo:["",Validators.required]
     });
     this.apiservice.httpgetprofile().subscribe(res=>{
@@ -31,7 +31,7 @@ export class ProfileComponent {
      this.name=res.data.fullName;
      this.email=res.data.email;
      this.phone=res.data.phoneNo;
-     this.imgurl=res.data.image;
+     this.imgurl="http://dev.webdevelopmentsolution.net:3008"+res.data.image;
     });
     }
     upload(evt) 
@@ -39,7 +39,7 @@ export class ProfileComponent {
       console.log(evt);
       var files = evt.target.files;
       this.file=files[0];
-      if(files)
+      if(files && this.file)
       {
       var reader = new FileReader();
       reader.readAsDataURL(files[0]); 
@@ -50,19 +50,20 @@ export class ProfileComponent {
     }
     update()
     {
-      //console.log("updated");
-      let formdata =new FormData();
-      formdata.append('firstName',this.profileform.controls['firstName'].value);
-      formdata.append('lastName',this.profileform.controls['lastName'].value);
-      formdata.append('email',this.profileform.controls['email'].value);
-      formdata.append('phoneNo',this.profileform.controls['phoneNo'].value);
-      formdata.append('image',this.file);
-      console.log(formdata);
-      this.apiservice.httpupdateprofile(formdata).subscribe(res=>{
-      console.log(res);
+      var formdata =new FormData();
+      console.log(this.file);
+      formdata.append('file',this.file);
+      formdata.append('nature',"PROFILE_PIC");
+      this.apiservice.httpuploadfile(formdata).subscribe(res=>{
+        this.ngOnInit();
       });
-      console.log(this.profileform.value); 
-
+      //console.log(this.profileform.value);
+      let data=this.profileform.value;
+      this.apiservice.httpupdateprofile(data).subscribe(res=>{
+        this.ngOnInit();
+      });
+      this.apiservice.search_value.next(true);
+      
     }
 
 }

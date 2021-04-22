@@ -3,20 +3,15 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
+import { ApiService } from 'src/app/services/api.service';
 export interface UserData {
-  name: string,
-  // completedOrders:string,
+  fullName: string,
   id: string,
-  // cancelledOrders:string,
-  // totalOrders:string,
-  // current:number,
-  // complete:number,
-  contact:string,
+  phoneNo:any,
   email:string;
- status:string,
+  isActive:string,
   action:string,
   address:string,
-  // pendingOrders:string
 }
 @Component({
   selector: 'app-users',
@@ -25,71 +20,40 @@ export interface UserData {
 })
 export class UsersComponent implements OnInit {
   closeResult: string;
-
-  //table: any
+  table = [];
   displayedColumns: string[] = [ 'name' ,'id','email','contact','address','status','action'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  length: any;
+  timer: number;
 
-  constructor(private modalService: NgbModal) {
-    this.dataSource = new MatTableDataSource(this.table);
+  constructor(private modalService: NgbModal,private apiservice: ApiService) {
+    
   }
   ngOnInit(): void {
+    this.apiservice.httpgetuser().subscribe((res:any)=>{
+      console.log(res);
+      this.table=res.user;
+      this.dataSource = new MatTableDataSource(this.table);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.length=res.totalPages;
+      });
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
   }
-
-
   discountModal(discount) {
     this.modalService.open(discount, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
   }
-  table = [
-    {
-      name: 'Sandy',
-      id: "#sand334553",
-      contact:"+91-33434343",
-      email:"sand@example.com",
-      address:"#454 1st Block, Rammurthy, Bangalore-560016",
-      // current: 40,
-      // complete: 140,
-      status:"",
-      action:"1",
-    },
-    {
-      name: 'Rohan',
-      id: "#rohan334553",
-      contact:"+91-33434343",
-      email:"sand@example.com",
-      address:"#454 1st Block, Rammurthy, Bangalore-560016",
-      // current: 40,
-      // complete: 140,
-      status:"",
-      action:"1",
-    },
-    {
-      name: 'john',
-      id: "#rohan334553",
-      contact:"+91-33434343",
-      email:"sand@example.com",
-      address:"#454 1st Block, Rammurthy, Bangalore-560016",
-      // current: 40,
-      // complete: 140,
-      status:"",
-      action:"1",
-    },
-
-  ]
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    clearTimeout(this.timer);
+    this.timer=setTimeout(()=>{
+      console.log(filterValue);
+    },500);
   }
 // This is for the first modal
 open1(content1) {

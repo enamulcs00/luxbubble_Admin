@@ -60,7 +60,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         FormsModule,
         HttpClientModule,
         NgbModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot(
+            {timeOut: 1000
+            }
+        ),
         RouterModule.forRoot(Approutes, { useHash: false }),
         PerfectScrollbarModule,
         Ng2SearchPipeModule,

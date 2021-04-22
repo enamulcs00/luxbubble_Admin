@@ -11,4 +11,7 @@ forgetpassword=this.baseUrl+"/api/v1/admin/forgotPassword";
 changepassword=this.baseUrl+"/api/v1/admin/changePassword";
 getprofile=this.baseUrl+"/api/v1/admin/getProfile";
 updateprofile=this.baseUrl+"/api/v1/admin/updateProfile";
+getuser=this.baseUrl+"/api/v1/admin/getUser";
+file=this.baseUrl+"/api/v1/admin/uploadFile";
+updateuser=this.baseUrl+"/api/v1/admin/updateUser/";
 }

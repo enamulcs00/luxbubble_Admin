@@ -34,6 +34,12 @@ export class Login2Component {
          if(res.message=="Account Login Successfully")
          {
            this.toaster.success(res.message,'Login');
+           if (rememberMe) {
+            let userData = this.loginForm.value;
+            localStorage.setItem('rememberMe', JSON.stringify(userData))
+          } else {
+            localStorage.removeItem('rememberMe')
+          }
            sessionStorage.setItem("accessToken",res.data.accessToken);
              this.router.navigate(['dashboard']);
          }
@@ -43,14 +49,7 @@ export class Login2Component {
          }
        });
        //console.log(rememberMe);
-       
-       
-       if (rememberMe) {
-        let userData = this.loginForm.value;
-        localStorage.setItem('rememberMe', JSON.stringify(userData))
-      } else {
-        localStorage.removeItem('rememberMe')
-      }
+      
     }
 
   showRecoverForm() {
