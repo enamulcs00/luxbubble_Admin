@@ -105,10 +105,10 @@ export const PagesRoutes: Routes = [
         path: 'vendors',
         component: VendorsComponent,
         data: {
-          title: 'Vendors',
+          title: 'Service Provider',
           urls: [
             { title: 'Dashboard', url: '/dashboard' },
-            { title: 'Vendors' }
+            { title: 'Service Provider' }
           ]
         }
       },

@@ -4,6 +4,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
 import { ApiService } from 'src/app/services/api.service';
+import { ToastrService } from 'ngx-toastr';
 export interface UserData {
   fullName: string,
   id: string,
@@ -28,12 +29,17 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   length: any;
   timer: number;
+  search: string="";
+  filter: any="";
+  page: any;
+  count: any;
+  deleteid: any;
 
-  constructor(private modalService: NgbModal,private apiservice: ApiService) {
+  constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService) {
     
   }
   ngOnInit(): void {
-    this.apiservice.httpgetuser().subscribe((res:any)=>{
+    this.apiservice.httpgetuser(this.search,this.filter,this.page,this.count).subscribe((res:any)=>{
       console.log(res);
       this.table=res.user;
       this.dataSource = new MatTableDataSource(this.table);
@@ -42,9 +48,6 @@ export class UsersComponent implements OnInit {
       this.length=res.totalPages;
       });
   }
-  ngAfterViewInit() {
-
-  }
   discountModal(discount) {
     this.modalService.open(discount, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
   }
@@ -52,8 +55,44 @@ export class UsersComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     clearTimeout(this.timer);
     this.timer=setTimeout(()=>{
-      console.log(filterValue);
+      this.search=filterValue;
+      this.ngOnInit();
     },500);
+  }
+  filterSelected(body:any){
+    const filterValue = body;
+    console.log(filterValue);
+    clearTimeout(this.timer);
+    this.timer=setTimeout(()=>{
+      this.filter=filterValue;
+      this.ngOnInit();
+    },500);
+  }
+  productListAfterPageSizeChanged(e): any {
+    if (e.pageIndex == 0) {
+      this.page = 1;
+    } else {
+      if (e.previousPageIndex < e.pageIndex) {
+        this.page = e.pageIndex + 1;
+      } else {
+        this.page = e.pageIndex;
+      }
+    }
+    this.count=e.pageSize;
+    this.ngOnInit();
+  }
+  deleteUser()
+  {
+    this.apiservice.HttpDeleteUser(this.deleteid).subscribe(res=>{
+      if(res.success==true)
+      {
+       this.toaster.success("Done","Delete User");
+      }
+      else
+      {
+       this.toaster.error(res.message,"Delete User");
+      }
+     });
   }
 // This is for the first modal
 open1(content1) {
@@ -69,7 +108,8 @@ openWindowCustomClass(content3) {
 userprofileModal(userDelete) {
   this.modalService.open(userDelete, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
 }
-userDeleteModal(userDelete) {
+userDeleteModal(userDelete,id) {
+   this.deleteid=id;
   this.modalService.open(userDelete, {backdropClass: 'light-blue-backdrop',centered: true,size: 'sm'});
 }
 userDetailModal(userDetail) {

@@ -27,17 +27,27 @@ export class NavigationComponent implements AfterViewInit, OnInit {
   image: any;
 
   constructor(private modalService: NgbModal,private apiservice:ApiService) {
-   this.apiservice.httpgetprofile().subscribe(res=>{
-     this.firstname=res.data.firstName;
-     this.lastname=res.data.lastName;
-     this.email=res.data.email;
-     this.image="http://dev.webdevelopmentsolution.net:3008"+res.data.image;
-   });
+  
+this.getData()
+  }
 
+
+  getData(){
+    this.apiservice.httpgetprofile().subscribe(res=>{
+      this.firstname=res.data.firstName;
+      this.lastname=res.data.lastName;
+      this.email=res.data.email;
+      this.image="http://dev.webdevelopmentsolution.net:3008"+res.data.image;
+    });
   }
  ngOnInit()
  {
 
+  this.apiservice.search_value.subscribe(res=>{
+    if(res==true){
+      this.getData()
+    }
+  })
  }
   // This is for Notifications
   notifications: Object[] = [

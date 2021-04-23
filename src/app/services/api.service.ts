@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { UrlService } from './url.service';
 import { HttpClient } from "@angular/common/http";
 
@@ -7,8 +7,7 @@ import { HttpClient } from "@angular/common/http";
   providedIn: 'root'
 })
 export class ApiService {
-  public search_value = new Subject<any>();
-  public $searchvalue = this.search_value.asObservable();
+  public search_value = new BehaviorSubject<boolean>(false);
   constructor(private url:UrlService,private http: HttpClient) { }
   httplogin(body:any):Observable<any>
   {
@@ -30,9 +29,9 @@ export class ApiService {
   {
     return this.http.put<any>(this.url.updateprofile,body);
   }
-  httpgetuser():Observable<any>
+  httpgetuser(search:any,filter:any,page:any,count:any):Observable<any>
   {
-    return this.http.get<any>(this.url.getuser);
+    return this.http.get<any>(`${this.url.getuser}?search=${search}&filter=${filter}&page=${page}&count=${count}`);
   }
   httpuploadfile(body:any):Observable<any>
   {
@@ -42,7 +41,11 @@ export class ApiService {
   {
     return this.http.put<any>(this.url.updateuser,body);
   }
-  // searchdata() {
-  //   this.search_value.next("12");
-  // }
+  HttpDeleteUser(id)
+  {
+    return this.http.delete<any>(this.url.deleteuser+id);
+  }
+  searchdata() {
+    this.search_value.next(true);
+  }
 }

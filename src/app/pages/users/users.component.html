@@ -17,10 +17,10 @@
                             <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
                                 All
                             </button>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                <button class="dropdown-item">All</button>
-                                <button class="dropdown-item">Active</button>
-                                <button class="dropdown-item">Inactive</button>
+                            <div  ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                <button value="" class="dropdown-item" (click)="filterSelected('')">All</button>
+                                <button value="true" class="dropdown-item" (click)="filterSelected('true')">Active</button>
+                                <button value="false" class="dropdown-item"(click)="filterSelected('false')">Inactive</button>
                             </div>
                         </div>
                         <button class="btn btn-primary mb-2 mr-2"><i class="sl-icon-cloud-download"></i> Export
@@ -77,7 +77,7 @@
                                         <a class="dropdown-item" routerLink="/pages/users_detail"><i class="ti-eye"></i>
                                             View
                                         </a>
-                                        <button class="dropdown-item" (click)="userDeleteModal(userDelete)"><i
+                                        <button class="dropdown-item" (click)="userDeleteModal(userDelete,row.id)"><i
                                                 class="ti-trash"></i>
                                             Delete</button>
                                     </div>
@@ -88,7 +88,7 @@
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
                 </div>
-                <mat-paginator [length]="length" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                <mat-paginator  (page)="productListAfterPageSizeChanged($event)" [length]="length" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
             </div>
         </div>
         <!-- Column -->
@@ -119,7 +119,7 @@
             <p>Are You Sure want to delete this user?</p>
             <div class="btn-group">
                 <button type="button" class="btn btn-primary mr-2" aria-label="Close"
-                    (click)="modal.dismiss('Cross click')">Yes</button>
+                    (click)="deleteUser()" (click)="modal.dismiss('Cross click')">Yes</button>
                 <button type="button" class="btn btn-seconadary" aria-label="Close"
                     (click)="modal.dismiss('Cross click')">No</button>
             </div>
