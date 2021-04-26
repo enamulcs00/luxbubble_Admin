@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-vendors',
@@ -8,9 +9,22 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 })
 export class VendorsComponent implements OnInit {
   closeResult: string;
-  constructor(private modalService: NgbModal) {}
+  length:any;
+  constructor(private modalService: NgbModal,private apiservice:ApiService) {}
 
   ngOnInit(): void {
+  this.apiservice.httpgetsevice(this.search,this.page,this.count).subscribe((res:any)=>{
+    console.log(res);
+  });
+  }
+  count(search: (search: any, page: any, count: any) => void, page: (search: (search: any, page: any, count: any) => void, page: any, count: any) => void, count: any) {
+    throw new Error('Method not implemented.');
+  }
+  page(search: (search: any, page: any, count: any) => void, page: any, count: any) {
+    throw new Error('Method not implemented.');
+  }
+  search(search: any, page: any, count: any) {
+    throw new Error('Method not implemented.');
   }
 // This is for the first modal
 open1(content1) {

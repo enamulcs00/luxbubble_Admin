@@ -15,4 +15,5 @@ getuser=this.baseUrl+"/api/v1/admin/getUser";
 file=this.baseUrl+"/api/v1/admin/uploadFile";
 updateuser=this.baseUrl+"/api/v1/admin/updateUser/";
 deleteuser=this.baseUrl+"/api/v1/admin/deleteUser/";
+serviceprovider=this.baseUrl+"/api/v1/admin/getServiceprovider";
 }

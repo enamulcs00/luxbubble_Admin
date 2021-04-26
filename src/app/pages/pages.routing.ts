@@ -560,10 +560,10 @@ export const PagesRoutes: Routes = [
         path: 'editvendor',
         component: EditvendorComponent,
         data: {
-          title: 'Edit Vendor',
+          title: 'Edit Service Provider',
           urls: [
             { title: 'Dashboard', url: '/editvendor' },
-            { title: 'Edit Vendor' }
+            { title: 'Edit Service Provider' }
           ]
         }
       },

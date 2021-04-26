@@ -33,18 +33,23 @@ export class ApiService {
   {
     return this.http.get<any>(`${this.url.getuser}?search=${search}&filter=${filter}&page=${page}&count=${count}`);
   }
+  httpgetsevice(search:any,page:any,count:any):Observable<any>
+  {
+    return this.http.get<any>(`${this.url.serviceprovider}?search=${search}&page=${page}&count=${count}`);
+  }
   httpuploadfile(body:any):Observable<any>
   {
     return this.http.post<any>(this.url.file,body);
   }
-  httpupdateuser(body):Observable<any>
+  httpupdateuser(body,id):Observable<any>
   {
-    return this.http.put<any>(this.url.updateuser,body);
+    return this.http.put<any>(this.url.updateuser+id,body);
   }
-  HttpDeleteUser(id)
+  HttpDeleteUser(id):Observable<any>
   {
     return this.http.delete<any>(this.url.deleteuser+id);
   }
+
   searchdata() {
     this.search_value.next(true);
   }

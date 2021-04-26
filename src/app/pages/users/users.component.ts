@@ -10,7 +10,7 @@ export interface UserData {
   id: string,
   phoneNo:any,
   email:string;
-  isActive:string,
+  isApproved:boolean,
   action:string,
   address:string,
 }
@@ -87,12 +87,22 @@ export class UsersComponent implements OnInit {
       if(res.success==true)
       {
        this.toaster.success("Done","Delete User");
+       this.ngOnInit();
       }
       else
       {
        this.toaster.error(res.message,"Delete User");
       }
      });
+  }
+  onChangeBlockStatus(status, id)
+  {
+    let body={isApproved:!status
+    }
+    console.log(body);
+    this.apiservice.httpupdateuser(body,id).subscribe((res:any)=>{
+      console.log(res);
+    });
   }
 // This is for the first modal
 open1(content1) {
