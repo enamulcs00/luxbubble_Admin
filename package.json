@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^10.0.8",
     "@angular/router": "^10.0.8",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@ngtools/webpack": "^1.2.4",
     "@swimlane/ngx-charts": "^14.0.0",
     "@swimlane/ngx-datatable": "^17.1.0",
     "angular-calendar": "^0.28.2",

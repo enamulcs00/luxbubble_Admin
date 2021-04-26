@@ -5,14 +5,15 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
 import { ApiService } from 'src/app/services/api.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export interface UserData {
   fullName: string,
-  id: string,
+  id:any,
   phoneNo:any,
   email:string;
-  isApproved:boolean,
+  isApproved:boolean, 
   action:string,
-  address:string,
+  address:string
 }
 @Component({
   selector: 'app-users',
@@ -22,6 +23,7 @@ export interface UserData {
 export class UsersComponent implements OnInit {
   closeResult: string;
   table = [];
+  UpdateUser:FormGroup;
   displayedColumns: string[] = [ 'name' ,'id','email','contact','address','status','action'];
   dataSource: MatTableDataSource<UserData>;
 
@@ -34,9 +36,15 @@ export class UsersComponent implements OnInit {
   page: any;
   count: any;
   deleteid: any;
-
-  constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService) {
-    
+  file="Choose file";
+  constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
+    this.UpdateUser=this.fb.group({
+      firstName:["",Validators.required],
+      lastName:["",Validators.required],
+      phoneNo:["",Validators.required],
+      email:["",Validators.required],
+      address:["",Validators.required]
+    });
   }
   ngOnInit(): void {
     this.apiservice.httpgetuser(this.search,this.filter,this.page,this.count).subscribe((res:any)=>{
