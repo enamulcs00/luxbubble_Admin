@@ -10,21 +10,51 @@ import { ApiService } from 'src/app/services/api.service';
 export class VendorsComponent implements OnInit {
   closeResult: string;
   length:any;
+  data:any;
+  timer: number;
+  search="";
+  page=1;
+  count=10;
   constructor(private modalService: NgbModal,private apiservice:ApiService) {}
 
   ngOnInit(): void {
-  this.apiservice.httpgetsevice(this.search,this.page,this.count).subscribe((res:any)=>{
-    console.log(res);
-  });
+  this.ListData();
   }
-  count(search: (search: any, page: any, count: any) => void, page: (search: (search: any, page: any, count: any) => void, page: any, count: any) => void, count: any) {
-    throw new Error('Method not implemented.');
+  ListData()
+  {
+    this.apiservice.httpgetsevice(this.search,this.page,this.count).subscribe((res:any)=>{
+      console.log(res);
+      this.data=res.user;
+      this.length=res.count;
+    });
   }
-  page(search: (search: any, page: any, count: any) => void, page: any, count: any) {
-    throw new Error('Method not implemented.');
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    clearTimeout(this.timer);
+    this.timer=setTimeout(()=>{
+      this.search=filterValue;
+      console.log(this.search)
+      this.ListData();
+    },500);
   }
-  search(search: any, page: any, count: any) {
-    throw new Error('Method not implemented.');
+  onChangeBlockStatus(status, id)
+  {
+    
+  }
+  productListAfterPageSizeChanged(e): any {
+    console.log(e);
+    
+    if (e.pageIndex == 0) {
+      this.page = 1;
+    } else {
+      if (e.previousPageIndex < e.pageIndex) {
+        this.page = e.pageIndex + 1;
+      } else {
+        this.page = e.pageIndex;
+      }
+    }
+    this.count=e.pageSize;
+    this.ListData();
   }
 // This is for the first modal
 open1(content1) {

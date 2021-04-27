@@ -35,7 +35,7 @@ export class ApiService {
   }
   httpgetsevice(search:any,page:any,count:any):Observable<any>
   {
-    return this.http.get<any>(`${this.url.serviceprovider}?search=${search}&page=${page}&count=${count}`);
+    return this.http.get<any>(`${this.url.serviceprovider}?search=${search}&page=${page}&limit=${count}`);
   }
   httpuploadfile(body:any):Observable<any>
   {
@@ -49,7 +49,10 @@ export class ApiService {
   {
     return this.http.delete<any>(this.url.deleteuser+id);
   }
-
+  HttpGetOneUser(id):Observable<any>
+  {
+    return this.http.get<any>(this.url.GetOneUser+id);
+  }
   searchdata() {
     this.search_value.next(true);
   }

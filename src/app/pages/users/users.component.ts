@@ -37,16 +37,21 @@ export class UsersComponent implements OnInit {
   count: any;
   deleteid: any;
   file="Choose file";
+  userid: any;
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
     this.UpdateUser=this.fb.group({
       firstName:["",Validators.required],
       lastName:["",Validators.required],
       phoneNo:["",Validators.required],
-      email:["",Validators.required],
+      email:["",[Validators.required,Validators.email]],
       address:["",Validators.required]
     });
   }
   ngOnInit(): void {
+   this.DataList();
+  }
+  DataList()
+  {
     this.apiservice.httpgetuser(this.search,this.filter,this.page,this.count).subscribe((res:any)=>{
       console.log(res);
       this.table=res.user;
@@ -89,6 +94,20 @@ export class UsersComponent implements OnInit {
     this.count=e.pageSize;
     this.ngOnInit();
   }
+  GetOneUser(id:any)
+  {
+    console.log(id);
+    this.userid=id;
+    this.apiservice.HttpGetOneUser(id).subscribe((res:any)=>{
+      console.log(res.User);
+      this.UpdateUser.get('firstName').setValue(res.User.firstName);
+      this.UpdateUser.get('lastName').setValue(res.User.lastName);
+      this.UpdateUser.get('phoneNo').setValue(res.User.phoneNo);
+      this.UpdateUser.get('email').setValue(res.User.email);
+      this.UpdateUser.get('address').setValue(res.User.address);
+
+    })
+  }
   deleteUser()
   {
     this.apiservice.HttpDeleteUser(this.deleteid).subscribe(res=>{
@@ -103,9 +122,21 @@ export class UsersComponent implements OnInit {
       }
      });
   }
-  onChangeBlockStatus(status, id)
+  UpdateUserData()
   {
-    let body={isApproved:!status
+    let id=this.userid;
+    let body=this.UpdateUser.value;
+    //console.log(body);
+    this.apiservice.httpupdateuser(body,id).subscribe((res:any)=>{
+     // console.log(res);
+      this.DataList();
+    });
+  }
+  onChangeBlockStatus(status,id,phoneNo)
+  {
+    let body={
+      isApproved:!status,
+      phoneNo:phoneNo
     }
     console.log(body);
     this.apiservice.httpupdateuser(body,id).subscribe((res:any)=>{
