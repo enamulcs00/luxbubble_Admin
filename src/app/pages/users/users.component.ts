@@ -1,14 +1,15 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {MatPaginator} from '@angular/material/paginator';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
 import { ApiService } from 'src/app/services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export interface UserData {
-  fullName: string,
-  id:any,
+  firstName: string,
+  lastName:string,
+  _id:any,
   phoneNo:any,
   email:string;
   isApproved:boolean, 
@@ -29,19 +30,22 @@ export class UsersComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  length: any;
   timer: number;
-  search: string="";
-  filter: any="";
-  page: any;
-  count: any;
+  filter:boolean;
+  pageEvent: PageEvent;
+  search="";
+  page=1;
+  pageIndex:number;
+   pageSize:number;
+   totalsize:number;
+  count=10;
   deleteid: any;
   file="Choose file";
   userid: any;
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
     this.UpdateUser=this.fb.group({
-      firstName:["",Validators.required],
-      lastName:["",Validators.required],
+      firstName:["",[Validators.required,Validators.maxLength(15),Validators.minLength(2)]],
+      lastName:["",[Validators.required,Validators.maxLength(15),Validators.minLength(2)]],
       phoneNo:["",Validators.required],
       email:["",[Validators.required,Validators.email]],
       address:["",Validators.required]
@@ -52,13 +56,20 @@ export class UsersComponent implements OnInit {
   }
   DataList()
   {
-    this.apiservice.httpgetuser(this.search,this.filter,this.page,this.count).subscribe((res:any)=>{
+
+    let body=
+    {
+     search:this.search,
+     count:this.count,
+     isApproved:this.filter,
+     page:this.page
+    }
+    this.apiservice.httpgetuser(body).subscribe((res:any)=>{
       console.log(res);
-      this.table=res.user;
+      this.table=res.data;
       this.dataSource = new MatTableDataSource(this.table);
-      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.length=res.totalPages;
+      this.totalsize=res.total;
       });
   }
   discountModal(discount) {
@@ -69,11 +80,11 @@ export class UsersComponent implements OnInit {
     clearTimeout(this.timer);
     this.timer=setTimeout(()=>{
       this.search=filterValue;
-      this.ngOnInit();
+      this.DataList();
     },500);
   }
   filterSelected(body:any){
-    const filterValue = body;
+    const filterValue = body;''
     console.log(filterValue);
     clearTimeout(this.timer);
     this.timer=setTimeout(()=>{
@@ -81,18 +92,28 @@ export class UsersComponent implements OnInit {
       this.ngOnInit();
     },500);
   }
-  productListAfterPageSizeChanged(e): any {
-    if (e.pageIndex == 0) {
+  alphabate(event) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode >= 65 && charCode <= 90) ||
+      (charCode >= 97 && charCode <= 122)
+    ) {
+      return true;
+    }
+    return false;
+  }
+  productListAfterPageSizeChanged(event?:PageEvent): any {
+    if (event.pageIndex == 0) {
       this.page = 1;
     } else {
-      if (e.previousPageIndex < e.pageIndex) {
-        this.page = e.pageIndex + 1;
+      if (event.previousPageIndex < event.pageIndex) {
+        this.page = event.pageIndex + 1;
       } else {
-        this.page = e.pageIndex;
+        this.page = event.pageIndex;
       }
     }
-    this.count=e.pageSize;
-    this.ngOnInit();
+    this.count=event.pageSize;
+    this.DataList();
   }
   GetOneUser(id:any)
   {
@@ -126,9 +147,7 @@ export class UsersComponent implements OnInit {
   {
     let id=this.userid;
     let body=this.UpdateUser.value;
-    //console.log(body);
     this.apiservice.httpupdateuser(body,id).subscribe((res:any)=>{
-     // console.log(res);
       this.DataList();
     });
   }

@@ -48,7 +48,24 @@
                                         </mat-slide-toggle>
                                     </td>
                                     <td>
-                                        <div ngbDropdown placement="bottom" class="d-inline-block " placement="bottom" container="body">
+                                        <div *ngIf="!i.isApproved"  ngbDropdown placement="bottom" class="d-inline-block " placement="bottom" container="body">
+                                            <button class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
+                                            Pending
+                                          </button>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                <a href="javascript:void()" class="dropdown-item" (click)="vendorConfirmModal(vendorConfirm)">
+                                                    <i class="ti-eye"></i> Accept</a>
+                                                <a href="javascript:void()" class="dropdown-item" (click)="vendorUnconfirmModal(vendorUnconfirm)"><i
+                                                    class="ti-marker-alt"></i> Reject
+                                                    </a>
+                                                <!-- <a class="dropdown-item"><i class="ti-trash"></i>
+                                                Delete
+                                                </a> -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div *ngIf="i.isApproved"  ngbDropdown placement="bottom" class="d-inline-block " placement="bottom" container="body">
                                             <button class="btn btn-outline-primary btn-sm" id="dropdownBasic1" ngbDropdownToggle>
                                             Action
                                           </button>

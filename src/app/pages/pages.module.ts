@@ -73,6 +73,7 @@ import { VendorbusinessComponent } from './vendorbusiness/vendorbusiness.compone
 import { TrucklistComponent } from './trucklist/trucklist.component';
 import { TruckcategoryComponent } from './truckcategory/truckcategory.component';
 import { TrucklocationComponent } from './trucklocation/trucklocation.component';
+
 import { TermsComponent } from './terms/terms.component';
 
 

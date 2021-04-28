@@ -67,5 +67,11 @@ export class ProfileComponent {
         });
       });
     }
-
+    phoneNoInput(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+      if ((charCode >= 48 && charCode <= 57) || charCode == 43) {
+        return true;
+      }
+      return false;
+    }
 }

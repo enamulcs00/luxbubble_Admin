@@ -29,13 +29,13 @@ export class ApiService {
   {
     return this.http.put<any>(this.url.updateprofile,body);
   }
-  httpgetuser(search:any,filter:any,page:any,count:any):Observable<any>
+  httpgetuser(body:any):Observable<any>
   {
-    return this.http.get<any>(`${this.url.getuser}?search=${search}&filter=${filter}&page=${page}&count=${count}`);
+    return this.http.post<any>(this.url.getuser,body);
   }
   httpgetsevice(search:any,page:any,count:any):Observable<any>
   {
-    return this.http.get<any>(`${this.url.serviceprovider}?search=${search}&page=${page}&limit=${count}`);
+    return this.http.post<any>(`${this.url.serviceprovider}?page=${page}&limit=${count}`,search);
   }
   httpuploadfile(body:any):Observable<any>
   {
