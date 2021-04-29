@@ -6155,13 +6155,33 @@
       var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
       /*! @angular/core */
       "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+      /* harmony import */
 
-      var UserDetailsComponent = function UserDetailsComponent() {
-        _classCallCheck(this, UserDetailsComponent);
-      };
+
+      var src_app_services_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+      /*! src/app/services/api.service */
+      "./src/app/services/api.service.ts");
+
+      var UserDetailsComponent = /*#__PURE__*/function () {
+        function UserDetailsComponent(apiservice) {
+          _classCallCheck(this, UserDetailsComponent);
+
+          this.apiservice = apiservice;
+        }
+
+        _createClass(UserDetailsComponent, [{
+          key: "ngOnInit",
+          value: function ngOnInit() {}
+        }, {
+          key: "DataList",
+          value: function DataList() {}
+        }]);
+
+        return UserDetailsComponent;
+      }();
 
       UserDetailsComponent.ɵfac = function UserDetailsComponent_Factory(t) {
-        return new (t || UserDetailsComponent)();
+        return new (t || UserDetailsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_api_service__WEBPACK_IMPORTED_MODULE_1__["ApiService"]));
       };
 
       UserDetailsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
@@ -6995,7 +7015,9 @@
             templateUrl: './user-details.component.html'
           }]
         }], function () {
-          return [];
+          return [{
+            type: src_app_services_api_service__WEBPACK_IMPORTED_MODULE_1__["ApiService"]
+          }];
         }, null);
       })();
       /***/

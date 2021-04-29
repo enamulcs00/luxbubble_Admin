@@ -149,6 +149,14 @@
                                         <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf="UpdateUser.get('firstName').hasError('required') && UpdateUser.controls['firstName'].touched">
                                             *First Name is <strong>required</strong>
                                         </mat-error>
+                                        <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('firstName').hasError('minlength') &&
+                                        !UpdateUser.get('firstName').hasError('required')">
+                                      *Minimum 2 Character
+                                  </mat-error>
+                                  <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('firstName').hasError('maxlength') &&
+                                  !UpdateUser.get('firstName').hasError('required')">
+                                *Max 15 Character
+                            </mat-error>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -158,6 +166,14 @@
                                         <mat-error  class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf="UpdateUser.get('lastName').hasError('required') && UpdateUser.controls['lastName'].touched">
                                             *Last Name is <strong>required</strong>
                                         </mat-error>
+                                        <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('lastName').hasError('minlength') &&
+                                        !UpdateUser.get('lastName').hasError('required')">
+                                      *Minimum 2 Character
+                                  </mat-error>
+                                  <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('lastName').hasError('maxlength') &&
+                                  !UpdateUser.get('lastName').hasError('required')">
+                                *Max 15 Character
+                            </mat-error>
                                     </div>
                                 </div>
                                 <!--/span-->

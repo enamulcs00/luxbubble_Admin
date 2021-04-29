@@ -14,7 +14,7 @@ export class VendorsComponent implements OnInit {
   timer: number;
   search="";
   page=1;
-  count=10;
+  count=5;
   constructor(private modalService: NgbModal,private apiservice:ApiService) {}
 
   ngOnInit(): void {
@@ -22,10 +22,14 @@ export class VendorsComponent implements OnInit {
   }
   ListData()
   {
-    this.apiservice.httpgetsevice(this.search,this.page,this.count).subscribe((res:any)=>{
+    let body={
+      "search":this.search
+    }
+    console.log(body);
+    this.apiservice.httpgetsevice(body,this.page,this.count).subscribe((res:any)=>{
       console.log(res);
       this.data=res.user;
-      this.length=res.count;
+      this.length=res.TotalPages;
     });
   }
   applyFilter(event: Event) {

@@ -33,9 +33,9 @@ export class ApiService {
   {
     return this.http.post<any>(this.url.getuser,body);
   }
-  httpgetsevice(search:any,page:any,count:any):Observable<any>
+  httpgetsevice(body:any,page:any,count:any):Observable<any>
   {
-    return this.http.post<any>(`${this.url.serviceprovider}?page=${page}&limit=${count}`,search);
+    return this.http.post<any>(`${this.url.serviceprovider}?page=${page}&limit=${count}`,body);
   }
   httpuploadfile(body:any):Observable<any>
   {

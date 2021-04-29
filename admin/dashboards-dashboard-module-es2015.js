@@ -3422,12 +3422,20 @@ TopsellComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineC
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserDetailsComponent", function() { return UserDetailsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var src_app_services_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/api.service */ "./src/app/services/api.service.ts");
+
+
 
 
 class UserDetailsComponent {
-    constructor() { }
+    constructor(apiservice) {
+        this.apiservice = apiservice;
+    }
+    ngOnInit() {
+    }
+    DataList() { }
 }
-UserDetailsComponent.ɵfac = function UserDetailsComponent_Factory(t) { return new (t || UserDetailsComponent)(); };
+UserDetailsComponent.ɵfac = function UserDetailsComponent_Factory(t) { return new (t || UserDetailsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_services_api_service__WEBPACK_IMPORTED_MODULE_1__["ApiService"])); };
 UserDetailsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: UserDetailsComponent, selectors: [["app-user-details"]], decls: 257, vars: 0, consts: [[1, "row"], [1, "col-lg-12"], [1, "card", "bg-light"], [1, "card-body"], [1, "d-flex", "no-block", "align-items-center", "m-b-10"], [1, "card-title"], [1, "table-responsive"], [1, "table", "bg-white", "table-bordered", "nowrap", "display"], [1, "custom-control", "custom-checkbox"], ["type", "checkbox", "id", "customControlValidation2", "required", "", 1, "custom-control-input"], ["for", "customControlValidation2", 1, "custom-control-label"], ["href", "javscript:void(0)"], ["src", "assets/images/users/1.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], [1, "label", "label-danger"], ["type", "button", "data-toggle", "tooltip", "data-original-title", "Delete", 1, "btn", "btn-sm", "btn-icon", "btn-pure", "btn-outline", "delete-row-btn"], ["aria-hidden", "true", 1, "ti-close"], ["type", "checkbox", "id", "customControlValidation3", "required", "", 1, "custom-control-input"], ["for", "customControlValidation3", 1, "custom-control-label"], ["src", "assets/images/users/2.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], [1, "label", "label-info"], ["type", "checkbox", "id", "customControlValidation4", "required", "", 1, "custom-control-input"], ["for", "customControlValidation4", 1, "custom-control-label"], ["src", "assets/images/users/3.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], [1, "label", "label-success"], ["type", "checkbox", "id", "customControlValidation5", "required", "", 1, "custom-control-input"], ["for", "customControlValidation5", 1, "custom-control-label"], ["src", "assets/images/users/4.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], [1, "label", "label-inverse"], ["type", "checkbox", "id", "customControlValidation6", "required", "", 1, "custom-control-input"], ["for", "customControlValidation6", 1, "custom-control-label"], ["src", "assets/images/users/5.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], ["type", "checkbox", "id", "customControlValidation7", "required", "", 1, "custom-control-input"], ["for", "customControlValidation7", 1, "custom-control-label"], ["src", "assets/images/users/6.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], [1, "label", "label-warning"], ["type", "checkbox", "id", "customControlValidation8", "required", "", 1, "custom-control-input"], ["for", "customControlValidation8", 1, "custom-control-label"], ["src", "assets/images/users/7.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], ["type", "checkbox", "id", "customControlValidation9", "required", "", 1, "custom-control-input"], ["for", "customControlValidation9", 1, "custom-control-label"], ["src", "assets/images/users/8.jpg", "alt", "user", "width", "30", 1, "rounded-circle"], ["type", "checkbox", "id", "customControlValidation10", "required", "", 1, "custom-control-input"], ["for", "customControlValidation10", 1, "custom-control-label"], ["type", "checkbox", "id", "customControlValidation11", "required", "", 1, "custom-control-input"], ["for", "customControlValidation11", 1, "custom-control-label"]], template: function UserDetailsComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
@@ -3841,7 +3849,7 @@ UserDetailsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
                 selector: 'app-user-details',
                 templateUrl: './user-details.component.html'
             }]
-    }], function () { return []; }, null); })();
+    }], function () { return [{ type: src_app_services_api_service__WEBPACK_IMPORTED_MODULE_1__["ApiService"] }]; }, null); })();
 
 
 /***/ }),

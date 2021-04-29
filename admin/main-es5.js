@@ -1834,13 +1834,13 @@
           }
         }, {
           key: "httpgetuser",
-          value: function httpgetuser(search, filter, page, count) {
-            return this.http.get("".concat(this.url.getuser, "?search=").concat(search, "&filter=").concat(filter, "&page=").concat(page, "&count=").concat(count));
+          value: function httpgetuser(body) {
+            return this.http.post(this.url.getuser, body);
           }
         }, {
           key: "httpgetsevice",
           value: function httpgetsevice(search, page, count) {
-            return this.http.get("".concat(this.url.serviceprovider, "?search=").concat(search, "&page=").concat(page, "&count=").concat(count));
+            return this.http.post("".concat(this.url.serviceprovider, "?page=").concat(page, "&limit=").concat(count), search);
           }
         }, {
           key: "httpuploadfile",
@@ -1856,6 +1856,11 @@
           key: "HttpDeleteUser",
           value: function HttpDeleteUser(id) {
             return this.http["delete"](this.url.deleteuser + id);
+          }
+        }, {
+          key: "HttpGetOneUser",
+          value: function HttpGetOneUser(id) {
+            return this.http.get(this.url.GetOneUser + id);
           }
         }, {
           key: "searchdata",
@@ -2088,6 +2093,7 @@
         this.updateuser = this.baseUrl + "/api/v1/admin/updateUser/";
         this.deleteuser = this.baseUrl + "/api/v1/admin/deleteUser/";
         this.serviceprovider = this.baseUrl + "/api/v1/admin/getServiceprovider";
+        this.GetOneUser = this.baseUrl + "/api/v1/admin/getUser/";
       };
 
       UrlService.ɵfac = function UrlService_Factory(t) {
@@ -2535,7 +2541,7 @@
         },
         decls: 35,
         vars: 5,
-        consts: [[1, "navbar-nav", "float-left", "mr-auto"], [1, "nav-item", "d-none", "d-md-block"], ["href", "javascript:void(0)", "data-sidebartype", "mini-sidebar", 1, "nav-link", "sidebartoggler", "waves-effect", "waves-light", 3, "click"], [1, "sl-icon-menu", "font-20"], [1, "navbar-nav", "float-right"], ["ngbDropdown", "", "placement", "bottom-right", 1, "nav-item"], ["ngbDropdownToggle", "", "href", "javascript:void(0)", "data-toggle", "dropdown", "aria-haspopup", "true", "aria-expanded", "false", 1, "nav-link", "text-muted", "waves-effect", "waves-dark", "pro-pic"], ["alt", "user", "width", "31", 1, "rounded-circle", 3, "src"], ["ngbDropdownMenu", "", 1, "dropdown-menu-right", "user-dd"], [1, "with-arrow"], [1, "bg-primary"], [1, "d-flex", "no-block", "align-items-center", "p-15", "bg-primary", "text-white", "m-b-10"], [1, ""], ["alt", "user", "width", "60", 1, "img-circle", 3, "src"], [1, "m-l-10"], [1, "m-b-0"], ["routerLink", "pages/profile", 1, "dropdown-item"], [1, "ti-user", "m-r-5", "m-l-5"], ["routerLink", "/changepassword", 1, "dropdown-item"], [1, "fas", "fa-lock", "m-r-5", "m-l-5"], ["routerLink", "/login", 1, "dropdown-item", 3, "click"], [1, "fa", "fa-power-off", "m-r-5", "m-l-5"], [1, "dropdown-divider"], ["id", "notification", 1, "aside-box", "mailbox", "shadow"], ["href", "javascript:void(0)", "id", "arrow-close", 3, "click"], [1, "mdi", "mdi-close", "font-20"], [1, "list-style-none"]],
+        consts: [[1, "navbar-nav", "float-left", "mr-auto"], [1, "nav-item", "d-none", "d-md-block"], ["href", "javascript:void(0)", "data-sidebartype", "mini-sidebar", 1, "nav-link", "sidebartoggler", "waves-effect", "waves-light", 3, "click"], [1, "sl-icon-menu", "font-20"], [1, "navbar-nav", "float-right"], ["ngbDropdown", "", "placement", "bottom-right", 1, "nav-item"], ["ngbDropdownToggle", "", "href", "javascript:void(0)", "data-toggle", "dropdown", "aria-haspopup", "true", "aria-expanded", "false", 1, "nav-link", "text-muted", "waves-effect", "waves-dark", "pro-pic"], ["alt", "user", "height", "31", "width", "31", 1, "rounded-circle", 3, "src"], ["ngbDropdownMenu", "", 1, "dropdown-menu-right", "user-dd"], [1, "with-arrow"], [1, "bg-primary"], [1, "d-flex", "no-block", "align-items-center", "p-15", "bg-primary", "text-white", "m-b-10"], [1, ""], ["alt", "user", "height", "60", "width", "60", 1, "img-circle", 3, "src"], [1, "m-l-10"], [1, "m-b-0"], ["routerLink", "pages/profile", 1, "dropdown-item"], [1, "ti-user", "m-r-5", "m-l-5"], ["routerLink", "/changepassword", 1, "dropdown-item"], [1, "fas", "fa-lock", "m-r-5", "m-l-5"], ["routerLink", "/login", 1, "dropdown-item", 3, "click"], [1, "fa", "fa-power-off", "m-r-5", "m-l-5"], [1, "dropdown-divider"], ["id", "notification", 1, "aside-box", "mailbox", "shadow"], ["href", "javascript:void(0)", "id", "arrow-close", 3, "click"], [1, "mdi", "mdi-close", "font-20"], [1, "list-style-none"]],
         template: function NavigationComponent_Template(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "ul", 0);

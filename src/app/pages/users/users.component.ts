@@ -38,7 +38,7 @@ export class UsersComponent implements OnInit {
   pageIndex:number;
    pageSize:number;
    totalsize:number;
-  count=10;
+  count=5;
   deleteid: any;
   file="Choose file";
   userid: any;

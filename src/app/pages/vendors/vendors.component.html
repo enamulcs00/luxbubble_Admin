@@ -35,7 +35,7 @@
                             <tbody>
                                 <tr *ngFor="let i of data ; let j = index">
                                     <td>{{j+1}}</td>
-                                    <td><span class="text-nowrap"> {{i.fullName}} </span></td>
+                                    <td><span class="text-nowrap"> {{i.firstName}} {{i.lastName}} </span></td>
                                     <td class="text-nowrap">{{i.phoneNo}}</td>
                                     <td class="text-nowrap">{{i.email}}</td>
                                     <td>{{i.address}}</td>
@@ -84,7 +84,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <mat-paginator (page)="productListAfterPageSizeChanged($event)" [length]="length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                        <mat-paginator (page)="productListAfterPageSizeChanged($event)" [length]="length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
                     </div>
                 </div>
             </div>

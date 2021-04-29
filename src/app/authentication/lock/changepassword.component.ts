@@ -40,4 +40,8 @@ export class changepasswordComponent {
      }
    })
   }
+  BackToDashboard()
+  {
+    this.router.navigate(['dashboard']);
+  }
 }
