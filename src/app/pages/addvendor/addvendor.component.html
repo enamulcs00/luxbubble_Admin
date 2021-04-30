@@ -7,16 +7,22 @@
                         <div class="form-group has-success">
                             <div class="form-group">
                                 <label class="control-label">Upload Image</label>
-                                <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">Choose file</label></div>
+                                <div class="custom-file"><input (click)="upload($event)"  class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label"  for="inputGroupFile01">Choose file</label></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label class="control-label">Name</label>
-                            <input type="text" id="firstName" class="form-control" placeholder="John doe">
+                            <label class="control-label">First Name</label>
+                            <input type="text" id="firstName" class="form-control" placeholder="John">
                         </div>
                     </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                          <label class="control-label">Last Name</label>
+                          <input type="text" id="firstName" class="form-control" placeholder="doe">
+                      </div>
+                  </div>
                     <div class="col-md-6">
                         <div class="form-group col-12">
                             <label class="control-label">Add Commission</label>

@@ -1839,8 +1839,8 @@
           }
         }, {
           key: "httpgetsevice",
-          value: function httpgetsevice(search, page, count) {
-            return this.http.post("".concat(this.url.serviceprovider, "?page=").concat(page, "&limit=").concat(count), search);
+          value: function httpgetsevice(body, page, count) {
+            return this.http.post("".concat(this.url.serviceprovider, "?page=").concat(page, "&limit=").concat(count), body);
           }
         }, {
           key: "httpuploadfile",
@@ -1861,6 +1861,11 @@
           key: "HttpGetOneUser",
           value: function HttpGetOneUser(id) {
             return this.http.get(this.url.GetOneUser + id);
+          }
+        }, {
+          key: "HttpUpdateServiceProvider",
+          value: function HttpUpdateServiceProvider(body, id) {
+            return this.http.put(this.url.updateServiceprovider + id, body);
           }
         }, {
           key: "searchdata",
@@ -2094,6 +2099,7 @@
         this.deleteuser = this.baseUrl + "/api/v1/admin/deleteUser/";
         this.serviceprovider = this.baseUrl + "/api/v1/admin/getServiceprovider";
         this.GetOneUser = this.baseUrl + "/api/v1/admin/getUser/";
+        this.updateServiceprovider = this.baseUrl + "/api/v1/admin/updateServiceprovider/";
       };
 
       UrlService.ɵfac = function UrlService_Factory(t) {

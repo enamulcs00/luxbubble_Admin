@@ -53,6 +53,10 @@ export class ApiService {
   {
     return this.http.get<any>(this.url.GetOneUser+id);
   }
+  HttpUpdateServiceProvider(body,id):Observable<any>
+  {
+    return this.http.put<any>(this.url.updateServiceprovider+id,body);
+  }
   searchdata() {
     this.search_value.next(true);
   }

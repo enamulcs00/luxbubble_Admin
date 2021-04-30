@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/services/api.service';
-
+import { saveAs } from "file-saver";
 @Component({
   selector: 'app-vendors',
   templateUrl: './vendors.component.html',
@@ -41,9 +41,16 @@ export class VendorsComponent implements OnInit {
       this.ListData();
     },500);
   }
-  onChangeBlockStatus(status, id)
+  onChangeBlockStatus(status,id,email)
   {
-    
+    let body={
+      isActive:!status,
+      email:email
+    }
+    console.log(body);
+    this.apiservice.HttpUpdateServiceProvider(body,id).subscribe((res:any)=>{
+      console.log(res);
+    });
   }
   productListAfterPageSizeChanged(e): any {
     console.log(e);
@@ -59,6 +66,12 @@ export class VendorsComponent implements OnInit {
     }
     this.count=e.pageSize;
     this.ListData();
+  }
+  ExportCsv() {
+    // saveAs(
+    //   "http://15.207.74.128:9031/api/admin/exportToCsvSP/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDQ5ZWQ1NzI5MWYwZjJmMzRlYWUxM2IiLCJpYXQiOjE2MTg2MzYyMzMsImV4cCI6MTYyMTIyODIzM30.pA8qEaOVljL7lrW2CL2h5aVgXYxxis6a39uqHyK0hA0/sp.csv",
+    //   "users.csv"
+    // );
   }
 // This is for the first modal
 open1(content1) {

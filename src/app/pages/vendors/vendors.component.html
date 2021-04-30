@@ -10,7 +10,7 @@
                         </form>
                     </div>
                     <div class="col-md-8 d-flex  justify-content-end">
-                        <button class="btn btn-primary mb-2 mr-2"><i class="sl-icon-cloud-download"></i> Export CSV</button>
+                        <button class="btn btn-primary mb-2 mr-2" (click)="ExportCsv()"><i class="sl-icon-cloud-download"></i> Export CSV</button>
                         <div class="d-inline-block mb-2">
                             <a class="btn btn-outline-primary" routerLink="/pages/addvendor">
                                 <i class="sl-icon-plus"></i> Add Service Provider
@@ -23,7 +23,6 @@
                                 <tr>
                                     <th class="nowrap">SR NO.</th>
                                     <th class="nowrap">Name</th>
-                                    <!-- <th>ID</th> -->
                                     <th class="nowrap">Contact </th>
                                     <th class="nowrap">Email</th>
                                     <th class="nowrap">Address</th>
@@ -44,7 +43,7 @@
                                         <p class="text-nowrap"><i class="fa fa-circle text-success"></i> Completed : 90</p>
                                     </td>
                                     <td>
-                                        <mat-slide-toggle [checked]="i.isApproved===true?'true':'false'" (change)="onChangeBlockStatus(i.isApproved,i.id)">
+                                        <mat-slide-toggle [checked]="i.isActive===true?'true':'false'" (change)="onChangeBlockStatus(i.isActive,i.id,i.email)">
                                         </mat-slide-toggle>
                                     </td>
                                     <td>

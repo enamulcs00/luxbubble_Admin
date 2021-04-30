@@ -17,4 +17,5 @@ updateuser=this.baseUrl+"/api/v1/admin/updateUser/";
 deleteuser=this.baseUrl+"/api/v1/admin/deleteUser/";
 serviceprovider=this.baseUrl+"/api/v1/admin/getServiceprovider";
 GetOneUser=this.baseUrl+"/api/v1/admin/getUser/";
+updateServiceprovider=this.baseUrl+"/api/v1/admin/updateServiceprovider/";
 }

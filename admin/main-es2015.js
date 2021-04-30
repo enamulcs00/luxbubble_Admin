@@ -851,8 +851,8 @@ class ApiService {
     httpgetuser(body) {
         return this.http.post(this.url.getuser, body);
     }
-    httpgetsevice(search, page, count) {
-        return this.http.post(`${this.url.serviceprovider}?page=${page}&limit=${count}`, search);
+    httpgetsevice(body, page, count) {
+        return this.http.post(`${this.url.serviceprovider}?page=${page}&limit=${count}`, body);
     }
     httpuploadfile(body) {
         return this.http.post(this.url.file, body);
@@ -865,6 +865,9 @@ class ApiService {
     }
     HttpGetOneUser(id) {
         return this.http.get(this.url.GetOneUser + id);
+    }
+    HttpUpdateServiceProvider(body, id) {
+        return this.http.put(this.url.updateServiceprovider + id, body);
     }
     searchdata() {
         this.search_value.next(true);
@@ -988,6 +991,7 @@ class UrlService {
         this.deleteuser = this.baseUrl + "/api/v1/admin/deleteUser/";
         this.serviceprovider = this.baseUrl + "/api/v1/admin/getServiceprovider";
         this.GetOneUser = this.baseUrl + "/api/v1/admin/getUser/";
+        this.updateServiceprovider = this.baseUrl + "/api/v1/admin/updateServiceprovider/";
     }
 }
 UrlService.ɵfac = function UrlService_Factory(t) { return new (t || UrlService)(); };

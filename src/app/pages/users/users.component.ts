@@ -12,7 +12,7 @@ export interface UserData {
   _id:any,
   phoneNo:any,
   email:string;
-  isApproved:boolean, 
+  isActive:boolean, 
   action:string,
   address:string
 }
@@ -61,7 +61,7 @@ export class UsersComponent implements OnInit {
     {
      search:this.search,
      count:this.count,
-     isApproved:this.filter,
+     isActive:this.filter,
      page:this.page
     }
     this.apiservice.httpgetuser(body).subscribe((res:any)=>{
@@ -154,7 +154,7 @@ export class UsersComponent implements OnInit {
   onChangeBlockStatus(status,id,phoneNo)
   {
     let body={
-      isApproved:!status,
+      isActive:!status,
       phoneNo:phoneNo
     }
     console.log(body);
