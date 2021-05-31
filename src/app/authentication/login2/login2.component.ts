@@ -25,7 +25,7 @@ export class Login2Component {
   }
     onLogin()
     {
-       //console.log(this.loginForm.value);
+       
          let data=this.loginForm.value;
          delete data.rememberMe;
          let rememberMe=this.loginForm.controls['rememberMe'].value;
@@ -48,8 +48,6 @@ export class Login2Component {
           this.toaster.error(res.message,'Login');
          }
        });
-       //console.log(rememberMe);
-      
     }
 
   showRecoverForm() {

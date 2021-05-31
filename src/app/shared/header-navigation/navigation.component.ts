@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, EventEmitter, Output, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   NgbModal,
   ModalDismissReasons,
@@ -26,7 +27,7 @@ export class NavigationComponent implements AfterViewInit, OnInit {
   email: any;
   image: any;
 
-  constructor(private modalService: NgbModal,private apiservice:ApiService) {
+  constructor(private router:Router,private modalService: NgbModal,private apiservice:ApiService) {
   
 this.getData()
   }
@@ -129,5 +130,6 @@ this.getData()
   Logout()
   {
     sessionStorage.removeItem("accessToken");
+    this.router.navigate(['/login'])
   }
 }

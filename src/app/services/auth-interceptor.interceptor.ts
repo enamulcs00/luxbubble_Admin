@@ -2,24 +2,27 @@ import { Injectable } from '@angular/core';
 import {HttpRequest,HttpHandler,HttpEvent,HttpInterceptor} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Injectable()
 export class AuthInterceptorInterceptor implements HttpInterceptor {
   token: string;
 
-  constructor() {}
+  constructor(private spinner:NgxSpinnerService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
  // console.log("hi");
  this.token=sessionStorage.getItem('accessToken');
- 
- //console.log(this.token);
+ this.spinner.show();
  let tokenizedReq=req.clone({
    setHeaders:{
      Authorization:`${this.token}`
    }
  })
- console.log("interceptor");
+
  
- return next.handle(tokenizedReq);
+ return next.handle(tokenizedReq).pipe(finalize( ()=>
+ this.spinner.hide()
+
+));
   }
 }

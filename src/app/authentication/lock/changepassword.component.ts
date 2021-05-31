@@ -6,7 +6,7 @@ import { ApiService } from 'src/app/services/api.service';
 import {CustomValidationService} from '../../services/custom-validation.service'
 @Component({
   selector: 'app-changepassword',
-  templateUrl: './changePassword.component.html'
+  templateUrl: './changepassword.component.html'
 })
 export class changepasswordComponent {
   changepassForm:FormGroup;

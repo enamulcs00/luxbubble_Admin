@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { UrlService } from './url.service';
 import { HttpClient } from "@angular/common/http";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   public search_value = new BehaviorSubject<boolean>(false);
-  constructor(private url:UrlService,private http: HttpClient) { }
+  constructor(private url:UrlService,private http: HttpClient,private router:Router) { }
   httplogin(body:any):Observable<any>
   {
     return this.http.post<any>(this.url.login,body);
@@ -59,5 +60,17 @@ export class ApiService {
   }
   searchdata() {
     this.search_value.next(true);
+  }
+  postApi(url,data):Observable<any>
+  {
+    return this.http.post(this.url.baseUrl+url,data);
+  }
+  putApi(endPointURL,body){
+    return this.http.put(this.url.baseUrl + endPointURL, body)
+    }
+  logout()
+  {
+    sessionStorage.removeItem("accessToken");
+    this.router.navigate(['/login'])
   }
 }

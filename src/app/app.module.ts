@@ -29,6 +29,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import{AuthInterceptorInterceptor} from './services/auth-interceptor.interceptor'
+import{ErrorInterceptor} from './services/error.interceptor'
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -73,6 +75,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DragDropModule,
         ReactiveFormsModule,
         FormsModule,
+        NgxSpinnerModule,
         HttpClientModule    
     ],
    
@@ -89,7 +92,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             provide:HTTP_INTERCEPTORS,
             useClass:AuthInterceptorInterceptor,
             multi:true
-        }
+        },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],
     bootstrap: [AppComponent],
     schemas: [
