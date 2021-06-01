@@ -93,7 +93,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             useClass:AuthInterceptorInterceptor,
             multi:true
         },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+        {
+            provide:HTTP_INTERCEPTORS,
+            useClass:ErrorInterceptor,
+            multi:true
+        }
     ],
     bootstrap: [AppComponent],
     schemas: [

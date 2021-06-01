@@ -1,5 +1,5 @@
 <div class="card">
-    <form action="#">
+    <form [formGroup]="ServiceProviderForm">
         <div class="form-body">
             <div class="card-body">
                 <div class="row p-t-20">
@@ -7,31 +7,31 @@
                         <div class="form-group has-success">
                             <div class="form-group">
                                 <label class="control-label">Upload Image</label>
-                                <div class="custom-file"><input (click)="upload($event)"  class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label"  for="inputGroupFile01">Choose file</label></div>
+                                <div class="custom-file text-nowrap text-truncate"><input (click)="upload($event)" formControlName="image"class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label"  for="inputGroupFile01">{{profile?profile:'Choose file'}}</label></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
-                            <input type="text" id="firstName" class="form-control" placeholder="John">
+                            <input type="text" id="firstName" class="form-control" placeholder="John" formControlName="firstName">
                         </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
                           <label class="control-label">Last Name</label>
-                          <input type="text" id="firstName" class="form-control" placeholder="doe">
+                          <input type="text" id="firstName" class="form-control" placeholder="doe" formControlName="lastName">
                       </div>
                   </div>
                     <div class="col-md-6">
                         <div class="form-group col-12">
-                            <label class="control-label">Add Commission</label>
+                            <label class="control-label">Commission type</label>
                             <div class="row">
-                                <select class="form-control col-md-4 mr-2">
-                          <option value="">Percentage</option>
-                          <option value="">Fixed</option>
+                                <select class="form-control col-md-4 mr-2" formControlName="commissionType">
+                          <option value="PERCENTAGE">Percentage</option>
+                          <option value="FIXED">Fixed</option>
                         </select>
-                                <input type="text" placeholder="Add commission in % or $" class="form-control col-md-7 ml-auto">
+                                <input type="text" placeholder="Add commission in % or $" class="form-control col-md-7 ml-auto" formControlName="commission">
                             </div>
                         </div>
                     </div>
@@ -48,14 +48,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Contact Number</label>
-                            <input type="number" id="firstName" class="form-control" placeholder="343-434-5423">
+                            <input type="text" id="firstName" class="form-control" placeholder="eg:-343-434-5423" formControlName="phoneNo">
                         </div>
                     </div>
                     <!--/span-->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Email</label>
-                            <input type="email" id="firstName" class="form-control" placeholder="example@gmail.com">
+                            <input type="email" formControlName="email" id="firstName" class="form-control" placeholder="example@gmail.com">
 
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <div class="form-group has-success">
                             <div class="form-group">
                                 <label class="control-label">Upload Document</label>
-                                <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">Choose file</label></div>
+                                <div class="custom-file"><input class="custom-file-input"id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">{{doc?doc:'Choose file'}}</label></div>
                             </div>
                         </div>
                     </div>
@@ -119,14 +119,14 @@
                     <div class="col-md-12">
                         <div class="form-group has-danger">
                             <label class="control-label">Address</label>
-                            <textarea name="" id="" cols="30" rows="5" class="form-control" placeholder="#433 New garden Complex"></textarea>
+                            <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-actions">
                 <div class="card-body">
-                    <button type="submit" class="btn btn-primary mr-3">
+                    <button type="submit" class="btn btn-primary mr-3" (click)="Add()">
               <i class="fa fa-plus"></i> Add</button>
                 </div>
             </div>

@@ -23,7 +23,7 @@
                                 <button value="false" class="dropdown-item"(click)="filterSelected(false)">Inactive</button>
                             </div>
                         </div>
-                        <button class="btn btn-primary mb-2 mr-2"><i class="sl-icon-cloud-download"></i> Export
+                        <button class="btn btn-primary mb-2 mr-2" (click)="exportToCsv()"><i class="sl-icon-cloud-download"></i> Export
                             CSV</button>
                         <!-- <button class="btn btn-seconadary mb-2" (click)="addUserModal(addUser)"><i class="sl-icon-plus"></i> Add
               User</button> -->
@@ -35,28 +35,28 @@
                         <!-- ID Column -->
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Name </th>
-                            <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}}</td>
+                            <td mat-cell *matCellDef="let row"> {{row.firstName +" "+ row.lastName ||"--"}}</td>
                         </ng-container>
 
                         <!-- Progress Column -->
                         <ng-container matColumnDef="id">
                             <th mat-header-cell *matHeaderCellDef>User ID </th>
-                            <td mat-cell *matCellDef="let row"> {{row._id}} </td>
+                            <td mat-cell *matCellDef="let row"> {{row.userName||"--"}} </td>
                         </ng-container>
                         <!-- Progress Column -->
                         <ng-container matColumnDef="contact">
                             <th mat-header-cell *matHeaderCellDef class="text-nowrap">Phone Number </th>
-                            <td mat-cell *matCellDef="let row" class="text-nowrap"> {{row.phoneNo}} </td>
+                            <td mat-cell *matCellDef="let row" class="text-nowrap"> {{row.dialCode+" "+row.phoneNo}} </td>
                         </ng-container>
                         <!-- Progress Column -->
                         <ng-container matColumnDef="email">
                             <th mat-header-cell *matHeaderCellDef>Email </th>
-                            <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                            <td mat-cell *matCellDef="let row"> {{row.email ||"--"}} </td>
                         </ng-container>
                         <!-- Address -->
                         <ng-container matColumnDef="address">
                             <th mat-header-cell *matHeaderCellDef>Address </th>
-                            <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+                            <td mat-cell *matCellDef="let row"> {{row.address ||"--"}} </td>
                         </ng-container>
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef class="text-nowrap"> Status </th>
@@ -74,10 +74,10 @@
                                         Action
                                     </button>
                                     <div  ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                        <a class="dropdown-item" routerLink="/pages/users_detail"><i class="ti-eye"></i>
+                                        <a class="dropdown-item" routerLink="/pages/users_detail"[queryParams]="{ id: row._id}"><i class="ti-eye"></i>
                                             View
                                         </a>
-                                        <button class="dropdown-item" (click)="userDetailModal(userDetail)" (click)="GetOneUser(row._id)"><i 
+                                        <button class="dropdown-item" (click)="userDetailModal(userDetail,row)"><i 
                                             class="ti-marker-alt"></i> Edit</button>
                                         <button class="dropdown-item" (click)="userDeleteModal(userDelete,row._id)"><i
                                                 class="ti-trash"></i>
@@ -89,6 +89,7 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
+                    <p *ngIf="!totalsize">Data not found!</p>
                 </div>
                 <mat-paginator  #paginator
                 [length]="totalsize"
@@ -123,10 +124,10 @@
     <!-- delete modal -->
     <ng-template #userDelete let-modal>
         <div class="modal-body">
-            <p>Are You Sure want to delete this user?</p>
+            <p>Are you want to delete this user?</p>
             <div class="btn-group">
                 <button type="button" class="btn btn-primary mr-2" aria-label="Close"
-                    (click)="deleteUser()" (click)="modal.dismiss('Cross click')">Yes</button>
+                    (click)="deleteUser()">Yes</button>
                 <button type="button" class="btn btn-seconadary" aria-label="Close"
                     (click)="modal.dismiss('Cross click')">No</button>
             </div>
@@ -144,36 +145,32 @@
                             <div class="row p-t-20">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">First Name</label>
-                                        <input type="text"(keypress)="alphabate($event)" (keydown.space)="$event.preventDefault()" formControlName="firstName" id="firstName" class="form-control" placeholder="John">
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf="UpdateUser.get('firstName').hasError('required') && UpdateUser.controls['firstName'].touched">
-                                            *First Name is <strong>required</strong>
+                                        <label class="control-label">First name</label>
+                                        <input type="text" (keydown.space)="$event.preventDefault()" formControlName="firstName" id="firstName" class="form-control" placeholder="John">
+                                        <mat-error *ngIf="UpdateUser.get('firstName').hasError('required') && submitted">
+                                            *First name is required.
                                         </mat-error>
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('firstName').hasError('minlength') &&
-                                        !UpdateUser.get('firstName').hasError('required')">
-                                      *Minimum 2 Character
+                                        <mat-error *ngIf=" UpdateUser.get('firstName').hasError('pattern')">
+                                      *first name should alphabate only.
                                   </mat-error>
-                                  <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('firstName').hasError('maxlength') &&
-                                  !UpdateUser.get('firstName').hasError('required')">
-                                *Max 15 Character
+                                  <mat-error  *ngIf="UpdateUser.get('firstName').hasError('maxlength')">
+                                *Maximum 15 character allowed.
                             </mat-error>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">Last Name</label>
-                                        <input type="text" (keypress)="alphabate($event)" (keydown.space)="$event.preventDefault()" formControlName="lastName" formControlName="lastName" id="lastName" class="form-control" placeholder="doe">
-                                        <mat-error  class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf="UpdateUser.get('lastName').hasError('required') && UpdateUser.controls['lastName'].touched">
-                                            *Last Name is <strong>required</strong>
+                                        <label class="control-label">Last name</label>
+                                        <input type="text" (keydown.space)="$event.preventDefault()" formControlName="lastName" formControlName="lastName" id="lastName" class="form-control" placeholder="doe">
+                                        <mat-error *ngIf="UpdateUser.get('lastName').hasError('required') && submitted">
+                                            *Last name is required.
                                         </mat-error>
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('lastName').hasError('minlength') &&
-                                        !UpdateUser.get('lastName').hasError('required')">
-                                      *Minimum 2 Character
+                                        <mat-error *ngIf=" UpdateUser.get('lastName').hasError('pattern')">
+                                            *first name should alphabate only.
+                                        </mat-error>
+                                        <mat-error  *ngIf=" UpdateUser.get('lastName').hasError('maxlength')">
+                                      *Maximum 15 character allowed.
                                   </mat-error>
-                                  <mat-error class="text-danger font-weight-bold bg-white px-1 d-inline-block"  *ngIf=" UpdateUser.get('lastName').hasError('maxlength') &&
-                                  !UpdateUser.get('lastName').hasError('required')">
-                                *Max 15 Character
-                            </mat-error>
                                     </div>
                                 </div>
                                 <!--/span-->
@@ -191,25 +188,15 @@
                             <div class="row ">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">Phone Number</label>
-                                        <input type="number" (keydown.space)="$event.preventDefault()" readonly formControlName="phoneNo" class="form-control" placeholder="No.">
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="UpdateUser.get('phoneNo').hasError('required') && UpdateUser.controls['phoneNo'].touched">
-                                            *Phone No is <strong>required</strong>
-                                        </mat-error>
+                                        <label class="control-label">Phone number</label>
+                                        <input type="number" readonly formControlName="phoneNo" class="form-control" placeholder="eg:- 9939940419">
                                     </div>
                                 </div>
                                 <!--/span-->
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Email</label>
-                                        <input readonly type="email" (keydown.space)="$event.preventDefault()" formControlName="email"  class="form-control" placeholder="example@gmail.com">
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="UpdateUser.get('email').hasError('required') && UpdateUser.controls['email'].touched">
-                                            *Email is <strong>required</strong>
-                                        </mat-error>
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="UpdateUser.get('email').hasError('email') &&
-                                  !UpdateUser.get('email').hasError('required')">
-                            *Email is <strong>not valid</strong>
-                        </mat-error>
+                                        <input readonly type="email" formControlName="email"  class="form-control" placeholder="example@gmail.com">
                                     </div>
                                 </div>
                                 <!--/span-->
@@ -251,9 +238,12 @@
                                 <div class="col-md-12">
                                     <div class="form-group has-danger">
                                         <label class="control-label">Address</label>
-                                        <textarea (keydown.space)="$event.preventDefault()" formControlName="address" cols="30" rows="5" class="form-control" placeholder="#433 New garden Complex"></textarea>
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="UpdateUser.get('address').hasError('required') && UpdateUser.controls['address'].touched">
-                                            *Address is <strong>required</strong>
+                                        <textarea formControlName="address" cols="30" rows="5" class="form-control" placeholder="#433 New garden Complex"></textarea>
+                                        <mat-error *ngIf="UpdateUser.get('address').hasError('required') && submitted">
+                                            *Address is required.
+                                        </mat-error>
+                                        <mat-error  *ngIf="UpdateUser.get('address').hasError('pattern')">
+                                           white space not allowed.
                                         </mat-error>
                                     </div>
                                 </div>
@@ -263,7 +253,7 @@
                         </div>
                         <div class="form-actions">
                             <div class="card-body">
-                                <button type="submit" class="btn btn-primary mr-3" (click)="UpdateUserData()" (click)="modal.dismiss('Cross click')">
+                                <button type="submit" class="btn btn-primary mr-3" (click)="UpdateUserData()">
                                   <i class="fa fa-check"></i> Update</button>
                                 <button type="button" class="btn btn-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
                             </div>
@@ -287,7 +277,6 @@
                                     <div class="form-group">
                                         <label class="control-label">User Name</label>
                                         <input type="text" id="firstName" class="form-control" placeholder="John doe">
-
                                     </div>
                                 </div>
                                 <!--/span-->

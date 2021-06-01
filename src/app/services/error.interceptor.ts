@@ -3,11 +3,13 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpResponse,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
 @Injectable()
@@ -15,22 +17,22 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(private accountService: ApiService,private toastr:ToastrService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      return next.handle(request).pipe(catchError(err => {
-          if ([401, 403].includes(err.status)) {
+    
+      return next.handle(request).pipe(tap((evt:any) => {
+        console.log('All response of apu',evt);
+        
+        if (evt instanceof HttpResponse) {
+          console.log('Response instance',evt);
+        
+          if ([401, 403].includes(evt.body.statusCode)) {
+            this.toastr.error('Please login','Session expired',{
+              timeOut: 3000,
+            })
+            this.accountService.logout();
             
-              this.toastr.error('Session expired','Please login',{
-                timeOut: 3000,
-              })
-              this.accountService.logout();
-              console.log('Called from Error Interceptor');
-              
-          }
- const error = err.error?.message || err.statusText;
-          console.error(err);
-          this.toastr.error(err,'',{
-            timeOut: 3000,
-          })
-          return throwError(error);
-      }))
+        }else if(![401, 403,200].includes(evt.body.statusCode)){
+          this.toastr.error(evt.body.message || evt.statusText)
+        }
+     }}))
   }
 }

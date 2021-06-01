@@ -18,7 +18,7 @@ export class Login2Component {
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", [Validators.required, Validators.minLength(8)]),
+      password: new FormControl("", [Validators.required]),
       rememberMe:new FormControl(false),
     });
     this.checkRememberMe();

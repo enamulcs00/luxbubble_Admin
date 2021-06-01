@@ -9,12 +9,13 @@ import { saveAs } from "file-saver";
 })
 export class VendorsComponent implements OnInit {
   closeResult: string;
-  length:any;
+  length:number;
   data:any;
   timer: number;
   search="";
   page=1;
   count=5;
+  csvUrl: any;
   constructor(private modalService: NgbModal,private apiservice:ApiService) {}
 
   ngOnInit(): void {
@@ -22,14 +23,24 @@ export class VendorsComponent implements OnInit {
   }
   ListData()
   {
+    let url = `/api/v1/admin/getServiceProvider`
     let body={
+      "page":this.page,
+      "count":this.count,
       "search":this.search
-    }
+  }
     console.log(body);
-    this.apiservice.httpgetsevice(body,this.page,this.count).subscribe((res:any)=>{
-      console.log(res);
-      this.data=res.user;
-      this.length=res.TotalPages;
+    this.apiservice.postApi(url,body).subscribe((res:any)=>{
+      console.log('Vendors',res);
+      if(res.statusCode==200){
+        console.log(res);
+        this.data=res.data.doc;
+        this.length=res.data.total;
+        console.log('Len',this.length);
+        this.csvUrl = res.data.exportToCsv
+      }else{
+        this.length = 0
+      }
     });
   }
   applyFilter(event: Event) {
@@ -67,11 +78,8 @@ export class VendorsComponent implements OnInit {
     this.count=e.pageSize;
     this.ListData();
   }
-  ExportCsv() {
-    // saveAs(
-    //   "http://15.207.74.128:9031/api/admin/exportToCsvSP/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDQ5ZWQ1NzI5MWYwZjJmMzRlYWUxM2IiLCJpYXQiOjE2MTg2MzYyMzMsImV4cCI6MTYyMTIyODIzM30.pA8qEaOVljL7lrW2CL2h5aVgXYxxis6a39uqHyK0hA0/sp.csv",
-    //   "users.csv"
-    // );
+  exportToCsv(){
+    window.open(this.csvUrl,'Vendors details')
   }
 // This is for the first modal
 open1(content1) {

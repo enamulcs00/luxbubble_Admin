@@ -3,6 +3,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ApiService } from 'src/app/services/api.service';
+
 
 export interface UserData {
   hotelName: string,
@@ -30,14 +34,17 @@ export class UsersDetailComponent implements AfterViewInit    {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private modalService: NgbModal) {
-    // const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
+  constructor(private modalService: NgbModal,public apiservice:ApiService,private route:ActivatedRoute,private toaster:ToastrService) {
+    this.route.queryParams.subscribe((params:any)=>{
+      this.id = params.id;
+      console.log('id',params.id);
+      
+    })
     this.dataSource = new MatTableDataSource(this.table);
   }
 
   ngAfterViewInit() {
+    this.GetUser()
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -86,19 +93,23 @@ export class UsersDetailComponent implements AfterViewInit    {
       this.dataSource.paginator.firstPage();
     }
   }
+  id: any;
+  userData: any;
+  
+  ngOnInit(): void {
+  
+  }
+  GetUser(){
+    let url = `/api/v1/admin/viewUser/${this.id}`
+    this.apiservice.getApi(url).subscribe((res:any)=>{
+      console.log("User data",res);
+      if(res.statusCode==200){
+        this.userData = res.data
+        console.log('Data detais',res);
+      }
+    })
+  } 
 }
 
-/** Builds and returns a new User. */
-// function createNewUser(id: number): UserData {
-//   const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-//       NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-//   return {
-//     id: id.toString(),
-//     name: name,
-//     progress: Math.round(Math.random() * 100).toString(),
-//     color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-//   };
-// }
 
 

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ApiService {
+ public baseUrl = "http://dev.webdevelopmentsolution.net:3008";
+  public regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u  //Prevent white space between words
   public search_value = new BehaviorSubject<boolean>(false);
   constructor(private url:UrlService,private http: HttpClient,private router:Router) { }
   httplogin(body:any):Observable<any>
@@ -68,9 +70,16 @@ export class ApiService {
   putApi(endPointURL,body){
     return this.http.put(this.url.baseUrl + endPointURL, body)
     }
+    deleteApi(endPointURL){
+      return this.http.delete(this.url.baseUrl + endPointURL)
+     }
   logout()
   {
     sessionStorage.removeItem("accessToken");
     this.router.navigate(['/login'])
+  }
+  getApi(url):Observable<any>
+  {
+    return this.http.get<any>(this.url.baseUrl+url);
   }
 }

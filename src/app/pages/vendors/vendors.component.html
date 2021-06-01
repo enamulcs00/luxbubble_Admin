@@ -10,7 +10,7 @@
                         </form>
                     </div>
                     <div class="col-md-8 d-flex  justify-content-end">
-                        <button class="btn btn-primary mb-2 mr-2" (click)="ExportCsv()"><i class="sl-icon-cloud-download"></i> Export CSV</button>
+                        <button class="btn btn-primary mb-2 mr-2" (click)="exportToCsv()"><i class="sl-icon-cloud-download"></i> Export CSV</button>
                         <div class="d-inline-block mb-2">
                             <a class="btn btn-outline-primary" routerLink="/pages/addvendor">
                                 <i class="sl-icon-plus"></i> Add Service Provider
@@ -83,6 +83,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <p *ngIf="!length">Data not found!</p>
                         <mat-paginator (page)="productListAfterPageSizeChanged($event)" [length]="length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
                     </div>
                 </div>

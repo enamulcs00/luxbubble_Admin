@@ -42,13 +42,16 @@ export class UsersComponent implements OnInit {
   deleteid: any;
   file="Choose file";
   userid: any;
+submitted:boolean = false
+  csvUrl: any;
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
+  //  var regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u
     this.UpdateUser=this.fb.group({
-      firstName:["",[Validators.required,Validators.maxLength(15),Validators.minLength(2)]],
-      lastName:["",[Validators.required,Validators.maxLength(15),Validators.minLength(2)]],
-      phoneNo:["",Validators.required],
-      email:["",[Validators.required,Validators.email]],
-      address:["",Validators.required]
+      firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
+      lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
+      phoneNo:[""],
+      email:[""],
+      address:["",[Validators.required,Validators.pattern(apiservice.regx)]]
     });
   }
   ngOnInit(): void {
@@ -56,7 +59,7 @@ export class UsersComponent implements OnInit {
   }
   DataList()
   {
-
+let url = `/api/v1/admin/getUsers`
     let body=
     {
      search:this.search,
@@ -64,13 +67,17 @@ export class UsersComponent implements OnInit {
      isActive:this.filter,
      page:this.page
     }
-    this.apiservice.httpgetuser(body).subscribe((res:any)=>{
-      console.log(res);
-      this.table=res.data;
-      this.dataSource = new MatTableDataSource(this.table);
+    this.apiservice.postApi(url,body).subscribe((res:any)=>{
+    
+    if(res.statusCode==200){
+      this.dataSource = new MatTableDataSource(res.data.doc);
       this.dataSource.sort = this.sort;
-      this.totalsize=res.total;
-      });
+      this.totalsize=res.data.total;
+      this.csvUrl = res.data.exportToCsv
+    }else{
+      this.totalsize = 0
+    }
+     });
   }
   discountModal(discount) {
     this.modalService.open(discount, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
@@ -84,11 +91,10 @@ export class UsersComponent implements OnInit {
     },500);
   }
   filterSelected(body:any){
-    const filterValue = body;''
-    console.log(filterValue);
+    
     clearTimeout(this.timer);
     this.timer=setTimeout(()=>{
-      this.filter=filterValue;
+      this.filter=body
       this.ngOnInit();
     },500);
   }
@@ -115,53 +121,57 @@ export class UsersComponent implements OnInit {
     this.count=event.pageSize;
     this.DataList();
   }
-  GetOneUser(id:any)
-  {
-    console.log(id);
-    this.userid=id;
-    this.apiservice.HttpGetOneUser(id).subscribe((res:any)=>{
-      console.log(res.User);
-      this.UpdateUser.get('firstName').setValue(res.User.firstName);
-      this.UpdateUser.get('lastName').setValue(res.User.lastName);
-      this.UpdateUser.get('phoneNo').setValue(res.User.phoneNo);
-      this.UpdateUser.get('email').setValue(res.User.email);
-      this.UpdateUser.get('address').setValue(res.User.address);
-
-    })
-  }
   deleteUser()
   {
-    this.apiservice.HttpDeleteUser(this.deleteid).subscribe(res=>{
-      if(res.success==true)
+    let url = `/api/v1/admin/deleteUser/${this.deleteid}`
+    this.apiservice.deleteApi(url).subscribe((res:any)=>{
+      if(res.statusCode==200)
       {
-       this.toaster.success("Done","Delete User");
-       this.ngOnInit();
+       this.toaster.success(res.message);
+       this.DataList()
+       console.log("Deleted",res);
+       this.modalService.dismissAll()
+       
       }
-      else
-      {
-       this.toaster.error(res.message,"Delete User");
-      }
+      
      });
   }
   UpdateUserData()
   {
-    let id=this.userid;
+    this.submitted = true
+    let url = `/api/v1/admin/updateUser/${this.userid}`
+  
     let body=this.UpdateUser.value;
-    this.apiservice.httpupdateuser(body,id).subscribe((res:any)=>{
-      this.DataList();
-    });
+    if(this.UpdateUser.valid){
+      this.apiservice.putApi(url,body).subscribe((res:any)=>{
+        if(res.statusCode==200){
+          this.toaster.success(res.message)
+          console.log('Idd',this.userid);
+          
+          this.DataList();
+          this.modalService.dismissAll()
+          this.submitted = false
+        }
+        });
+    }
+  
   }
-  onChangeBlockStatus(status,id,phoneNo)
+  exportToCsv(){
+    window.open(this.csvUrl,'user details')
+  }
+  onChangeBlockStatus(status,id)
   {
     let body={
       isActive:!status,
-      phoneNo:phoneNo
+      
     }
-    console.log(body);
-    this.apiservice.httpupdateuser(body,id).subscribe((res:any)=>{
-      console.log(res);
-    });
-  }
+    let url = `/api/v1/admin/updateUser/${id}}`
+  this.apiservice.putApi(url,body).subscribe((res:any)=>{
+        if(res.statusCode==200){
+          this.toaster.success(res.message)
+          this.DataList();
+        }
+        }); }
 // This is for the first modal
 open1(content1) {
   this.modalService.open(content1, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -180,7 +190,13 @@ userDeleteModal(userDelete,id) {
    this.deleteid=id;
   this.modalService.open(userDelete, {backdropClass: 'light-blue-backdrop',centered: true,size: 'sm'});
 }
-userDetailModal(userDetail) {
+userDetailModal(userDetail,obj) {
+  this.userid = obj._id
+  this.UpdateUser.get('firstName').setValue(obj.firstName);
+      this.UpdateUser.get('lastName').setValue(obj.lastName);
+      this.UpdateUser.get('phoneNo').setValue(obj.phoneNo);
+      this.UpdateUser.get('email').setValue(obj.email);
+      this.UpdateUser.get('address').setValue(obj.address);
   this.modalService.open(userDetail, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
 }
 addUserModal(addUser) {
