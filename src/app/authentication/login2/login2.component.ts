@@ -12,13 +12,14 @@ import{ApiService} from '../../services/api.service'
 export class Login2Component {
   loginForm:FormGroup;
   loginform = true;
+  regx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/
   recoverform = false;
   email2 = new FormControl('',[Validators.required, Validators.email]);
   constructor(private fb:FormBuilder,private apiservice:ApiService,private router:Router,private toaster:ToastrService) { }
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", [Validators.required]),
+      password: new FormControl("", [Validators.required,Validators.minLength(8)]),
       rememberMe:new FormControl(false),
     });
     this.checkRememberMe();
@@ -43,10 +44,7 @@ export class Login2Component {
            sessionStorage.setItem("accessToken",res.data.accessToken);
              this.router.navigate(['dashboard']);
          }
-         else
-         {
-          this.toaster.error(res.message,'Login');
-         }
+         
        });
     }
 
@@ -79,10 +77,7 @@ let body={'email':this.email2.value};
            sessionStorage.setItem("accessToken",res.data.accessToken);
             window.location.reload();
          }
-         else
-         {
-          this.toaster.error(res.message,'Forget Password');
-         }
+         
          })
              
   }

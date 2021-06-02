@@ -162,10 +162,9 @@ let url = `/api/v1/admin/getUsers`
   onChangeBlockStatus(status,id)
   {
     let body={
-      isActive:!status,
-      
-    }
-    let url = `/api/v1/admin/updateUser/${id}}`
+      "isActive" : !status
+  }
+    let url = `/api/v1/admin/updateUser/${id}`
   this.apiservice.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){
           this.toaster.success(res.message)

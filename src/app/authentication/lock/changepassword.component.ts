@@ -34,10 +34,7 @@ export class changepasswordComponent {
       this.toaster.success(res.message,'Change Password');
       this.router.navigate(['dashboard']);
      }
-     else
-     {
-      this.toaster.error(res.message,'Change Password');
-     }
+     
    })
   }
   BackToDashboard()

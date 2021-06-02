@@ -19,10 +19,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
       return next.handle(request).pipe(tap((evt:any) => {
-        console.log('All response of apu',evt);
+     //   console.log('All response of apu',evt);
         
         if (evt instanceof HttpResponse) {
-          console.log('Response instance',evt);
+     //     console.log('Response instance',evt);
         
           if ([401, 403].includes(evt.body.statusCode)) {
             this.toastr.error('Please login','Session expired',{

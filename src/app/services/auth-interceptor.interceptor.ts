@@ -10,19 +10,15 @@ export class AuthInterceptorInterceptor implements HttpInterceptor {
   constructor(private spinner:NgxSpinnerService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
- // console.log("hi");
- this.token=sessionStorage.getItem('accessToken');
+this.token=sessionStorage.getItem('accessToken');
  this.spinner.show();
  let tokenizedReq=req.clone({
    setHeaders:{
      Authorization:`${this.token}`
    }
  })
-
- 
- return next.handle(tokenizedReq).pipe(finalize( ()=>
+return next.handle(tokenizedReq).pipe(finalize( ()=>
  this.spinner.hide()
-
 ));
   }
 }

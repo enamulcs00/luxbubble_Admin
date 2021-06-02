@@ -39,17 +39,29 @@
                             <form [formGroup]="profileform" class="form-horizontal form-material">
                                 <div class="row form-group">
                                     <div class="col-md-5">
-                                        <label>First Name</label>
+                                        <label>First name</label>
                                         <input type="text" (keydown.space)="$event.preventDefault()" formControlName="firstName" placeholder="Johnathan Doe" class="form-control form-control-line">
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="profileform.get('firstName').hasError('required') && profileform.controls['firstName'].touched">
-                                            *First Name is <strong>required</strong>
+                                        <mat-error *ngIf="profileform.get('firstName').hasError('required') &&  submitted">
+                                            *First name is required.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('firstName').hasError('pattern')">
+                                            *First name should alphabate only.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('firstName').hasError('maxlength')">
+                                            *Maximum length of first name should 15.
                                         </mat-error>
                                     </div>
                                     <div class="col-md-5 offset-md-1">
-                                        <label>Last Name</label>
+                                        <label>Last name</label>
                                         <input type="text" (keydown.space)="$event.preventDefault()" formControlName="lastName" placeholder="Johnathan Doe" class="form-control form-control-line">
-                                        <mat-error  class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="profileform.get('lastName').hasError('required') && profileform.controls['lastName'].touched">
-                                            *Last Name is <strong>required</strong>
+                                        <mat-error *ngIf="profileform.get('lastName').hasError('required') &&  submitted">
+                                            *Last name is required.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('lastName').hasError('pattern')">
+                                            *Last name should alphabate only.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('lastName').hasError('maxlength')">
+                                            *Maximum length of last name should 15.
                                         </mat-error>
                                     </div>
                                 </div>
@@ -57,13 +69,12 @@
                                     <label for="example-email" class="col-md-12">Email</label>
                                     <div class="col-md-12">
                                         <input type="email" (keydown.space)="$event.preventDefault()" formControlName="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email">
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="profileform.get('email').hasError('required') && profileform.controls['email'].touched">
-                                            *Email is <strong>required</strong>
+                                        <mat-error *ngIf="profileform.get('email').hasError('required') &&  submitted">
+                                            *Email is required.
                                         </mat-error>
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="profileform.get('email').hasError('email') &&
-                                  !profileform.get('email').hasError('required')">
-                            *Email is <strong>not valid</strong>
-                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('email').hasError('pattern')">
+                                            *Email is invalid.
+                                        </mat-error>
                                     </div>
                                 </div>
                                 <!-- <div class="form-group">
@@ -73,11 +84,20 @@
                                     </div>
                                 </div> -->
                                 <div class="form-group">
-                                    <label class="col-md-12">Phone No</label>
+                                    <label class="col-md-12">Phone no</label>
                                     <div class="col-md-12">
                                         <input type="text" (keypress)="phoneNoInput($event)" formControlName="phoneNo" placeholder="123 456 7890" class="form-control form-control-line">
-                                        <mat-error class="text-danger font-weight-bold bg-white px-1 w-100"  *ngIf="profileform.get('phoneNo').hasError('required') && profileform.controls['phoneNo'].touched">
-                                            *Phone No is <strong>required</strong>
+                                        <mat-error *ngIf="profileform.get('phoneNo').hasError('required') &&  submitted">
+                                            *Phone no is required.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('phoneNo').hasError('pattern')">
+                                            *Phone no is invalid.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('phoneNo').hasError('maxlength')">
+                                            *Maximum length of phone no should 15.
+                                        </mat-error>
+                                        <mat-error *ngIf="profileform.get('phoneNo').hasError('minlength')">
+                                            *Minimum length of phone no should 7.
                                         </mat-error>
                                     </div>
                                 </div>

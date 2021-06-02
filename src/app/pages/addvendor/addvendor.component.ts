@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { validateEvents } from 'calendar-utils';
+
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -10,15 +10,17 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './addvendor.component.html',
   styleUrls: ['./addvendor.component.css']
 })
-export class AddvendorComponent implements OnInit,AfterViewInit {
+export class AddvendorComponent implements OnInit {
   file: any;
   imgurl:any;
   profile:any
   doc
   submitted:boolean = false
+  files: any;
+  docfile: any=[];
   constructor(private fb:FormBuilder,public service:ApiService,private toaster:ToastrService,private router:Router) { }
   ServiceProviderForm=this.fb.group({
-    image:[""],
+    image:["",Validators.required],
     firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
     lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
     commission:['',Validators.required],
@@ -26,34 +28,28 @@ export class AddvendorComponent implements OnInit,AfterViewInit {
     phoneNo :['', [Validators.required,Validators.maxLength(15),Validators.minLength(7),Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$')]],
     email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
     address:['',[Validators.required,Validators.pattern(this.service.regx)]],
- //   documents:[''],
+    document:['',Validators.required],
   });
   ngOnInit(): void {
-  
-  }
-  ngAfterViewInit(){
     this.ServiceProviderForm.controls['commissionType'].setValue('PERCENTAGE')
   }
-  upload(evt) 
-    {
-      console.log(evt);
-      var files = evt.target.files;
-      this.file=files[0];
-      if(files && this.file)
-      {
-      var reader = new FileReader();
-      reader.readAsDataURL(files[0]); 
-      reader.onload = (_event) => { 
-        this.imgurl = reader.result; 
-      }
-    }
-    }
     Add(){
-
-      this.submitted = true
+       this.submitted = true
+       let obj = {
+        "firstName": this.ServiceProviderForm.controls['firstName'].value,
+        "lastName": this.ServiceProviderForm.controls['lastName'].value,
+        "image": this.files,
+        "docImages":this.docfile,
+        "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
+        "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
+        "email": this.ServiceProviderForm.controls['email'].value,
+        "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value,
+        "dialCode": "+91",
+        "address": this.ServiceProviderForm.controls['address'].value,
+    }
       let url = `/api/v1/admin/addServiceProvider`
       if(this.ServiceProviderForm.valid){
-        this.service.postApi(url,this.ServiceProviderForm.value).subscribe((res:any)=>{
+        this.service.postApi(url,obj).subscribe((res:any)=>{
           if(res.statusCode==200){
             this.toaster.success(res.message)
            this.submitted = false
@@ -63,5 +59,41 @@ export class AddvendorComponent implements OnInit,AfterViewInit {
           });
       }
 }
+sendFile(fileData,ref) {
+  let url = `/api/v1/admin/uploadFile`
+ let formdata = new FormData()
+  formdata.append('file', fileData);
+  this.service.postApi(url,formdata).subscribe((res: any) => {
+    console.log(res.data)
+    if (res.statusCode==200) {
+      
+   this.toaster.success('File updated successfully')
+      console.log("upload data res=>>", res.data)
+      
+      if(ref=='profile'){
+        this.files = res.data.filePath
+      }else if(ref=='doc'){
+        this.docfile.push(res.data.filePath)
+      }
+    } else {
+      this.toaster.error(res.message)
     }
+  });
+}
+uploadFile(event,ref) {
+  if(event.target.files && event.target.files[0]) {
+    var type = event.target.files[0].type;
+    if(ref=='profile'){
+      this.profile = event.target.files[0].name
+    }else if(ref=='doc'){
+      this.doc+= event.target.files[0].name+", "
+    }
+    if (type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
+      let fileData = event.target.files[0];
+      this.sendFile(fileData,ref)
+       var reader = new FileReader()
+    }
+  }
+}
+}
 

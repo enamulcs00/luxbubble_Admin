@@ -23,6 +23,7 @@ export class NavigationComponent implements AfterViewInit, OnInit {
   public showSearch = false;
   public element1: any;
   firstname:any;
+  fullName:any;
   lastname: any;
   email: any;
   image: any;
@@ -37,6 +38,7 @@ this.getData()
     this.apiservice.httpgetprofile().subscribe(res=>{
       this.firstname=res.data.firstName;
       this.lastname=res.data.lastName;
+      this.fullName = res.data.fullName
       this.email=res.data.email;
       this.image="http://dev.webdevelopmentsolution.net:3008"+res.data.image;
     });

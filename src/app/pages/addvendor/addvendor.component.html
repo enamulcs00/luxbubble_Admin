@@ -6,57 +6,98 @@
                     <div class="col-md-12">
                         <div class="form-group has-success">
                             <div class="form-group">
-                                <label class="control-label">Upload Image</label>
-                                <div class="custom-file text-nowrap text-truncate"><input (click)="upload($event)" formControlName="image"class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label"  for="inputGroupFile01">{{profile?profile:'Choose file'}}</label></div>
-                            </div>
+                                <label class="control-label">Upload image</label>
+                                <div class="custom-file text-nowrap text-truncate"><input (change)="uploadFile($event,'profile')" formControlName="image"class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label"  for="inputGroupFile01">{{profile?profile:'Choose file'}}</label></div>
+                                <mat-error *ngIf="ServiceProviderForm.get('image').hasError('required') && submitted">
+                                  *Image is required.
+                              </mat-error>
+                              </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label">First Name</label>
-                            <input type="text" id="firstName" class="form-control" placeholder="John" formControlName="firstName">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                          <label class="control-label">Last Name</label>
-                          <input type="text" id="firstName" class="form-control" placeholder="doe" formControlName="lastName">
-                      </div>
-                  </div>
                     <div class="col-md-6">
-                        <div class="form-group col-12">
-                            <label class="control-label">Commission type</label>
-                            <div class="row">
-                                <select class="form-control col-md-4 mr-2" formControlName="commissionType">
-                          <option value="PERCENTAGE">Percentage</option>
-                          <option value="FIXED">Fixed</option>
-                        </select>
-                                <input type="text" placeholder="Add commission in % or $" class="form-control col-md-7 ml-auto" formControlName="commission">
-                            </div>
-                        </div>
+                        <div class="form-group">
+                            <label class="control-label">First name</label>
+                            <input type="text" id="firstName" class="form-control" placeholder="John" formControlName="firstName">
+                            <mat-error *ngIf="ServiceProviderForm.get('firstName').hasError('required') && submitted">
+                              *First name is required.
+                          </mat-error>
+                          <mat-error *ngIf=" ServiceProviderForm.get('firstName').hasError('pattern')">
+                        *First name should alphabate only.
+                    </mat-error>
+                    <mat-error  *ngIf="ServiceProviderForm.get('firstName').hasError('maxlength')">
+                  *Maximum 15 character allowed.
+              </mat-error>
+                          </div>
                     </div>
-                    <!-- <div class="col-md-6">
-              <div class="form-group has-danger">
-                <label class="control-label">Contact</label>
-                <input type="text" id="email" class="form-control form-control-danger" placeholder="#46543343">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                          <label class="control-label">Last name</label>
+                          <input type="text" id="firstName" class="form-control" placeholder="doe" formControlName="lastName">
+                          <mat-error *ngIf="ServiceProviderForm.get('lastName').hasError('required') && submitted">
+                            *Last name is required.
+                        </mat-error>
+                        <mat-error *ngIf=" ServiceProviderForm.get('lastName').hasError('pattern')">
+                      *Last name should alphabate only.
+                  </mat-error>
+                  <mat-error  *ngIf="ServiceProviderForm.get('lastName').hasError('maxlength')">
+                *Maximum 15 character allowed.
+            </mat-error>
               </div>
-            </div> -->
-                    <!--/span-->
-                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Commission type</label>
+                    <select class="form-control" formControlName="commissionType">
+                      <option value="PERCENTAGE">Percentage</option>
+                      <option value="FIXED">Fixed</option>
+                    </select>
+                    <mat-error *ngIf="ServiceProviderForm.get('commissionType').hasError('required') && submitted">
+                      *Commission type is required.
+                  </mat-error>
+                  </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label class="control-label">Set commission</label>
+                  <input type="number" min="0" max="100" placeholder="Set commission in % or $" class="form-control" formControlName="commission">
+                  <mat-error *ngIf="ServiceProviderForm.get('commission').hasError('required') && submitted">
+                    *Set commission is required.
+                </mat-error>
+      </div>
+      </div>
+       </div>
                 <!--/row-->
                 <div class="row ">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Contact Number</label>
+                            <label class="control-label">Contact number</label>
                             <input type="text" id="firstName" class="form-control" placeholder="eg:-343-434-5423" formControlName="phoneNo">
-                        </div>
+                            <mat-error *ngIf="ServiceProviderForm.get('phoneNo').hasError('required') && submitted">
+                              *Contact number is required.
+                          </mat-error>
+                          <mat-error *ngIf=" ServiceProviderForm.get('phoneNo').hasError('pattern')">
+                        *Contact number is invalid.
+                    </mat-error>
+                    <mat-error  *ngIf="ServiceProviderForm.get('phoneNo').hasError('maxlength')">
+                  *Maximum length should 15.
+              </mat-error>
+              <mat-error  *ngIf="ServiceProviderForm.get('phoneNo').hasError('minlength')">
+                *Minimum length should 7.
+            </mat-error>
+                          </div>
                     </div>
                     <!--/span-->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Email</label>
-                            <input type="email" formControlName="email" id="firstName" class="form-control" placeholder="example@gmail.com">
-
+                            <input type="email" (keydown.space)="$event.preventDefault()" formControlName="email" id="firstName" class="form-control" placeholder="example@gmail.com">
+                            <mat-error *ngIf="ServiceProviderForm.get('email').hasError('required') && submitted">
+                              *Email is required.
+                          </mat-error>
+                          <mat-error *ngIf=" ServiceProviderForm.get('email').hasError('pattern')">
+                        *Email is invalid.
+                    </mat-error>
                         </div>
                     </div>
                     <!-- <div class="col-md-6">
@@ -82,9 +123,12 @@
                     <div class="col-md-12">
                         <div class="form-group has-success">
                             <div class="form-group">
-                                <label class="control-label">Upload Document</label>
-                                <div class="custom-file"><input class="custom-file-input"id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">{{doc?doc:'Choose file'}}</label></div>
-                            </div>
+                                <label class="control-label">Upload document</label>
+                                <div class="custom-file text-nowrap text-truncate"><input class="custom-file-input"id="inputGroupFile01" formControlName="document" type="file" (change)="uploadFile($event,'doc')" multiple><label class="custom-file-label" for="inputGroupFile01">{{doc?doc:'Choose file'}}</label></div>
+                                <mat-error *ngIf="ServiceProviderForm.get('document').hasError('required') && submitted">
+                                  *Document is required.
+                              </mat-error>
+                              </div>
                         </div>
                     </div>
                     <!-- <div class="col-md-6">
@@ -120,7 +164,13 @@
                         <div class="form-group has-danger">
                             <label class="control-label">Address</label>
                             <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex"></textarea>
-                        </div>
+                            <mat-error *ngIf="ServiceProviderForm.get('address').hasError('required') && submitted">
+                              *Address is required.
+                          </mat-error>
+                          <mat-error *ngIf=" ServiceProviderForm.get('address').hasError('pattern')">
+                        *White space not allowed.
+                    </mat-error>
+                  </div>
                     </div>
                 </div>
             </div>

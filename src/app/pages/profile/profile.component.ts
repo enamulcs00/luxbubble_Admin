@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 export class ProfileComponent {
   profileform:FormGroup;
   name:any;
+  submitted:boolean = false
   email:any;
   phone:any;
   imgurl:any;
@@ -23,10 +24,10 @@ export class ProfileComponent {
     getdata()
     {
       this.profileform=this.fb.group({
-        firstName:["",Validators.required],
-        lastName:["",Validators.required],
-        email:["",[Validators.required,Validators.email]],
-        phoneNo:["",Validators.required]
+        firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
+        lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
+        phoneNo :['', [Validators.required,Validators.maxLength(15),Validators.minLength(7),Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$')]],
+        email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
       });
       this.apiservice.httpgetprofile().subscribe((res:any)=>{
     console.log('Get profile res',res);
@@ -45,6 +46,7 @@ export class ProfileComponent {
     
     update()
     {
+      this.submitted = true
       let url = `/api/v1/admin/updateProfile`
    let  obj = {
         "firstName":  this.profileform.controls['firstName'].value,
@@ -64,6 +66,7 @@ export class ProfileComponent {
         if(this.profileform.valid){
           this.apiservice.putApi(url,obj).subscribe((res:any)=>{
             if(res.statusCode==200){
+              this.submitted = false
               this.toastr.success(res.message)
               this.getdata()
               this.router.navigate(['dashboard']);

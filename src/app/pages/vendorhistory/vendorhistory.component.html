@@ -7,7 +7,7 @@
                 <div class="col-md-3">
                     <div class="card-body p-3 bg-light">
                         <div class=" text-center">
-                            <img src="assets/images/users/2.jpg" class="rounded-circle" width="150" />
+                            <img [src]="userData?.image?apiservice.baseUrl+userData?.image:'assets/images/users/2.jpg'" class="rounded-circle" width="150" height="150"/>
                         </div>
                     </div>
                 </div>
@@ -15,9 +15,9 @@
                     <div class="row pt-2 ">
                         <div class="col-md-3">
                             <ul class="list-block pl-0 list-style-none">
-                                <li class="list-block-listing pr-2 pb-2">Name: <span class="font-weight-600">Hanna Gover</span></li>
-                                <li class="list-block-listing pr-2 pb-2">Contact: <span class="font-weight-600">+91-4564345452</span> </li>
-                                <li class="list-block-listing pr-2 pb-2">Email: <span class="font-weight-600">HannaGover@gamil.com</span></li>
+                                <li class="list-block-listing pr-2 pb-2">Name: <span class="font-weight-600">{{userData?.fullName}}</span></li>
+                                <li class="list-block-listing pr-2 pb-2">Contact: <span class="font-weight-600">{{userData?.phoneNo}}</span> </li>
+                                <li class="list-block-listing pr-2 pb-2">Email: <span class="font-weight-600">{{userData?.email}}</span></li>
                             </ul>
                         </div>
                         <div class="col-md-3">
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-3">
                             <ul class="list-block pl-0 list-style-none">
-                                <li class="list-block-listing pr-2 pb-2"> Commission: <span class="font-weight-600">10%</span></li>
+                                <li class="list-block-listing pr-2 pb-2"> Commission: <span class="font-weight-600">{{userData?.commission}}%</span></li>
                                 <li class="list-block-listing pr-2 pb-2"> Total Bookings: <span class="font-weight-600">30</span></li>
                                 <!-- <li class="list-block-listing pr-2 pb-2"> Timing: <span class="font-weight-600">11AM - 4:00PM</span></li> -->
                             </ul>
@@ -49,16 +49,16 @@
         </div>
     </div>
     <!-- Column -->
-    <div class="card mx-2">
+    <div class="card mx-2" *ngIf="userData?.docImages.length>0">
         <div class="card-body">
             <h3>Document</h3>
             <div class="row">
-                <div class="col-md-3">
-                    <figure class="mb-0"><img src="assets/images/gallery/driving-licence.jpg" class="img-fluid"></figure>
+                <div class="col-md-3 my-2" *ngFor="let item of userData?.docImages">
+                    <figure class="mb-0" style="width: 100%; height: 100%;"><img [src]="item?apiservice.baseUrl+item:'assets/images/gallery/driving-licence.jpg'" style="width: 100%; height: 170px;object-fit:cover;" class="img-fluid"></figure>
                 </div>
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <figure class="mb-0"><img src="assets/images/gallery/driving-licence.jpg" class="img-fluid"></figure>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

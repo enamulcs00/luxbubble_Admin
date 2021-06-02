@@ -3,6 +3,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { ApiService } from 'src/app/services/api.service';
 
 export interface UserData {
   hotelName: string,    
@@ -21,17 +24,18 @@ export interface UserData {
 })
 export class VendorhistoryComponent implements AfterViewInit {
   closeResult: string;
-  //table: any
+  id: any;
+  userData: any;
   displayedColumns: string[] = [ 'hotelName' ,'productname','id', 'orderdate','deliverydate','delivery_man','price','status'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private modalService: NgbModal) {
-    // const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
+  constructor(private modalService: NgbModal,public apiservice:ApiService,private route:ActivatedRoute,private toaster:ToastrService) {
+    this.route.queryParams.subscribe((params)=>{
+      this.id = params.id;
+    })
     this.dataSource = new MatTableDataSource(this.table);
   }
 
@@ -84,4 +88,19 @@ export class VendorhistoryComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  ngOnInit(): void {
+    this.GetUser()
+  }
+  GetUser(){
+    let url = `/api/v1/admin/viewServiceProvider/${this.id}`
+    this.apiservice.getApi(url).subscribe((res:any)=>{
+      console.log("User data",res);
+      
+      if(res.statusCode==200){
+        this.userData = res.data
+        console.log('Data detais',res);
+        
+      }
+    })
+  } 
 }
