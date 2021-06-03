@@ -54,7 +54,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">Name</label>
-                                    <input type="text" class="form-control" formControlName="name" #ref (keydown.space)="!ref.value?$event.preventDefault():null">
+                                    <input type="text" class="form-control" formControlName="name" #ref (keydown.space)="!ref.value?$event.preventDefault():null" >
                                     <mat-error *ngIf="addcategory.get('name').hasError('required') && submitted">
                                         *Name is required.
                                     </mat-error>
