@@ -89,7 +89,7 @@ export class VendorsComponent implements OnInit {
     let url = `/api/v1/admin/updateServiceprovider/${id}`
   this.apiservice.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){
-          this.toaster.success(res.message)
+        //  this.toaster.success(res.message)
           this.ListData();
         }
         }); }

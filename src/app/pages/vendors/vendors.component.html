@@ -47,7 +47,7 @@
                                     </td>
                                     <td>
                                         <mat-slide-toggle [checked]="i.isActive===true?'true':'false'" (change)="onChangeBlockStatus(i.isActive,i._id)">
-                                        </mat-slide-toggle>
+                                       {{i.isActive===true?'Active':'Inactive'}} </mat-slide-toggle>
                                     </td>
                                     <td *ngIf="i.status=='PENDING'">
                                         <div ngbDropdown placement="bottom" class="d-inline-block " placement="bottom" container="body">

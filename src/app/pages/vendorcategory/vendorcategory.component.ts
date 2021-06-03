@@ -37,7 +37,7 @@ export class VendorcategoryComponent implements OnInit {
   id: any;
   constructor(private modalService: NgbModal,private fb:FormBuilder,public apiservice:ApiService,private toaster:ToastrService) {
     this.addcategory = this.fb.group({
-      name:['',[Validators.required,Validators.pattern(this.apiservice.regx)]],
+      name:['',[Validators.required]],
       image:['']
     })
   }

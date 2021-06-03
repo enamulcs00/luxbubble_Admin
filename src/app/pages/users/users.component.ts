@@ -47,11 +47,11 @@ submitted:boolean = false
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
   //  var regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u
     this.UpdateUser=this.fb.group({
-      firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
-      lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
+      firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
+      lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
       phoneNo:[""],
       email:[""],
-      address:["",[Validators.required,Validators.pattern(apiservice.regx)]]
+      address:["",[Validators.required]]
     });
   }
   ngOnInit(): void {
@@ -167,7 +167,7 @@ let url = `/api/v1/admin/getUsers`
     let url = `/api/v1/admin/updateUser/${id}`
   this.apiservice.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){
-          this.toaster.success(res.message)
+       //   this.toaster.success(res.message)
           this.DataList();
         }
         }); }

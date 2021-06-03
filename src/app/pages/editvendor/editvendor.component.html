@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">First name</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="John" formControlName="firstName">
+                        <input type="text" id="firstName" class="form-control" placeholder="John" formControlName="firstName" #ref (keydown.space)="!ref.value?$event.preventDefault():null">
                         <mat-error *ngIf="ServiceProviderForm.get('firstName').hasError('required') && submitted">
                           *First name is required.
                       </mat-error>
@@ -32,7 +32,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                       <label class="control-label">Last name</label>
-                      <input type="text" id="firstName" class="form-control" placeholder="doe" formControlName="lastName">
+                      <input type="text" id="firstName" class="form-control" placeholder="doe" formControlName="lastName" #ref (keydown.space)="!ref.value?$event.preventDefault():null">
                       <mat-error *ngIf="ServiceProviderForm.get('lastName').hasError('required') && submitted">
                         *Last name is required.
                     </mat-error>
@@ -60,7 +60,7 @@
         <div class="col-md-6">
           <div class="form-group">
               <label class="control-label">Set commission</label>
-              <input type="number" min="0" max="100" placeholder="Set commission in % or $" class="form-control" formControlName="commission">
+              <input type="number" min="0" max="100" maxlength="3" placeholder="Set commission in % or $" class="form-control" formControlName="commission" (keydown.space)="$event.preventDefault()">
               <mat-error *ngIf="ServiceProviderForm.get('commission').hasError('required') && submitted">
                 *Set commission is required.
             </mat-error>
@@ -72,7 +72,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Contact number</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="eg:-343-434-5423" formControlName="phoneNo">
+                        <input type="text" id="firstName" class="form-control" placeholder="eg:-343-434-5423" formControlName="phoneNo" (keydown.space)="$event.preventDefault()">
                         <mat-error *ngIf="ServiceProviderForm.get('phoneNo').hasError('required') && submitted">
                           *Contact number is required.
                       </mat-error>
@@ -163,14 +163,11 @@
                 <div class="col-md-12">
                     <div class="form-group has-danger">
                         <label class="control-label">Address</label>
-                        <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex"></textarea>
+                        <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex" #ref (keydown.space)="!ref.value?$event.preventDefault():null"></textarea>
                         <mat-error *ngIf="ServiceProviderForm.get('address').hasError('required') && submitted">
                           *Address is required.
                       </mat-error>
-                      <mat-error *ngIf=" ServiceProviderForm.get('address').hasError('pattern')">
-                    *White space not allowed.
-                </mat-error>
-              </div>
+                     </div>
                 </div>
             </div>
         </div>

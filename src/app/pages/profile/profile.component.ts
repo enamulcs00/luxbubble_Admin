@@ -24,8 +24,8 @@ export class ProfileComponent {
     getdata()
     {
       this.profileform=this.fb.group({
-        firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
-        lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern("^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$")]],
+        firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
+        lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
         phoneNo :['', [Validators.required,Validators.maxLength(15),Validators.minLength(7),Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$')]],
         email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
       });
