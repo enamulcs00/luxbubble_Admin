@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -10,12 +11,15 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./editvendor.component.css']
 })
 export class EditvendorComponent implements OnInit {
+  @ViewChild("placeRef") placesRef: GooglePlaceDirective;
   id: any;
   profile: any;
   doc: string;
   docfile: any=[];
   files: any;
 submitted:boolean = false
+  lng: any;
+  lat: any;
   constructor(private router:Router,private fb:FormBuilder,private service:ApiService,private route:ActivatedRoute,private toaster:ToastrService) {
     this.route.queryParams.subscribe((params)=>{
       this.id = params.id;
@@ -103,8 +107,9 @@ this.toaster.success('File updated successfully')
 });
 }
 uploadFile(event,ref) {
-if(event.target.files && event.target.files[0]) {
- var type = event.target.files[0].type;
+  var type = event.target.files[0].type;
+if(event.target.files && event.target.files[0] && type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
+ 
  if(ref=='profile'){
    this.profile = event.target.files[0].name
  }else if(ref=='doc'){
@@ -115,6 +120,17 @@ if(event.target.files && event.target.files[0]) {
    this.sendFile(fileData,ref)
     var reader = new FileReader()
  }
+}else{
+  this.toaster.error('File must be Jpg, Jpeg, Png','Error')
 }
+}
+public AddressChange(address: any,ref) {
+  console.log(address);
+ //setting address from API to local variable
+ 
+ this.ServiceProviderForm.get('address').setValue(ref)
+ // console.log(address.formatted_address);
+  this.lat = address.geometry.location.lat()
+  this.lng = address.geometry.location.lng()
 }
 }

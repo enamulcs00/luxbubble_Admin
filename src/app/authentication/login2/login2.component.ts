@@ -18,7 +18,7 @@ export class Login2Component {
   constructor(private fb:FormBuilder,private apiservice:ApiService,private router:Router,private toaster:ToastrService) { }
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: new FormControl("", [Validators.required, Validators.email]),
+      email: new FormControl("", [Validators.required, Validators.pattern(this.regx)]),
       password: new FormControl("", [Validators.required,Validators.minLength(8)]),
       rememberMe:new FormControl(false),
     });
@@ -26,7 +26,6 @@ export class Login2Component {
   }
     onLogin()
     {
-       
          let data=this.loginForm.value;
          delete data.rememberMe;
          let rememberMe=this.loginForm.controls['rememberMe'].value;

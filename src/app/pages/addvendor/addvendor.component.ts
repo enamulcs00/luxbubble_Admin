@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
@@ -11,6 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./addvendor.component.css']
 })
 export class AddvendorComponent implements OnInit {
+  @ViewChild("placeRef") placesRef: GooglePlaceDirective;
   file: any;
   imgurl:any;
   profile:any
@@ -18,6 +20,8 @@ export class AddvendorComponent implements OnInit {
   submitted:boolean = false
   files: any;
   docfile: any=[];
+  lng: any;
+  lat: any;
   constructor(private fb:FormBuilder,public service:ApiService,private toaster:ToastrService,private router:Router) { }
   ServiceProviderForm=this.fb.group({
     image:["",Validators.required],
@@ -81,8 +85,11 @@ sendFile(fileData,ref) {
   });
 }
 uploadFile(event,ref) {
-  if(event.target.files && event.target.files[0]) {
-    var type = event.target.files[0].type;
+  var type = event.target.files[0].type;
+  if(event.target.files && event.target.files[0] && type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
+   // var type = event.target.files[0].type;
+   console.log('Called from file type');
+   
     if(ref=='profile'){
       this.profile = event.target.files[0].name
     }else if(ref=='doc'){
@@ -93,7 +100,18 @@ uploadFile(event,ref) {
       this.sendFile(fileData,ref)
        var reader = new FileReader()
     }
+  }else{
+    this.toaster.error('File must be Jpg, Jpeg, Png','Error')
   }
+}
+public AddressChange(address: any,ref) {
+  console.log(address);
+ //setting address from API to local variable
+ 
+ this.ServiceProviderForm.get('address').setValue(ref)
+ // console.log(address.formatted_address);
+  this.lat = address.geometry.location.lat()
+  this.lng = address.geometry.location.lng()
 }
 }
 

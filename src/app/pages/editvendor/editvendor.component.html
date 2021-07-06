@@ -60,7 +60,7 @@
         <div class="col-md-6">
           <div class="form-group">
               <label class="control-label">Set commission</label>
-              <input type="number" min="0" max="100" maxlength="3" placeholder="Set commission in % or $" class="form-control" formControlName="commission" (keydown.space)="$event.preventDefault()">
+              <input type="number" min="0" max="100" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="Set commission in % or $" class="form-control" formControlName="commission" (keydown.space)="$event.preventDefault()">
               <mat-error *ngIf="ServiceProviderForm.get('commission').hasError('required') && submitted">
                 *Set commission is required.
             </mat-error>
@@ -163,7 +163,8 @@
                 <div class="col-md-12">
                     <div class="form-group has-danger">
                         <label class="control-label">Address</label>
-                        <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex" #ref (keydown.space)="!ref.value?$event.preventDefault():null"></textarea>
+                        <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex" #r (keydown.space)="!r.value?$event.preventDefault():null" ngx-google-places-autocomplete
+                        (onAddressChange)="AddressChange($event,r.value)" #placesRef="ngx-places"></textarea>
                         <mat-error *ngIf="ServiceProviderForm.get('address').hasError('required') && submitted">
                           *Address is required.
                       </mat-error>

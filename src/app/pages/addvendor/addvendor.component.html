@@ -163,7 +163,8 @@
                     <div class="col-md-12">
                         <div class="form-group has-danger">
                             <label class="control-label">Address</label>
-                            <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex" #ref (keydown.space)="!ref.value?$event.preventDefault():null"></textarea>
+                            <textarea name="" id="" cols="30" rows="5" formControlName="address" class="form-control" placeholder="#433 New garden Complex" #re (keydown.space)="!re.value?$event.preventDefault():null" ngx-google-places-autocomplete
+                            (onAddressChange)="AddressChange($event,re.value)" #placesRef="ngx-places"></textarea>
                             <mat-error *ngIf="ServiceProviderForm.get('address').hasError('required') && submitted">
                               *Address is required.
                           </mat-error>

@@ -75,6 +75,7 @@ import { TruckcategoryComponent } from './truckcategory/truckcategory.component'
 import { TrucklocationComponent } from './trucklocation/trucklocation.component';
 
 import { TermsComponent } from './terms/terms.component';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ CommonModule,
     MatFormFieldModule,
     MatPaginatorModule,
     MatSortModule,
-    AgmCoreModule
+    AgmCoreModule,
+    GooglePlaceModule
   
   ],
   declarations: [

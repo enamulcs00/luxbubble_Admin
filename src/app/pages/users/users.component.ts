@@ -6,7 +6,9 @@ import {MatTableDataSource, } from '@angular/material/table';
 import { ApiService } from 'src/app/services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 export interface UserData {
+  image:any;
   firstName: string,
   lastName:string,
   _id:any,
@@ -25,11 +27,12 @@ export class UsersComponent implements OnInit {
   closeResult: string;
   table = [];
   UpdateUser:FormGroup;
-  displayedColumns: string[] = [ 'name' ,'id','email','contact','address','status','action'];
+  displayedColumns: string[] = ['image', 'name' ,'id','email','contact','address','status','action'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild("placeRef") placesRef: GooglePlaceDirective;
   timer: number;
   filter:boolean;
   pageEvent: PageEvent;
@@ -44,6 +47,9 @@ export class UsersComponent implements OnInit {
   userid: any;
 submitted:boolean = false
   csvUrl: any;
+  lng: any;
+  lat: any;
+  address: any;
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
   //  var regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u
     this.UpdateUser=this.fb.group({
@@ -108,6 +114,15 @@ let url = `/api/v1/admin/getUsers`
     }
     return false;
   }
+  public AddressChange(address: any,ref) {
+    console.log(address);
+   //setting address from API to local variable
+   this.address = address.formatted_address
+   this.UpdateUser.get('address').setValue(ref)
+   // console.log(address.formatted_address);
+    this.lat = address.geometry.location.lat()
+    this.lng = address.geometry.location.lng()
+ }
   productListAfterPageSizeChanged(event?:PageEvent): any {
     if (event.pageIndex == 0) {
       this.page = 1;

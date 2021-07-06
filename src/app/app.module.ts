@@ -31,6 +31,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import{AuthInterceptorInterceptor} from './services/auth-interceptor.interceptor'
 import{ErrorInterceptor} from './services/error.interceptor'
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 
 
@@ -76,7 +77,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ReactiveFormsModule,
         FormsModule,
         NgxSpinnerModule,
-        HttpClientModule    
+        HttpClientModule,
+        GooglePlaceModule  
     ],
    
     providers: [
