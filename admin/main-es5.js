@@ -2218,7 +2218,8 @@
                   });
 
                   _this2.accountService.logout();
-                } else if (![401, 403, 200].includes(evt.body.statusCode)) {//this.toastr.error(evt.body.message || evt.statusText)
+                } else if (![401, 403, 200].includes(evt.body.statusCode)) {
+                  _this2.toastr.error(evt.body.message || evt.statusText);
                 }
               }
             }));

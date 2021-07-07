@@ -1055,7 +1055,7 @@ class ErrorInterceptor {
                     this.accountService.logout();
                 }
                 else if (![401, 403, 200].includes(evt.body.statusCode)) {
-                    //this.toastr.error(evt.body.message || evt.statusText)
+                    this.toastr.error(evt.body.message || evt.statusText);
                 }
             }
         }));
