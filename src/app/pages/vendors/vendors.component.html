@@ -38,7 +38,7 @@
                                             class="rounded"></span>
                                       </td>
                                     <td><span class="text-nowrap"> {{i.firstName}} {{i.lastName}} </span></td>
-                                    <td class="text-nowrap">{{i.phoneNo}}</td>
+                                    <td class="text-nowrap">{{i.dialCode?i.dialCode+"-"+i.phoneNo:i.phoneNo}}</td>
                                     <td class="text-nowrap">{{i.email}}</td>
                                     <td>{{i.address}}</td>
                                     <td>
@@ -434,7 +434,7 @@
     <ng-template #vendorConfirm let-modal>
         <div class="modal-body">
             <form [formGroup]="acceptform">
-                <label>Add Commision</label>
+                <label>Add Commission</label>
                 <div class="col-12 mb-3 px-0">
                     <select class="form-control" formControlName="commissionType">
                         <option value="PERCENTAGE">Percentage</option>
@@ -444,7 +444,7 @@
                         *Commission type is required.
                     </mat-error>
                 </div>
-                <div class="col-12 px-0"><input class="form-control" placeholder="Add commission in % or $" type="number" min="0" max="100" formControlName="commission">
+                <div class="col-12 px-0"><input class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="Add commission in % or $" type="number" min="0" max="100" formControlName="commission">
                     <mat-error *ngIf="acceptform.get('commission').hasError('required') && submitted">
                         *commission is required.
                     </mat-error>

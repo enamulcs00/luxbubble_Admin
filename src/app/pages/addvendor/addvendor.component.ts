@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
@@ -29,7 +30,7 @@ export class AddvendorComponent implements OnInit {
     lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
     commission:['',Validators.required],
     commissionType:['',Validators.required],
-    phoneNo :['', [Validators.required,Validators.maxLength(15),Validators.minLength(7),Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$')]],
+    phoneNo :['', [Validators.required]],
     email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
     address:['',[Validators.required]],
     document:['',Validators.required],
@@ -38,6 +39,8 @@ export class AddvendorComponent implements OnInit {
     this.ServiceProviderForm.controls['commissionType'].setValue('PERCENTAGE')
   }
     Add(){
+      console.log('Form dataild',this.ServiceProviderForm.value);
+      
        this.submitted = true
        let obj = {
         "firstName": this.ServiceProviderForm.controls['firstName'].value,
@@ -47,8 +50,8 @@ export class AddvendorComponent implements OnInit {
         "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
         "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
         "email": this.ServiceProviderForm.controls['email'].value,
-        "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value,
-        "dialCode": "+91",
+        "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value.number,
+        "dialCode": this.ServiceProviderForm.controls['phoneNo'].value.dialCode,
         "address": this.ServiceProviderForm.controls['address'].value,
     }
       let url = `/api/v1/admin/addServiceProvider`
@@ -84,7 +87,12 @@ sendFile(fileData,ref) {
     }
   });
 }
+Remove(index){
+  this.docfile.splice(index,1);
+}
 uploadFile(event,ref) {
+  
+  console.log("Evnt",event);
   var type = event.target.files[0].type;
   if(event.target.files && event.target.files[0] && type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
    // var type = event.target.files[0].type;
@@ -113,5 +121,12 @@ public AddressChange(address: any,ref) {
   this.lat = address.geometry.location.lat()
   this.lng = address.geometry.location.lng()
 }
+SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+  changePreferredCountries() {
+		this.preferredCountries = [CountryISO.India, CountryISO.Canada];
+	}
 }
 

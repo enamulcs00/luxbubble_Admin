@@ -76,6 +76,8 @@ import { TrucklocationComponent } from './trucklocation/trucklocation.component'
 
 import { TermsComponent } from './terms/terms.component';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { FileUploadModule } from '@iplab/ngx-file-upload';
 
 
 @NgModule({
@@ -99,7 +101,9 @@ CommonModule,
     MatPaginatorModule,
     MatSortModule,
     AgmCoreModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    NgxIntlTelInputModule,
+    FileUploadModule
   
   ],
   declarations: [

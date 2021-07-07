@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
-
+import {allCountries} from 'src/app/pages/editvendor/countries'
 @Component({
   selector: 'app-editvendor',
   templateUrl: './editvendor.component.html',
@@ -20,6 +21,7 @@ export class EditvendorComponent implements OnInit {
 submitted:boolean = false
   lng: any;
   lat: any;
+  selectedCountry : any = CountryISO.India;
   constructor(private router:Router,private fb:FormBuilder,private service:ApiService,private route:ActivatedRoute,private toaster:ToastrService) {
     this.route.queryParams.subscribe((params)=>{
       this.id = params.id;
@@ -30,7 +32,7 @@ submitted:boolean = false
       lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
       commission:['',Validators.required],
       commissionType:['',Validators.required],
-      phoneNo :['', [Validators.required,Validators.maxLength(15),Validators.minLength(7),Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$')]],
+      phoneNo :['', [Validators.required]],
       email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
       address:['',[Validators.required]],
       document:[''],
@@ -43,10 +45,11 @@ submitted:boolean = false
     this.service.getApi(url).subscribe((res:any)=>{
       console.log("User data",res);
       if(res.statusCode==200){
-        for(let doc of res.data.docImages){
+        for(var doc of res.data.docImages){
           this.docfile.push(doc)
           this.doc+= doc.split('/').pop()+', '
         }
+        
       this.profile = res.data.image.split('/').pop()
       this.ServiceProviderForm.controls['firstName'].setValue(res.data.firstName)
       this.ServiceProviderForm.controls['lastName'].setValue(res.data.lastName)
@@ -55,12 +58,26 @@ submitted:boolean = false
       this.ServiceProviderForm.controls['phoneNo'].setValue(res.data.phoneNo)
       this.ServiceProviderForm.controls['email'].setValue(res.data.email)
       this.ServiceProviderForm.controls['address'].setValue(res.data.address)
+      let findIndex = allCountries.find(x=>{
+				const phone = res.data.dialCode.split('+');
+				return x[2] == phone[1].trim();
+			})
+			this.selectedCountry = (findIndex != undefined)?findIndex[1]:CountryISO.India;
       // this.ServiceProviderForm.controls['image'].setValue(res.data.image)
       // this.ServiceProviderForm.controls['document'].setValue(this.docfile)
+      console.log('Get form',this.ServiceProviderForm.controls['phoneNo'],this.ServiceProviderForm.controls['phoneNo'].value.number,res);
+      
       }
     })
+    console.log('form',this.ServiceProviderForm.controls['phoneNo'].value.dialCode);
+    
   } 
+  Remove(index){
+    this.docfile.splice(index,1);
+  }
   Add(){
+    console.log('Form',this.ServiceProviderForm.value);
+    
     this.submitted = true
     let obj = {
      "firstName": this.ServiceProviderForm.controls['firstName'].value,
@@ -70,8 +87,8 @@ submitted:boolean = false
      "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
      "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
      "email": this.ServiceProviderForm.controls['email'].value,
-     "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value,
-     "dialCode": "+91",
+     "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value.number,
+     "dialCode": this.ServiceProviderForm.controls['phoneNo'].value.dialCode,
      "address": this.ServiceProviderForm.controls['address'].value,
  }
    let url = `/api/v1/admin/updateServiceprovider/${this.id}`
@@ -133,4 +150,11 @@ public AddressChange(address: any,ref) {
   this.lat = address.geometry.location.lat()
   this.lng = address.geometry.location.lng()
 }
+SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+  changePreferredCountries() {
+		this.preferredCountries = [CountryISO.India, CountryISO.Canada];
+	}
 }

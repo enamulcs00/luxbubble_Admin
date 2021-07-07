@@ -172,14 +172,17 @@ let formdata = new FormData()
  });
 }
 uploadFile(event) {
- if(event.target.files && event.target.files[0]) {
-   var type = event.target.files[0].type;
+  var type = event.target.files[0].type;
+ if(event.target.files && event.target.files[0] && type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
+   
      this.profile = event.target.files[0].name
    if (type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
      let fileData = event.target.files[0];
      this.sendFile(fileData)
       var reader = new FileReader()
    }
+ }else{
+  this.toaster.error('File must be Jpg, Jpeg, Png','Error')
  }
 }
 

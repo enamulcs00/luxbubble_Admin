@@ -52,3 +52,23 @@ body {
     box-sizing: border-box;
     overflow: hidden;
 }
+/* upload */
+.imgs {
+    margin-right: 10px;
+    position: relative;
+}
+.rows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add {
+    margin-left: 5px;
+}
+.cros {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
+}
+/* upload end */

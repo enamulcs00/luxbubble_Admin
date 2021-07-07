@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ApiService {
+public ImageUrl ="http://dev.webdevelopmentsolution.net:3008"
  public baseUrl = "http://dev.webdevelopmentsolution.net:3008";
   public regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u  //Prevent white space between words
   public search_value = new BehaviorSubject<boolean>(false);

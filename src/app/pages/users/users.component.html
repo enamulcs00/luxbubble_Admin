@@ -193,9 +193,34 @@
                             <!--/row-->
                             <div class="row ">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Phone number</label>
-                                        <input type="number" readonly formControlName="phoneNo" class="form-control" placeholder="eg:- 9939940419">
+                                    
+                                    <div class="wrapper">
+                                        <div class="form-group">
+                                            <label class="control-label">Phone number</label>
+                                            <ngx-intl-tel-input readonly
+                                            [cssClass]="'form-control'"
+                                            [preferredCountries]="[CountryISO.UnitedStates, CountryISO.UnitedKingdom]"
+                                            [enableAutoCountrySelect]="false"
+                                            [enablePlaceholder]="true"
+                                            [separateDialCode]="true"
+                                            [searchCountryFlag]="true"
+                                            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                            [selectFirstCountry]="false"
+                                            [selectedCountryISO]="selectedCountry"
+                                            [phoneValidation]="true"
+                                            [maxLength]="15"
+                                            [inputId]="'my-input-id'"
+                                            name="phoneNo"
+                                            formControlName="phoneNo"
+                                          
+                                        ></ngx-intl-tel-input>
+                                        <mat-error *ngIf="UpdateUser.get('phoneNo').hasError('required') && submitted">
+                                            *Phone number is required.
+                                        </mat-error>
+                                        <mat-error *ngIf=" UpdateUser.get('phoneNo').hasError('validatePhoneNumber')">
+                                      * Invalid phone number..
+                                  </mat-error>
+                                        </div>
                                     </div>
                                 </div>
                                 <!--/span-->
@@ -302,7 +327,22 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Contact No</label>
-                                        <input type="text" id="firstName" class="form-control" placeholder="John doe">
+                                        <!-- <input type="text" id="firstName" class="form-control" placeholder="John doe"> -->
+                                        <ngx-intl-tel-input
+                                        [cssClass]="'custom'"
+                                        [preferredCountries]="[CountryISO.UnitedStates, CountryISO.UnitedKingdom]"
+                                        [enableAutoCountrySelect]="false"
+                                        [enablePlaceholder]="true"
+                                        [searchCountryFlag]="true"
+                                        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                        [selectFirstCountry]="false"
+                                        [selectedCountryISO]="CountryISO.India"
+                                        [maxLength]="15"
+                                        [phoneValidation]="true"
+                                        [inputId]="my-input-id"
+                                        name="phone"
+                                        formControlName="phone"
+                                    ></ngx-intl-tel-input>
 
                                     </div>
                                 </div>

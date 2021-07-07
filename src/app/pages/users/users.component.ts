@@ -1,12 +1,14 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnInit,ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource, } from '@angular/material/table';
 import { ApiService } from 'src/app/services/api.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { SearchCountryField, CountryISO ,PhoneNumberFormat} from 'ngx-intl-tel-input';
+import { allCountries } from '../editvendor/countries';
 export interface UserData {
   image:any;
   firstName: string,
@@ -23,7 +25,7 @@ export interface UserData {
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit{
   closeResult: string;
   table = [];
   UpdateUser:FormGroup;
@@ -33,6 +35,8 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild("placeRef") placesRef: GooglePlaceDirective;
+  @ViewChild('phoneField')
+  public phoneField;
   timer: number;
   filter:boolean;
   pageEvent: PageEvent;
@@ -50,6 +54,7 @@ submitted:boolean = false
   lng: any;
   lat: any;
   address: any;
+  selectedCountry : any = CountryISO.India;
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
   //  var regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u
     this.UpdateUser=this.fb.group({
@@ -62,6 +67,7 @@ submitted:boolean = false
   }
   ngOnInit(): void {
    this.DataList();
+   this.UpdateUser.controls['phoneNo'].disable()
   }
   DataList()
   {
@@ -156,7 +162,11 @@ let url = `/api/v1/admin/getUsers`
     this.submitted = true
     let url = `/api/v1/admin/updateUser/${this.userid}`
   
-    let body=this.UpdateUser.value;
+    let body={
+      "firstName":this.UpdateUser.value.firstName,
+      "lastName" : this.UpdateUser.value.lastName,
+      "address": this.UpdateUser.value.address
+    }
     if(this.UpdateUser.valid){
       this.apiservice.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){
@@ -209,8 +219,14 @@ userDetailModal(userDetail,obj) {
   this.UpdateUser.get('firstName').setValue(obj.firstName);
       this.UpdateUser.get('lastName').setValue(obj.lastName);
       this.UpdateUser.get('phoneNo').setValue(obj.phoneNo);
+      this.UpdateUser.get('phoneNo').setValue(obj.dialCode);
       this.UpdateUser.get('email').setValue(obj.email);
       this.UpdateUser.get('address').setValue(obj.address);
+      let findIndex = allCountries.find(x=>{
+				const phone = obj.dialCode.split('+');
+				return x[2] == phone[1].trim();
+			})
+			this.selectedCountry = (findIndex != undefined)?findIndex[1]:CountryISO.India;
   this.modalService.open(userDetail, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
 }
 addUserModal(addUser) {
@@ -225,4 +241,12 @@ private getDismissReason(reason: any): string {
     return  `with: ${reason}`;
   }
 }
+	SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+  changePreferredCountries() {
+		this.preferredCountries = [CountryISO.India, CountryISO.Canada];
+	}
+  
 }
