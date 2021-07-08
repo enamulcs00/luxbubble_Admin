@@ -219,7 +219,7 @@ userDetailModal(userDetail,obj) {
   this.UpdateUser.get('firstName').setValue(obj.firstName);
       this.UpdateUser.get('lastName').setValue(obj.lastName);
       this.UpdateUser.get('phoneNo').setValue(obj.phoneNo);
-      this.UpdateUser.get('phoneNo').setValue(obj.dialCode);
+      
       this.UpdateUser.get('email').setValue(obj.email);
       this.UpdateUser.get('address').setValue(obj.address);
       let findIndex = allCountries.find(x=>{
