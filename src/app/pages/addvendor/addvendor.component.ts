@@ -33,7 +33,7 @@ export class AddvendorComponent implements OnInit {
     phoneNo :['', [Validators.required]],
     email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
     address:['',[Validators.required]],
-    document:['',Validators.required],
+    document:[''],
   });
   ngOnInit(): void {
     this.ServiceProviderForm.controls['commissionType'].setValue('PERCENTAGE')
@@ -55,7 +55,7 @@ export class AddvendorComponent implements OnInit {
         "address": this.ServiceProviderForm.controls['address'].value,
     }
       let url = `/api/v1/admin/addServiceProvider`
-      if(this.ServiceProviderForm.valid){
+      if(this.ServiceProviderForm.valid && this.docfile){
         this.service.postApi(url,obj).subscribe((res:any)=>{
           if(res.statusCode==200){
             this.toaster.success(res.message)
@@ -80,8 +80,9 @@ sendFile(fileData,ref) {
       if(ref=='profile'){
         this.files = res.data.filePath
       }else if(ref=='doc'){
-        this.docfile.push(res.data.filePath)
-      }
+        //this.docfile.push(res.data.filePath)
+        this.docfile.length < 5 && !this.docfile.includes(res.data.filePath)?this.docfile.push(res.data.filePath):alert(this.docfile.length===5?'Maximum 5 files can be upload!':'This item has already been added'
+        )}
     } else {
       this.toaster.error(res.message)
     }

@@ -116,7 +116,8 @@ this.toaster.success('File updated successfully')
    if(ref=='profile'){
      this.files = res.data.filePath
    }else if(ref=='doc'){
-     this.docfile.push(res.data.filePath)
+    this.docfile.length < 5 && !this.docfile.includes(res.data.filePath)?this.docfile.push(res.data.filePath):alert(this.docfile.length===5?'Maximum 5 files can be upload!':'This item has already been added'
+    )
    }
  } else {
    this.toaster.error(res.message)

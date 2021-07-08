@@ -146,7 +146,6 @@
                       <div class="upload">
                         <label class="control-label">Upload document</label>
                       <div class="rows">
-                        
                        <div class="imgs" *ngFor="let item of docfile; index as i">   
                           <button  (click)="Remove(i)" class="cros">
                             <span>&times;</span>
@@ -160,7 +159,8 @@
                           </div>
                         </div>
                       </div>
-                      </div>
+                    <mat-error *ngIf="!docfile.length && submitted">Documents are required</mat-error>  
+                    </div>
                      
                     <!-- <div class="col-md-6">
               <div class="form-group has-danger">
