@@ -30,8 +30,8 @@ submitted:boolean = false
       image:[""],
       firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
       lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
-      commission:['',Validators.required],
-      commissionType:['',Validators.required],
+      // commission:['',Validators.required],
+      // commissionType:['',Validators.required],
       phoneNo :['', [Validators.required]],
       email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
       address:['',[Validators.required]],
@@ -53,8 +53,8 @@ submitted:boolean = false
       this.profile = res.data.image.split('/').pop()
       this.ServiceProviderForm.controls['firstName'].setValue(res.data.firstName)
       this.ServiceProviderForm.controls['lastName'].setValue(res.data.lastName)
-      this.ServiceProviderForm.controls['commission'].setValue(res.data.commission)
-      this.ServiceProviderForm.controls['commissionType'].setValue(res.data.commissionType)
+      // this.ServiceProviderForm.controls['commission'].setValue(res.data.commission)
+      // this.ServiceProviderForm.controls['commissionType'].setValue(res.data.commissionType)
       this.ServiceProviderForm.controls['phoneNo'].setValue(res.data.phoneNo)
       this.ServiceProviderForm.controls['email'].setValue(res.data.email)
       this.ServiceProviderForm.controls['address'].setValue(res.data.address)
@@ -84,8 +84,8 @@ submitted:boolean = false
      "lastName": this.ServiceProviderForm.controls['lastName'].value,
      "image": this.files,
      "docImages":this.docfile,
-     "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
-     "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
+    //  "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
+    //  "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
      "email": this.ServiceProviderForm.controls['email'].value,
      "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value.number,
      "dialCode": this.ServiceProviderForm.controls['phoneNo'].value.dialCode,

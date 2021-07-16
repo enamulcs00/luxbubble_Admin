@@ -28,8 +28,8 @@ export class AddvendorComponent implements OnInit {
     image:["",Validators.required],
     firstName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
     lastName:["",[Validators.required,Validators.maxLength(15),Validators.pattern(/^[a-zA-Z ]*$/i)]],
-    commission:['',Validators.required],
-    commissionType:['',Validators.required],
+    // commission:['',Validators.required],
+    // commissionType:['',Validators.required],
     phoneNo :['', [Validators.required]],
     email : ['', [Validators.required,Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/)]],
     address:['',[Validators.required]],
@@ -47,15 +47,16 @@ export class AddvendorComponent implements OnInit {
         "lastName": this.ServiceProviderForm.controls['lastName'].value,
         "image": this.files,
         "docImages":this.docfile,
-        "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
-        "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
+        // "commissionType": this.ServiceProviderForm.controls['commissionType'].value,
+        // "commission": this.ServiceProviderForm.controls['commission'].value.toString(),
         "email": this.ServiceProviderForm.controls['email'].value,
         "phoneNo": this.ServiceProviderForm.controls['phoneNo'].value.number,
         "dialCode": this.ServiceProviderForm.controls['phoneNo'].value.dialCode,
         "address": this.ServiceProviderForm.controls['address'].value,
+        status: "ACCEPTED"
     }
       let url = `/api/v1/admin/addServiceProvider`
-      if(this.ServiceProviderForm.valid && this.docfile){
+      if(this.ServiceProviderForm.valid && this.docfile.length){
         this.service.postApi(url,obj).subscribe((res:any)=>{
           if(res.statusCode==200){
             this.toaster.success(res.message)

@@ -15,12 +15,12 @@ export class VendorcategoryComponent implements OnInit {
   categories: any;
   subCategoryData: any;
   imageSub: string;
-  text: string;
+  text: string='Choose file';
   file: any;
   addCategoryFlag: boolean;
   imageSizeError: boolean;
   fileAttached: boolean;
-  imageFile: any;
+  imageFile: any='';
   submitted: boolean = false;
   deleteId: any;
   localID: any;
@@ -37,43 +37,33 @@ export class VendorcategoryComponent implements OnInit {
     private router:Router
   ) {}
   ngOnInit(): void {
-   this.foodFlag=(JSON.parse(sessionStorage.getItem("permission"))==null?true:JSON.parse(sessionStorage.getItem("permission")).Categories.modify);
     this.getCategories();
   }
+// Get Vendors
 
-  // Get Vendors
   getCategories() {
-    this.baseURL="http://dev.webdevelopmentsolution.net:8888";
-    this.Srvc.getApi(this.baseURL).subscribe((data: any) => {
-      if (data.statusCode == 401) {
-        this.sessionTerminate();
+   let url = `/api/v1/admin/getCategory`
+   let obj ={"page" : 1,"count" : 100 }
+    this.Srvc.postApi(url,obj).subscribe((res:any)=>{
+      if(res.statusCode==200){
+        this.categories = res.data.doc
+      }else{
+    //    this.toastr.error('Error','Something went wrong',{timeOut:1000})
       }
-      if (data.statusCode == 200) {
-        this.categories = data.data;
-      } else {
-        this.toastr.error(data.message, "Error", {
-          timeOut: 2000,
-        });
-      }
-    });
+    })
   }
 
   // Get SubCategory
   getSubCategory(id) {
-    this.localID=id;
-    this.parentID = id;
-    this.baseURL="http://dev.webdevelopmentsolution.net:8888";
-    this.Srvc.getApi(id).subscribe((res: any) => {
-      if (res.statusCode == 401) {
-        this.sessionTerminate();
-      }
+    let url = `/api/v1/Admin/getSubCategory/${id}`
+    this.Srvc.getApi(url).subscribe((res: any) => {
+      console.log('Sub res',res);
       if (res.statusCode == 200) {
         this.subCategoryData = res.data;
-        this.imageSub = this.baseURL + res.data.uploadImage;
       } else {
-        this.toastr.error(res.message, "Error", {
-          timeOut: 2000,
-        });
+      //  this.toastr.error(res.message, "Error", {
+       //   timeOut: 1000,
+       // });
       }
     });
   }
@@ -82,47 +72,35 @@ export class VendorcategoryComponent implements OnInit {
   addCategoryForm = this.formBuilder.group({
     name: [
       "",
-      [Validators.required, Validators.minLength(3), Validators.maxLength(15)],
+      [Validators.required, Validators.maxLength(35)],
     ],
-    description: [
-      "",
-      [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
-    ],
+  
     image: [""],
   });
 
-  // Add SubCategory Form
-  addSubCategoryForm = this.formBuilder.group({
-    name2: [
-      "",
-      [Validators.required, Validators.minLength(3), Validators.maxLength(15)],
-    ],
-    image2: ["", []],
-  });
 
   // Add Category
-  sendDetails() {
+  AddCategory() {
+    let url = `/api/v1/admin/createCategory`
     this.submitted = true;
     if (this.addCategoryForm.valid) {
-      if (this.imageFile) {
+      if (this.imageFile.length) {
         let obj = {
           name: this.addCategoryForm.value.name,
-          description: this.addCategoryForm.value.description,
           image: this.imageFile,
+          // description:'Enam'
         };
-        this.Srvc.postApi(obj,this.baseURL).subscribe((data: any) => {
-          if (data.statusCode == 401) {
-            this.sessionTerminate();
-          }
+        this.Srvc.postApi(url,obj).subscribe((data: any) => {
           if (data.statusCode == 200) {
+            this.toastr.success('Success','Category added',{timeOut:1000})
             this.modalService.dismissAll();
             this.addCategoryForm.reset();
-            this.imageFile = null;
             this.text = "Choose File";
             this.getCategories();
             this.submitted = false;
           } else {
             this.addCategoryFlag = true;
+        //    this.toastr.error('Error','Something went wrong',{timeOut:800})
           }
         });
       } else {
@@ -138,38 +116,67 @@ export class VendorcategoryComponent implements OnInit {
   }
 
   // Add Sub Category
-  sendSubDetails() {
+  SubCategoryAddition() {
     this.submitted = true;
-    if (this.addSubCategoryForm.valid) {
-      if (this.imageFile) {
+    let url = `/api/v1/admin/createCategory`
+    this.submitted = true;
+    if (this.addCategoryForm.valid) {
+      if (this.imageFile.length) {
         let obj = {
-          name: this.addSubCategoryForm.value.name2,
+          name: this.addCategoryForm.value.name,
           image: this.imageFile,
-          parent: this.localID,
+          parent:this.localID
         };
-
-        this.Srvc.postApi(obj,'').subscribe((data: any) => {
-          if (data.statusCode == 401) {
-            this.sessionTerminate();
-          }
+        this.Srvc.postApi(url,obj).subscribe((data: any) => {
           if (data.statusCode == 200) {
+            this.toastr.success('Success','Sub category added',{timeOut:1000})
             this.modalService.dismissAll();
-            
             this.addCategoryForm.reset();
             this.text = "Choose File";
-            this.submitted = false;
-            this.addSubCategoryForm.reset();
             this.getCategories();
-            this.getSubCategory(this.localID);
+            this.submitted = false;
           } else {
-            this.toastr.error(data.message, "Error", {
-              timeOut: 2000,
-            });
             this.addCategoryFlag = true;
+           // this.toastr.error('Error','Something went wrong',{timeOut:800})
           }
         });
       } else {
-        this.toastr.error("Please choose Sub Category image", "Error", {
+        // this.toastr.error("Please choose sub category image", "Error", {
+        //   timeOut: 2000,
+        // });
+      }
+    } else {
+      this.toastr.error("Please enter all the required fields", "Error", {
+        timeOut: 2000,
+      });
+    }
+  }
+  SubCategoryUpdate() {
+    this.submitted = true;
+    let url = `/api/v1/admin/updateCategory/${this.localID}`
+    this.submitted = true;
+    if (this.addCategoryForm.valid) {
+      if (this.imageFile.length) {
+        let obj = {
+          name: this.addCategoryForm.value.name,
+          image: this.imageFile,
+          parent:this.parentID
+        };
+        this.Srvc.postApi(url,obj).subscribe((data: any) => {
+          if (data.statusCode == 200) {
+            this.toastr.success('Success','Sub category added',{timeOut:1000})
+            this.modalService.dismissAll();
+            this.addCategoryForm.reset();
+            this.text = "Choose File";
+            this.getCategories();
+            this.submitted = false;
+          } else {
+            this.addCategoryFlag = true;
+          //  this.toastr.error('Error','Something went wrong',{timeOut:800})
+          }
+        });
+      } else {
+        this.toastr.error("Please choose sub category image", "Error", {
           timeOut: 2000,
         });
       }
@@ -179,70 +186,44 @@ export class VendorcategoryComponent implements OnInit {
       });
     }
   }
-
-  // Error Handling Category Add
-  public errorHandlingAddCategory = (control: string, error: string) => {
-    return this.addCategoryForm.controls[control].hasError(error);
-  };
-
-  // Error Handling Sub Category Add
-  public errorHandlingAddSubCategory = (control: string, error: string) => {
-    return this.addSubCategoryForm.controls[control].hasError(error);
-  };
-
-  // Error Handling Edit Category
-  public errorHandlingEditCategory = (control: string, error: string) => {
-    return this.editCategoryForm.controls[control].hasError(error);
-  };
-
-  // Avoid Empty Space
-  doSomething(e, ref) {
-    if (!ref.length) {
-      e.preventDefault();
+  sendFile(fileData) {
+    let url = `/api/v1/admin/uploadFile`
+   let formdata = new FormData()
+    formdata.append('file', fileData);
+    this.Srvc.postApi(url,formdata).subscribe((res: any) => {
+      console.log(res.data)
+      if (res.statusCode==200) {
+        this.imageFile =  res.data.filePath
+     this.toastr.success('File updated successfully')
+        console.log("upload data res=>>", res.data)
+      } else {
+        this.toastr.error(res.message)
+      }
+    });
+  }
+  uploadFile(event) {
+  console.log("Evnt",event);
+    var type = event.target.files[0].type;
+    if(event.target.files && event.target.files[0] && type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
+        this.text = event.target.files[0].name
+      if (type === 'image/png' || type === 'image/jpg' || type === 'image/jpeg') {
+        let fileData = event.target.files[0];
+        this.sendFile(fileData)
+         var reader = new FileReader()
+      }
+    }else{
+      this.toastr.error('File must be Jpg, Jpeg, Png','Error')
     }
   }
-
-  // Image Select
-  onImageSelect(e) {
-    var files = e.target.files;
-
-    if (files[0].size <= 1000000) {
-      this.file = files[0];
-      let formData = new FormData();
-      formData.append("file", this.file);
-      this.Srvc.postApi(formData,'').subscribe((res: any) => {
-        if (res.statusCode == 401) {
-          this.sessionTerminate();
-        }
-        if (res.statusCode == 200) {
-          this.imageFile = res.data.filePath;
-          this.toastr.success("Image Selected");
-
-          this.text = e.target.files[0].name;
-          this.imageSizeError = false;
-          this.fileAttached = true;
-        } else {
-          this.toastr.error(res.message, "Error", {
-            timeOut: 2000,
-          });
-        }
-      });
-    } else {
-      this.file = null;
-      this.text = "Choose File";
-      this.imageSizeError = true;
-    }
-  }
-
   // Delete Category
   deleteCategory() {
-    const body = {};
-    this.Srvc.deleteApi(this.deleteId).subscribe((data: any) => {
+    let url = `/api/v1/admin/deleteCategory/${this.deleteId}`
+    this.Srvc.deleteApi(url).subscribe((data: any) => {
       if (data.statusCode == 200) {
         this.getCategories();
         this.getSubCategory(this.localID);
         this.modalService.dismissAll();
-        
+        this.toastr.success('Deleted','Category deleted',{timeOut:800})
       } else {
         this.toastr.error(data.message, "Error", {
           timeOut: 2000,
@@ -258,8 +239,8 @@ export class VendorcategoryComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
-  deleteBoxModal(userDelete) {
-
+  deleteBoxModal(userDelete,id) {
+this.deleteId = id
     this.modalService.open(userDelete, {
       backdropClass: "light-blue-backdrop",
       centered: true,
@@ -275,82 +256,49 @@ export class VendorcategoryComponent implements OnInit {
     });
   }
 
-  editCategoryForm = this.formBuilder.group({
-    editName: [
-      "",
-      [Validators.required, Validators.minLength(3), Validators.maxLength(15)],
-    ],
-    editDescription: [
-      "",
-      [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
-    ],
-  });
 
-  editSubCategoryForm = this.formBuilder.group({
-    editSubName: [
-      "",
-      [Validators.required, Validators.minLength(3), Validators.maxLength(15)],
-    ],
-  });
-
-  editBoxModal(editModel, id) {
-    this.localID = id;
-    this.Srvc.getApi(this.localID).subscribe((res: any) => {
-      if (res.statusCode == 200) {
-        this.viewData = res.data;
-        this.editCategoryForm.controls["editName"].setValue(this.viewData.name);
-        this.editCategoryForm.controls["editDescription"].setValue(
-          this.viewData.description
-        );
-        if (res.data.image == "") {
-          this.text = "Choose File";
-        }
-        if (res.data.image != "") {
-          this.text = "Image.jpg";
-        }
-      }
-    });
+  editBoxModal(editModel, item) {
+    this.localID = item._id;
+        this.addCategoryForm.controls["name"].setValue(item.name);
+        this.text = item.image.split('/').pop()
+        this.imageFile = item.image
     this.modalService.open(editModel, {
       backdropClass: "light-blue-backdrop",
       centered: true,
       size: "lg",
-    });
+    })
   }
 
   // Edit Category
   editCategoryData() {
+    let url = `/api/v1/admin/updateCategory/${this.localID}`
     this.submitted = true;
-    if (this.editCategoryForm.valid) {
-      let obj = {
-        name: this.editCategoryForm.value.editName,
-        description: this.editCategoryForm.value.editDescription,
-        image: this.imageFile,
-      };
-      if (!this.imageFile) {
-        delete obj.image;
+    this.submitted = true;
+    if (this.addCategoryForm.valid) {
+      if (this.imageFile.length) {
+        let obj = {
+          name: this.addCategoryForm.value.name,
+          image: this.imageFile,
+          // description:'Enam'
+        };
+        this.Srvc.putApi(url,obj).subscribe((data: any) => {
+          if (data.statusCode == 200) {
+            this.toastr.success('Success','Category updated',{timeOut:1000})
+            this.modalService.dismissAll();
+            this.addCategoryForm.reset();
+            this.text = "Choose File";
+            this.getCategories();
+            this.submitted = false;
+          } else {
+            this.addCategoryFlag = true;
+            this.toastr.error('Error','Something went wrong',{timeOut:800})
+          }
+        });
+      } else {
+        this.toastr.error("Please choose Category image", "Error", {
+          timeOut: 2000,
+        });
       }
-      console.log(obj);
-      // return;
-      this.Srvc.putApi(this.localID, obj).subscribe((data: any) => {
-        if (data.statusCode == 200) {
-        
-          this.modalService.dismissAll();
-          this.getCategories();
-          this.fileAttached = false;
-          this.text = "Choose File";
-          this.imageFile = null;
-          this.submitted = false;
-        } else {
-          this.toastr.error(data.message, "Error", {
-            timeOut: 2000,
-          });
-          this.getCategories();
-          this.modalService.dismissAll();
-          this.fileAttached = false;
-          this.submitted=false;
-          this.imageFile = null;
-        }
-      });
     } else {
       this.toastr.error("Please enter all the required fields", "Error", {
         timeOut: 2000,
@@ -359,6 +307,10 @@ export class VendorcategoryComponent implements OnInit {
   }
   addsubCategoryModel(addsubCategory, id) {
     this.localID = id;
+    this.text = 'Choose file'
+    this,this.imageFile = ''
+    this.submitted = false
+    this.addCategoryForm.reset()
     this.modalService.open(addsubCategory, {
       backdropClass: "light-blue-backdrop",
       centered: true,
@@ -366,7 +318,10 @@ export class VendorcategoryComponent implements OnInit {
     });
   }
   addCategoryModel(addCategory) {
+    this.imageFile = ''
     this.text = "Choose File";
+    this.addCategoryForm.reset()
+    this.submitted = false
     this.modalService.open(addCategory, {
       backdropClass: "light-blue-backdrop",
       centered: true,
@@ -374,23 +329,12 @@ export class VendorcategoryComponent implements OnInit {
     });
   }
 
-editBoxModal1(editSubModel) {
-    
-    this.Srvc.getApi(this.localID).subscribe((res: any) => {
-      if (res.statusCode == 200) {
-        this.viewData = res.data;
-        this.editSubCategoryForm.controls["editSubName"].setValue(
-          this.viewData.name
-        );
-        if (res.data.image == "") {
-          this.text = "Choose File";
-        }
-        if (res.data.image != "") {
-          this.text = "Image.jpg";
-        }
-      }
-    });
-
+editBoxModal1(editSubModel,obj,id) {
+  this.parentID = id
+  this.localID = obj._id
+  this.text = obj.image.split('/').pop()
+  this.imageFile = obj.image
+this.addCategoryForm.controls['name'].setValue(obj.name)
     this.modalService.open(editSubModel, {
       backdropClass: "light-blue-backdrop",
       centered: true,
@@ -398,47 +342,4 @@ editBoxModal1(editSubModel) {
     });
   }
 
-  // Edit Sub Category on Submit
-  editSubCategory() {
-    this.submitted = true;
-    if (this.editSubCategoryForm.valid) {
-      let obj = {
-        name: this.editSubCategoryForm.value.editSubName,
-        image: this.imageFile,
-      };
-      if (!this.imageFile) {
-        delete obj.image;
-      }
-      console.log(obj);
-      // return;
-      this.Srvc.putApi(this.localID, obj).subscribe((data: any) => {
-        if (data.statusCode==200) {
-          this.toastr.success("Sub Category Updated");
-          this.editSubCategoryForm.reset();
-          this.submitted=false;
-          this.fileAttached = false;
-          this.text = "Choose File";
-          this.imageFile = null;
-          this.modalService.dismissAll();
-          this.getCategories();
-          this.getSubCategory(this.parentID);
-        } else {
-          this.toastr.error(data.message, "Error", {
-            timeOut: 2000,
-          });
-          this.getCategories();
-          this.modalService.dismissAll();
-          this.editSubCategoryForm.reset();
-          this.fileAttached = false;
-          this.submitted=false;
-          this.imageFile = null;
-          this.getSubCategory(this.parentID);
-        }
-      });
-    }else {
-      this.toastr.error("Please enter all the required fields", "Error", {
-        timeOut: 2000,
-      });
-    }
-  }
 }
