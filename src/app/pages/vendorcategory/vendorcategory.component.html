@@ -1,138 +1,341 @@
 <div class="card">
-    <div class="card-body">
-        <div class="row">
+  <div class="card-body">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+      <li [ngbNavItem]="1" >
+        <!-- <a ngbNavLink>Category</a> -->
+        <ng-template ngbNavContent>
+          <div class="row">
             <div class="col-md-12 text-right">
-                <button class="btn btn-primary mb-2" (click)="addCategoryModel(addCategory)">Add Category</button>
+              <button class="btn btn-primary mb-2" (click)="addCategoryModel(addCategory)">Add Category</button>
             </div>
-        </div>
-        <div class="table-reponsive">
-            <table class="table">
-                <thead>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of data">
-                        <td><img [src]="item?.image?apiservice.baseUrl+item?.image:'assets/images/food/1.png'" alt="" width="80" height="80"></td>
-                        <td>{{item?.name}} </td>
-                        <td>
-                            <a href="javascript:void()" class="btn btn-sm btn-success" (click)="editBoxModal(cusinine,item)"><i class="mdi mdi-lead-pencil"></i></a>
-                            <a href=javascript:void(); class="btn btn-sm btn-danger ml-1" (click)="deleteBoxModal(deleteBox,item?._id)"><i class="ti-trash"></i> </a>
-                        </td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-            <p *ngIf="!length">Data not found!</p>
-            <mat-paginator [length]="length" (page)="productListAfterPageSizeChanged($event)" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-        </div>
-    </div>
+          </div>
+
+
+              <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" class="">
+
+                <ngb-panel id="static-0" class="mb-2">
+
+                  <ng-template ngbPanelHeader >
+                    <div class="row box-tab">
+                      <div class="col-md-1">
+                        <h5 class="mb-0"> <img width="60px" height="60px" class="mr-2" src="assets/images/food/1.jpg"
+                            alt=""> </h5>
+                      </div>
+                      <div class="col-md-3">
+                        <h3 class="mb-0"> <span class="d-block">nm</span> </h3>
+                      </div>
+                      <div class="col-md-5 ">
+                        <p class="m-0">v</p>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="delete-categories" *ngIf="foodFlag">
+                          <span class="btn btn-primary mr-2" (click)="editBoxModal(editModel)"><i
+                              class="ti-marker-alt"></i> </span>
+                          <span class="btn btn-danger" (click)="deleteBoxModal(deleteBox)"><i
+                              class="ti-trash"></i> </span>
+                        </div>
+                      </div>
+                      <div class="col-md-1 p-4">
+                        <button ngbPanelToggle (click)="getSubCategory()" class="btn btn-link p-0"><i
+                            class="sl-icon-arrow-down"></i></button>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <ng-template ngbPanelContent>
+
+                    <table class="table v-middle product-overview ">
+                             <tr>
+                        <th>Image</th>
+                              <th>Name</th>
+                              <th *ngIf="foodFlag">Action</th>
+                            </tr>
+
+                            <tr>
+                              <td>
+                                <span class="img-small"><img src="assets/images/food/1.jpg" alt="image"
+                                    width="60" height="60" class="rounded"></span>
+                              </td>
+                              <td>
+                                nm
+                              </td>
+                              <td *ngIf="foodFlag">
+                                <a href="javascript:void()" (click)="editBoxModal1(editSubModel)" class="mr-2"><i
+                                    class="ti-marker-alt"></i> </a>
+                                <a href="javascript:void()" (click)="deleteBoxModal(deleteBox)"><i class="ti-trash"></i>
+                                </a>
+                              </td>
+                            </tr>
+                          <!-- </table> -->
+
+                    </table>
+
+                    <div> <button class="btn btn-primary mr-2" (click)="addsubCategoryModel(addsubCategory)"><i
+                          class="sl-icon-plus"></i> Add New Sub Categories </button></div>
+
+                  </ng-template>
+                </ngb-panel>
+
+              </ngb-accordion>
+
+            <!-- </li> -->
+          <!-- </ul> -->
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </div>
 </div>
 
+<!-- edit user detail -->
+<ng-template #addsubCategory let-modal>
+  <div class="modal-body">
+    <div class="card">
+      <form >
+        <div class="form-body">
+          <div class="card-body">
+            <div class="row p-t-20">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Name</label>
+                  <input #ref  type="text" id="firstName" class="form-control" placeholder=" Ex. John">
+                 
+                </div>
+              </div>
+              <!--/span-->
+              <div class="col-md-12">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Upload Image</label>
+                    <div class="custom-file"><input accept="image/x-png,image/gif,image/jpeg" class="custom-file-input" id="inputGroupFile01" type="file"><label
+                      class="custom-file-label" for="inputGroupFile01" >{{text}}</label></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/row-->
+          </div>
+          <div class="form-actions">
+            <div class="card-body">
+              <button type="submit" class="btn btn-success mr-3" >
+                <i class="fa fa-check"></i> Add</button>
+              <button type="button" class="btn btn-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</ng-template>
+
+<!-- delete modal -->
 <ng-template #deleteBox let-modal>
-    <div class="modal-body">
-        <p>Are you want to delete category?</p>
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary mr-2" aria-label="Close" (click)="deleteVendor()">Yes</button>
-            <button type="button" class="btn btn-seconadary" aria-label="Close" (click)="modal.dismiss('Cross click')">No</button>
-        </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this category?</p>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary mr-2" aria-label="Close"
+      >Yes</button>
+      <button type="button" class="btn btn-seconadary" aria-label="Close"
+        (click)="modal.dismiss('Cross click')">No</button>
     </div>
+  </div>
 </ng-template>
+
+<!-- edit user detail -->
+<ng-template #editModel let-modal>
+  <div class="modal-body">
+    <div class="card">
+      <form>
+        <div class="form-body">
+          <div class="card-body">
+            <div class="row p-t-20">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label"> Category Name</label>
+                  <input type="text"  id="firstName" class="form-control" placeholder="Name">
+              </div>
+              </div>
+              <!--/span-->
+              <div class="col-md-12">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Upload Food Image</label>
+                    <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file" accept="image/x-png,image/gif,image/jpeg">
+                      <label
+                        class="custom-file-label" for="inputGroupFile01">{{text}}</label></div>
+                  </div>
+                </div>
+              </div>
+              <!--/span-->
+              <div class="col-md-12">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Description</label>
+                   <textarea id="" cols="30" rows="5" class="form-control" placeholder="Enter description"></textarea>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/row-->
+          </div>
+          <div class="form-actions">
+            <div class="card-body">
+              <button type="submit" class="btn btn-success mr-3">
+                <i class="fa fa-check"></i> Update</button>
+              <button type="button" class="btn btn-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</ng-template>
+
+
+<!-- edit user detail -->
+<ng-template #addsudsbCategory let-modal>
+  <div class="modal-body">
+    <div class="card">
+      <form action="#">
+        <div class="form-body">
+          <div class="card-body">
+            <div class="row p-t-20">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Name</label>
+                  <input type="text" id="firstName" class="form-control" placeholder="John doe">
+
+                </div>
+              </div>
+              <!--/span-->
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Upload Food Image</label>
+                    <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file"><label
+                        class="custom-file-label" for="inputGroupFile01">Choose file</label></div>
+                    <p class="constraints-info afu-constraints-info">(.jpg,.png) Size limit- 1.00 MB</p>
+                  </div>
+                </div>
+              </div>
+              <!--/span-->
+            </div>
+            <!--/row-->
+          </div>
+          <div class="form-actions">
+            <div class="card-body">
+              <button type="submit" class="btn btn-success mr-3" (click)="modal.dismiss('Cross click')">
+                <i class="fa fa-check"></i> Update</button>
+              <button type="button" class="btn btn-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</ng-template>
+
+<!-- edit user detail -->
 <ng-template #addCategory let-modal>
-    <div class="modal-body">
-        <div class="card">
-            <form [formGroup]="addcategory">
-                <div class="form-body">
-                    <div class="card-body">
-                        <div class="row p-t-20">
-                            <div class="col-12">
-                                <label> Add Category </label>
-                            </div>
-                        </div>
-                        <div class="row p-t-20">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Name</label>
-                                    <input type="text" class="form-control" formControlName="name" #ref (keydown.space)="!ref.value?$event.preventDefault():null" >
-                                    <mat-error *ngIf="addcategory.get('name').hasError('required') && submitted">
-                                        *Name is required.
-                                    </mat-error>
-                                    <!-- <mat-error *ngIf=" addcategory.get('name').hasError('pattern')">
-                                  *White space not allowed.
-                              </mat-error> -->
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <div class="form-group">
-                                        <label class="control-label">Upload Image</label>
-                                        <div class="custom-file text-nowrap text-truncate"><input class="custom-file-input" name="image" (change)="uploadFile($event)" id="inputGroupFile01" type="file"><label class="custom-file-label" for="inputGroupFile01">{{profile?profile:'Choose file'}}</label></div>
-                                        <mat-error *ngIf="!profile && submitted">
-                                            *Image is required.
-                                        </mat-error>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-success mr-3" (click)="Add()">
-                    <i class="fa fa-check"></i>Save</button>
-                        </div>
-                    </div>
+  <div class="modal-body">
+    <div class="card">
+      <form [formGroup]="addCategoryForm">
+        <div class="form-body">
+          <div class="card-body">
+            <div class="row p-t-20">
+
+            </div>
+            <!--/row-->
+            <div class="row p-t-20">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Categories</label>
+                  <input #ref id="name"
+                     type="text" class="form-control">
+
                 </div>
-            </form>
+              </div>
+              <!--/span-->
+              <div class="col-md-12">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Upload Food Image</label>
+                    <div class="custom-file">
+                      <input accept=".png, .jpg, .jpeg"
+                        class="custom-file-input" id="inputGroupFile01" type="file"><label class="custom-file-label"
+                        for="inputGroupFile01">{{text}}</label></div>
+                   
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <textarea #ref1 id="description" cols="30" rows="5"
+                      class="form-control"></textarea>
+                   
+                  </div>
+                </div>
+              </div>
+            
+            </div>
+            <!--/row-->
+          </div>
+          <div class="form-actions">
+            <div class="card-body">
+              <button type="submit" class="btn btn-success mr-3">
+                <i class="fa fa-check"></i> Save</button>
+            </div>
+          </div>
         </div>
+      </form>
     </div>
+
+  </div>
 </ng-template>
-<ng-template #cusinine let-modal>
-    <div class="modal-body">
-        <div class="card">
-            <form [formGroup]="addcategory">
-                <div class="form-body">
-                    <div class="card-body">
-                        <div class="row p-t-20">
-                            <div class="col-12">
-                                <label> Edit Category </label>
-                            </div>
-                        </div>
-                        <div class="row p-t-20">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Name</label>
-                                    <input type="text" class="form-control" formControlName="name" #ref (keydown.space)="!ref.value?$event.preventDefault():null">
-                                    <mat-error *ngIf="addcategory.get('name').hasError('required') && submitted">
-                                        *Name is required.
-                                    </mat-error>
-                                    <!-- <mat-error *ngIf=" addcategory.get('name').hasError('pattern')">
-                                  *White space not allowed.
-                              </mat-error> -->
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <div class="form-group">
-                                        <label class="control-label">Upload Image</label>
-                                        <div class="custom-file text-nowrap text-truncate"><input class="custom-file-input" id="inputGroupFile01" type="file" name="image" (change)="uploadFile($event)"><label class="custom-file-label" for="inputGroupFile01">{{profile?profile:'Choose file'}}</label></div>
-                                        <!-- <p class="constraints-info afu-constraints-info">(.jpg,.png) Size limit- 1.00 MB</p> -->
-                                        <mat-error *ngIf="!profile && submitted">
-                                            *Image is required.
-                                        </mat-error>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-success mr-3" (click)="update()">
-                    <i class="fa fa-check"></i>Update</button>
-                        </div>
-                    </div>
+<!-- Edit Sub Category -->
+<ng-template #editSubModel let-modal>
+  <div class="modal-body">
+    <div class="card">
+      <form>
+        <div class="form-body">
+          <div class="card-body">
+            <div class="row p-t-20">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Name</label>
+                  <input type="text" id="firstName" class="form-control" placeholder="Name">
+                 
                 </div>
-            </form>
+              </div>
+              <!--/span-->
+              <div class="col-md-12">
+                <div class="form-group has-success">
+                  <div class="form-group">
+                    <label class="control-label">Upload Image</label>
+                    <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file" accept="image/x-png,image/gif,image/jpeg">
+                      <label
+                        class="custom-file-label" for="inputGroupFile01">{{text}}</label></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/row-->
+          </div>
+          <div class="form-actions">
+            <div class="card-body">
+              <button type="submit" class="btn btn-primary mr-3">
+                <i class="fa fa-check"></i> Update</button>
+              <button type="button" class="btn btn-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
+            </div>
+          </div>
         </div>
+      </form>
     </div>
+
+  </div>
 </ng-template>

@@ -160,7 +160,7 @@ export const PagesRoutes: Routes = [
         path: 'rewards',
         component: RewardsComponent,
         data: {
-          title: 'Discount',
+          title: 'Coupons',
           urls: [
             { title: 'Dashboard', url: '/dashboard' },
             { title: 'Discount' }

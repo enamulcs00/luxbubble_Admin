@@ -2998,15 +2998,21 @@
       //     extralink: false,
       //     submenu: []
       // },
-      // {
-      //     path: '/pages/banner',
-      //     title: 'Banner',
-      //     icon: 'far fa-images',
-      //     class: '',
-      //     extralink: false,
-      //     submenu: []
-      // },
-      // {
+      {
+        path: '/pages/banner',
+        title: 'Banner',
+        icon: 'far fa-images',
+        "class": '',
+        extralink: false,
+        submenu: []
+      }, {
+        path: '/pages/rewards',
+        title: 'Coupons',
+        icon: 'ti-gift',
+        "class": '',
+        extralink: false,
+        submenu: []
+      }, // {
       //     path: '/pages/Inventory',
       //     title: 'Inventory',
       //     icon: 'mdi mdi-calendar-text',
