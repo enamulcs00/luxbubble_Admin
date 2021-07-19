@@ -29,6 +29,7 @@ export class VendorcategoryComponent implements OnInit {
   editSubID: any;
   parentID: any;
   foodFlag: any;
+  SubId: any;
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
@@ -39,9 +40,7 @@ export class VendorcategoryComponent implements OnInit {
   ngOnInit(): void {
     this.getCategories();
   }
-// Get Vendors
-
-  getCategories() {
+ getCategories() {
    let url = `/api/v1/admin/getCategory`
    let obj ={"page" : 1,"count" : 100 }
     this.Srvc.postApi(url,obj).subscribe((res:any)=>{
@@ -55,6 +54,7 @@ export class VendorcategoryComponent implements OnInit {
 
   // Get SubCategory
   getSubCategory(id) {
+    this.SubId = id
     let url = `/api/v1/Admin/getSubCategory/${id}`
     this.Srvc.getApi(url).subscribe((res: any) => {
       console.log('Sub res',res);
@@ -129,11 +129,11 @@ export class VendorcategoryComponent implements OnInit {
         };
         this.Srvc.postApi(url,obj).subscribe((data: any) => {
           if (data.statusCode == 200) {
+            this.getSubCategory(this.SubId)
             this.toastr.success('Success','Sub category added',{timeOut:1000})
             this.modalService.dismissAll();
             this.addCategoryForm.reset();
             this.text = "Choose File";
-            this.getCategories();
             this.submitted = false;
           } else {
             this.addCategoryFlag = true;
@@ -153,22 +153,21 @@ export class VendorcategoryComponent implements OnInit {
   }
   SubCategoryUpdate() {
     this.submitted = true;
-    let url = `/api/v1/admin/updateCategory/${this.localID}`
+    let url = `/api/v1/admin/updateCategory/${this.parentID}`
     this.submitted = true;
     if (this.addCategoryForm.valid) {
       if (this.imageFile.length) {
         let obj = {
           name: this.addCategoryForm.value.name,
           image: this.imageFile,
-          parent:this.parentID
         };
-        this.Srvc.postApi(url,obj).subscribe((data: any) => {
+        this.Srvc.putApi(url,obj).subscribe((data: any) => {
           if (data.statusCode == 200) {
+            this.getSubCategory(this.SubId)
             this.toastr.success('Success','Sub category added',{timeOut:1000})
             this.modalService.dismissAll();
             this.addCategoryForm.reset();
             this.text = "Choose File";
-            this.getCategories();
             this.submitted = false;
           } else {
             this.addCategoryFlag = true;
