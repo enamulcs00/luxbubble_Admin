@@ -23,8 +23,9 @@
                 <button class="dropdown-item">Inactive</button>
               </div>
             </div>
-              <button class="btn btn-seconadary mb-2 ml-2" (click)="addBannerModal(banner)"><i class="sl-icon-plus"></i> Add
-                Banner</button>
+            <button class="btn btn-seconadary mb-2 ml-2" (click)="addBannerModal(banner)"><i class="sl-icon-plus"></i>
+              Add
+              Banner</button>
 
           </div>
           <div class="table-responsive">
@@ -45,16 +46,17 @@
                     Yummy Food
                   </td>
                   <!-- <td><span class="nowrap"> Ronny <a routerLink="/pages/vendorsdetail"><span class="sl-icon-info"></span></a></span></td> -->
-                  <td><a href="javascript:void()" class="" (click)="imagesBoxModal(imagesBox)"> <img src="assets/images/food/banner.jpg" alt="" width="70px" class="img-fluid"> </a></td>
+                  <td><a href="javascript:void()" class="" (click)="imagesBoxModal(imagesBox)"> <img
+                        src="assets/images/food/banner.jpg" alt="" width="70px" class="img-fluid"> </a></td>
 
                   <td><span class="text-nowrap">12-4-04-2021/13:00</span></td>
-                  <td><span class="text-nowrap">15-4-04-2021/15:00</span></td>                 
+                  <td><span class="text-nowrap">15-4-04-2021/15:00</span></td>
                   <td>
                     <div ngbDropdown container="body">
                       <button class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
                       <div ngbDropdownMenu>
                         <button ngbDropdownItem>Active</button>
-                        <button ngbDropdownItem>Inactive</button>                      
+                        <button ngbDropdownItem>Inactive</button>
                       </div>
                     </div>
                   </td>
@@ -62,7 +64,7 @@
                     <button class="btn btn-primary mr-2" (click)="addBannerModal(banner)"><i class="ti-pencil"></i>
                     </button>
                     <button class="btn btn-primary" (click)="userDeleteModal(userDelete)"><i class="ti-trash"></i>
-                      </button>
+                    </button>
                   </td>
                 </tr>
 
@@ -87,7 +89,7 @@
     </div>
   </ng-template>
 
- 
+
 
 
   <ng-template #orderConfirm let-modal>
@@ -104,10 +106,10 @@
   <ng-template #banner let-modal>
     <div class="modal-body">
       <div class="card">
-        <form action="#">
+        <form [formGroup]="AddBannerForm">
           <div class="form-body">
             <div class="card-body">
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-6">
                    <div class="form-group">
                       <label for="">Select Categories</label>
@@ -128,13 +130,15 @@
                     </select>
                   </div>
                </div>
-              </div>
+              </div> -->
               <div class="row p-t-20">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="control-label">Banner Name</label>
-                    <input type="text" id="firstName" class="form-control" placeholder="Banner Name">
-
+                    <label class="control-label">Banner name</label>
+                    <input type="text" id="firstName" class="form-control" formControlName="name"
+                      placeholder="Banner Name" #name (keydown.space)="!name.value?$event.preventDefault():null">
+                    <mat-error *ngIf="submitted && AddBannerForm.controls['name'].hasError('required')">*Banner name is required!</mat-error>
+                    <mat-error *ngIf="AddBannerForm.controls['name'].hasError('maxlength')">*Maxlength should 30!</mat-error>
                   </div>
                 </div>
                 <!--/span-->
@@ -142,23 +146,25 @@
                   <div class="form-group has-success">
                     <div class="form-group">
                       <label class="control-label">Upload Banner</label>
-                      <div class="custom-file"><input class="custom-file-input" id="inputGroupFile01" type="file"><label
-                          class="custom-file-label" for="inputGroupFile01">Choose file</label></div>
-                          <p  class="constraints-info afu-constraints-info">(.jpg,.png) Size limit- 1.00 MB</p>
+                      <div class="custom-file"><input class="custom-file-input" (change)="uploadFile($event)"
+                          id="inputGroupFile01" type="file"><label class="custom-file-label text-nowrap text-truncate"
+                          for="inputGroupFile01">{{fileName}}</label></div>
+                      <!-- <p  class="constraints-info afu-constraints-info">(.jpg,.png) Size limit- 1.00 MB</p> -->
+                      <mat-error *ngIf="submitted && !imageFile">*Please upload banner!</mat-error>
                     </div>
-                    <ul class="banner-list list-style-none d-flex">
+                    <!-- <ul class="banner-list list-style-none d-flex">
                         <li class="banner-list-listing border p-1 mr-1"><figure class="mb-0"><img src="assets/images/food/banner.jpg" class="img-fluid"><a href="javascript:void()"><i class="mdi mdi-close-box"></i></a></figure></li>
                         <li class="banner-list-listing border p-1 mr-1"><figure class="mb-0"><img src="assets/images/food/banner.jpg" class="img-fluid"><a href="javascript:void()"><i class="mdi mdi-close-box"></i></a></figure></li>
                         <li class="banner-list-listing border p-1 mr-1"><figure class="mb-0"><img src="assets/images/food/banner.jpg" class="img-fluid"><a href="javascript:void()"><i class="mdi mdi-close-box"></i></a></figure></li>
                         <li class="banner-list-listing border p-1 mr-1"><figure class="mb-0"><img src="assets/images/food/banner.jpg" class="img-fluid"><a href="javascript:void()"><i class="mdi mdi-close-box"></i></a></figure></li>
                         <li class="banner-list-listing border p-1 mr-1"><figure class="mb-0"><img src="assets/images/food/banner.jpg" class="img-fluid"><a href="javascript:void()"><i class="mdi mdi-close-box"></i></a></figure></li>
-                    </ul>
+                    </ul> -->
                   </div>
                 </div>
                 <!--/span-->
               </div>
               <!--/row-->
-              <div class="row ">              
+              <div class="row ">
                 <!-- <div class="col-md-12">
                   <div class="form-group has-danger">
                     <label class="control-label">Days</label>
@@ -172,64 +178,72 @@
               <!--/row-->
               <div class="row">
                 <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="control-label col-form-label">Start Date</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon14">
-                                    <i class="far fa-calendar-plus"></i>
-                                </span>
-                            </div>
-                            <input type="date" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="control-label col-form-label">Start Date</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon14">
+                          <i class="far fa-calendar-plus"></i>
+                        </span>
+                      </div>
+                      <input type="date" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                        formControlName="startDate">
+                        <mat-error *ngIf="submitted && AddBannerForm.controls['startDate'].hasError('required')">*Start date is required!</mat-error>
                     </div>
+                  </div>
                 </div>
                 <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="control-label col-form-label">End Date</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon18">
-                                    <i class="far fa-calendar-plus"></i>
-                                </span>
-                            </div>
-                            <input type="date" class="form-control" aria-label="Username">
-                        </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="control-label col-form-label">End Date</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon18">
+                          <i class="far fa-calendar-plus"></i>
+                        </span>
+                      </div>
+                      <input type="date" class="form-control" aria-label="Username" formControlName="endDate">
+                      <mat-error *ngIf="submitted && AddBannerForm.controls['endDate'].hasError('required')">*End date is required!</mat-error>
+
                     </div>
+                  </div>
                 </div>
                 <!--/span-->
               </div>
               <div class="row">
                 <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="control-label col-form-label">Start Time</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon14">
-                                    <i class="far fa-clock"></i>
-                                </span>
-                            </div>
-                            <input type="time" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                    </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="control-label col-form-label">Start Time</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon14">
+                          <i class="far fa-clock"></i>
+                        </span>
+                      </div>
+                      <input type="time" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                        formControlName="startTime">
+                      <mat-error *ngIf="submitted && AddBannerForm.controls['startTime'].hasError('required')">*Start time is required!</mat-error>
+                   </div>
+                  </div>
                 </div>
                 <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="control-label col-form-label">End Time</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon18">
-                                    <i class="far fa-clock"></i>
-                                </span>
-                            </div>
-                            <input type="time" class="form-control" aria-label="Username">
-                        </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="control-label col-form-label">End Time</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon18">
+                          <i class="far fa-clock"></i>
+                        </span>
+                      </div>
+                      <input type="time" class="form-control" aria-label="Username" formControlName="endTime">
+                      <mat-error *ngIf="submitted && AddBannerForm.controls['endTime'].hasError('required')">*End time is required!</mat-error>
+
                     </div>
+                  </div>
                 </div>
                 <!--/span-->
               </div>
               <!--/row-->
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-6">
                     <label class="control-label">Product Limit</label>
                     <select name="" id="" class="form-control">
@@ -249,9 +263,9 @@
                   </select>
                 </div>
               </div>
-            </div>
-            <!--/row-->
-              <div class="row">
+            </div> -->
+
+              <!-- <div class="row">
                   
                   <div class="col-md-6">
                     <div class="form-group has-danger">
@@ -265,13 +279,13 @@
                         <input type="text" class="form-control" aria-label="Username" placeholder="10%">
                     </div>
                 </div>
-              </div>
-              <!--/row-->
+              </div> -->
+
             </div>
 
             <div class="form-actions">
               <div class="card-body">
-                <button type="submit" class="btn btn-success mr-3" (click)="modal.dismiss('Cross click')">
+                <button type="submit" class="btn btn-success mr-3" (click)="AddBanner()">
                   <i class="fa fa-check"></i> Add</button>
                 <button type="button" class="btn btn-dark" (click)="modal.dismiss('Cross click')">Cancel</button>
               </div>
@@ -287,18 +301,18 @@
     <div class="modal-body">
       <label>Banner</label>
       <div class="row">
-      <div class="col-md-3">
+        <div class="col-md-3">
           <img src="assets/images/food/banner.jpg" class="img-fluid">
-      </div>
-      <div class="col-md-3">
-        <img src="assets/images/food/banner.jpg" class="img-fluid">
-    </div>
-    <div class="col-md-3">
-        <img src="assets/images/food/banner.jpg" class="img-fluid">
-    </div>
-    <div class="col-md-3">
-        <img src="assets/images/food/banner.jpg" class="img-fluid">
-    </div>
+        </div>
+        <div class="col-md-3">
+          <img src="assets/images/food/banner.jpg" class="img-fluid">
+        </div>
+        <div class="col-md-3">
+          <img src="assets/images/food/banner.jpg" class="img-fluid">
+        </div>
+        <div class="col-md-3">
+          <img src="assets/images/food/banner.jpg" class="img-fluid">
+        </div>
       </div>
     </div>
   </ng-template>
