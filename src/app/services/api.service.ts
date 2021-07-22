@@ -83,4 +83,7 @@ public ImageUrl ="http://dev.webdevelopmentsolution.net:3008"
   {
     return this.http.get<any>(this.url.baseUrl+url);
   }
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
+    }
 }

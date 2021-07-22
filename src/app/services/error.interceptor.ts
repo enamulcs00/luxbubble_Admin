@@ -23,14 +23,15 @@ export class ErrorInterceptor implements HttpInterceptor {
         
         if (evt instanceof HttpResponse) {
      //     console.log('Response instance',evt);
-        
-          if ([401, 403].includes(evt.body.statusCode)) {
+         if ([401, 403].includes(evt.body.statusCode)) {
+           this.toastr.clear()
             this.toastr.error('Please login','Session expired',{
               timeOut: 3000,
             })
             this.accountService.logout();
             
         }else if(![401, 403,200].includes(evt.body.statusCode)){
+          this.toastr.clear()
           this.toastr.error(evt.body.message || evt.statusText)
         }
      }}))

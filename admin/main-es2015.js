@@ -918,6 +918,9 @@ class ApiService {
     getApi(url) {
         return this.http.get(this.url.baseUrl + url);
     }
+    getToday() {
+        return new Date().toISOString().split('T')[0];
+    }
 }
 ApiService.ɵfac = function ApiService_Factory(t) { return new (t || ApiService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_url_service__WEBPACK_IMPORTED_MODULE_2__["UrlService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
 ApiService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: ApiService, factory: ApiService.ɵfac, providedIn: 'root' });
@@ -1049,12 +1052,14 @@ class ErrorInterceptor {
             if (evt instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpResponse"]) {
                 //     console.log('Response instance',evt);
                 if ([401, 403].includes(evt.body.statusCode)) {
+                    this.toastr.clear();
                     this.toastr.error('Please login', 'Session expired', {
                         timeOut: 3000,
                     });
                     this.accountService.logout();
                 }
                 else if (![401, 403, 200].includes(evt.body.statusCode)) {
+                    this.toastr.clear();
                     this.toastr.error(evt.body.message || evt.statusText);
                 }
             }

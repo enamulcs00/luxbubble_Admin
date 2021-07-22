@@ -81,22 +81,32 @@
 <ng-template #promocode let-modal>
   <div class="modal-body">
     <div class="card">
+      <form [formGroup]="addPromocode">
       <div class="card-body">
         <div class="row">
           <div class="col-md-6 ">
             <div class="form-group">
               <label>Promo Code</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" formControlName="code" (keydown.space)="$event.preventDefault()">
+              <mat-error *ngIf="submitted && addPromocode.controls['code'].hasError('required')">
+                *Promo code is required!
+              </mat-error>
+              <mat-error *ngIf="addPromocode.controls['code'].hasError('maxlength')">
+                *Maxlength of promo code should 10!
+              </mat-error>
             </div>
           </div>
           <div class="col-md-6 ">
             <div class="form-group">
               <label>Discount type</label>
-              <select class="custom-select col-12" id="example-month-input2">
-                <option selected="">Percentage</option>
-                <option value="free">Flat</option>
-                <option value="Discount">Both Percentage and Flat amount</option>
+              <select class="custom-select col-12" id="example-month-input2" formControlName="discountType">
+                <option value="Percentage">Percentage</option>
+                <option value="Flat">Flat</option>
+                <option value="Both">Both Percentage and Flat amount</option>
               </select>
+              <mat-error *ngIf="submitted && addPromocode.controls['discountType'].hasError('required')">
+                *Discount type is required!
+              </mat-error>
             </div>
           </div>
           <!-- <div class="col-md-6">
@@ -108,28 +118,46 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="">Start Date </label>
-              <input type="date" class="form-control">
+              <input type="date" class="form-control" formControlName="startDate" [min]="service.getToday()" [max]="maxValue()">
+              <mat-error *ngIf="submitted && addPromocode.controls['startDate'].hasError('required')">
+                *Start date is required!
+              </mat-error>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="">End Date </label>
-              <input type="date" class="form-control">
+              <input type="date" class="form-control" formControlName="endDate" [min]="minValue() || service.getToday()">
+              <mat-error *ngIf="submitted && addPromocode.controls['endDate'].hasError('required')">
+                *End date is required!
+              </mat-error>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="">Start Time </label>
-              <input type="time" class="form-control">
+              <input type="time" class="form-control" formControlName="startTime">
+              <mat-error *ngIf="submitted && addPromocode.controls['startTime'].hasError('required')">
+                *Start time is required!
+              </mat-error>
+              <!-- <mat-error *ngIf="IsEqual">
+                *Start time can't be equal to end time!
+              </mat-error> -->
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="">End Time </label>
-              <input type="time" class="form-control">
+              <input type="time" class="form-control" formControlName="endTime">
+              <mat-error *ngIf="submitted && addPromocode.controls['endTime'].hasError('required')">
+                *End time is required!
+              </mat-error>
+              <!-- <mat-error *ngIf="IsEqual">
+                *End time can't be equal to start time!
+              </mat-error> -->
             </div>
           </div>
-          <div class="col-md-6 ">
+          <!-- <div class="col-md-6 ">
             <div class="form-group">
               <label>Vendors ID</label>
               <mat-form-field class="w-100">
@@ -161,7 +189,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-          </div>
+          </div> -->
           <!-- <div class="col-md-6">
                     <div class="form-group">
                     <label for="">Type Of Dish </label>
@@ -173,33 +201,36 @@
                       </mat-form-field>
                     </div>
                 </div> -->
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="form-group">
-              <label for="">Discount % </label>
-              <input type="text" class="form-control" placeholder="20%">
+              <label for="">Discount</label>
+              <input type="number" min="0" max="100" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control" placeholder="20%" formControlName="maxDiscount">
+              <mat-error *ngIf="submitted && addPromocode.controls['maxDiscount'].hasError('required')">
+                *Discount is required!
+              </mat-error>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <div class="form-group">
               <label for="">Unique Code </label>
               <input type="text" class="form-control" value="4d434df32">
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="form-group">
               <label for="">Usage Limit Per Coupan </label>
               <input type="number" placeholder="Add No" class="form-control">
             </div>
-          </div>
+          </div> -->
           <!-- <div class="col-md-6">
             <div class="form-group">
               <label for="">Usage Limit Per User </label>
               <input type="number" placeholder="Add No" class="form-control">
             </div>
           </div> -->
-        
-          
+
+<!-- 
           <div class="col-md-6">
             <div class="form-group">
               <label for="">Add Buy Value </label>
@@ -214,35 +245,39 @@
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="">Free Delivery </label>            
-              <div class="custom-control custom-checkbox"><input id="customCheck1" type="checkbox" name="yes" class="custom-control-input">
-                <label for="customCheck1"  class="custom-control-label">Yes</label></div>              
+              <label for="">Free Delivery </label>
+              <div class="custom-control custom-checkbox"><input id="customCheck1" type="checkbox" name="yes"
+                  class="custom-control-input">
+                <label for="customCheck1" class="custom-control-label">Yes</label></div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="">Use Only One Coupon </label>            
-              <div class="custom-control custom-checkbox"><input id="customCheck2" type="checkbox" name="yes1" class="custom-control-input">
-                <label for="customCheck2"  class="custom-control-label">Yes</label></div>              
+              <label for="">Use Only One Coupon </label>
+              <div class="custom-control custom-checkbox"><input id="customCheck2" type="checkbox" name="yes1"
+                  class="custom-control-input">
+                <label for="customCheck2" class="custom-control-label">Yes</label></div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="">Minimum Amount Of Order </label>            
-              <div class="custom-control custom-checkbox"><input id="customCheck3" type="checkbox" name="yes1" class="custom-control-input">
-                <label for="customCheck3"  class="custom-control-label">Yes</label></div>              
+              <label for="">Minimum Amount Of Order </label>
+              <div class="custom-control custom-checkbox"><input id="customCheck3" type="checkbox" name="yes1"
+                  class="custom-control-input">
+                <label for="customCheck3" class="custom-control-label">Yes</label></div>
             </div>
-          </div>
-          <div class="col-md-12">
+          </div> -->
+          <!-- <div class="col-md-12">
             <div class="form-group">
               <label for="">Description </label>
               <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
+      </form>
     </div>
-    <button type="submit" class="btn btn-success mr-3" (click)="modal.dismiss('Cross click')">
+    <button type="submit" class="btn btn-success mr-3" (click)="SaveCoupon()">
       <i class="fa fa-check"></i> Save</button>
   </div>
 </ng-template>

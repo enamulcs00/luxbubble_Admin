@@ -1939,6 +1939,11 @@
           value: function getApi(url) {
             return this.http.get(this.url.baseUrl + url);
           }
+        }, {
+          key: "getToday",
+          value: function getToday() {
+            return new Date().toISOString().split('T')[0];
+          }
         }]);
 
         return ApiService;
@@ -2213,12 +2218,16 @@
               if (evt instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpResponse"]) {
                 //     console.log('Response instance',evt);
                 if ([401, 403].includes(evt.body.statusCode)) {
+                  _this2.toastr.clear();
+
                   _this2.toastr.error('Please login', 'Session expired', {
                     timeOut: 3000
                   });
 
                   _this2.accountService.logout();
                 } else if (![401, 403, 200].includes(evt.body.statusCode)) {
+                  _this2.toastr.clear();
+
                   _this2.toastr.error(evt.body.message || evt.statusText);
                 }
               }
