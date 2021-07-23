@@ -28,7 +28,7 @@ export class RewardsComponent implements OnInit ,AfterViewInit{
   delId: any;
   timer: number;
   editId: any;
-  pageSize: any=10;
+  pageSize: any=15;
   IsFilter: any;
   constructor(private modalService: NgbModal,private fb:FormBuilder,public service:ApiService,private toast:ToastrService) {}
 
@@ -72,12 +72,12 @@ ngAfterViewInit(){
   SaveCoupon(){
     this.submitted = true
     this.toast.clear()
-    if(this.addPromocode.value.startTime==this.addPromocode.value.endTime && this.addPromocode.valid){
-      this.addPromocode.controls['startTime'].reset()
-      this.addPromocode.controls['endTime'].reset()
-      this.IsEqual = true
-      this.toast.error('Start time cannot be equal to end time',"Time error",{timeOut:2000})
-    }
+    // if(this.addPromocode.value.startTime==this.addPromocode.value.endTime && this.addPromocode.valid){
+    //   this.addPromocode.controls['startTime'].reset()
+    //   this.addPromocode.controls['endTime'].reset()
+    //   this.IsEqual = true
+    //   this.toast.error('Start time cannot be equal to end time',"Time error",{timeOut:2000})
+    // }
     let url = '/api/v1/Admin/coupons'
    if(this.addPromocode.valid){
   this.service.postApi(url,this.addPromocode.value).subscribe((res:any)=>{
@@ -98,12 +98,12 @@ ngAfterViewInit(){
 UpdateCoupon(){
   this.submitted = true
   this.toast.clear()
-  if(this.addPromocode.value.startTime==this.addPromocode.value.endTime && this.addPromocode.valid){
-    this.addPromocode.controls['startTime'].reset()
-    this.addPromocode.controls['endTime'].reset()
-    this.IsEqual = true
-    this.toast.error('Start time cannot be equal to end time',"Time error",{timeOut:2000})
-  }
+  // if(this.addPromocode.value.startTime==this.addPromocode.value.endTime && this.addPromocode.valid){
+  //   this.addPromocode.controls['startTime'].reset()
+  //   this.addPromocode.controls['endTime'].reset()
+  //   this.IsEqual = true
+  //   this.toast.error('Start time cannot be equal to end time',"Time error",{timeOut:2000})
+  // }
   let url = `/api/v1/Admin/coupons/${this.editId}`
  if(this.addPromocode.valid){
 this.service.putApi(url,this.addPromocode.value).subscribe((res:any)=>{

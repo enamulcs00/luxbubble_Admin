@@ -57,7 +57,7 @@
           <td class="text-nowrap">{{item?.endDate}}</td>
           <!-- <td>All</td>
           <td>Mains</td> -->
-          <td>{{item?.maxDiscount}}%</td>
+          <td>{{item?.discount?item?.discount+'%':''}}{{(item?.discount&&item?.maxDiscount)?'/':''}}{{item?.maxDiscount}}</td>
           <!-- <td class="text-nowrap"><span> Lorem ipsum, dolor sit amet <br> consectetur adipisicing elit.</span></td>
           <td>Yes</td> -->
           <td>
