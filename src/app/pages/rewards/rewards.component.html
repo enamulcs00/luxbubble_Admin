@@ -107,7 +107,7 @@
           <div class="col-md-6 ">
             <div class="form-group">
               <label>Discount type</label>
-              <select class="custom-select col-12" id="example-month-input2" formControlName="discountType">
+              <select class="custom-select col-12" id="example-month-input2" formControlName="discountType" (change)="Onchange($event.target.value)">
                 <option value="PERCENTAGE">Percentage</option>
                 <option value="FLAT">Flat</option>
                 <option value="BOTH">Both Percentage and Flat amount</option>
@@ -209,23 +209,26 @@
                       </mat-form-field>
                     </div>
                 </div> -->
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="">Discount</label>
-              <input type="number" min="0" max="100" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control" placeholder="20%" formControlName="maxDiscount">
-              <mat-error *ngIf="submitted && addPromocode.controls['maxDiscount'].hasError('required')">
+              <input type="number" min="0" max="100" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control" placeholder="20%" formControlName="discount">
+              <mat-error *ngIf="submitted && addPromocode.controls['discount'].hasError('required')">
                 *Discount is required!
               </mat-error>
             </div>
           </div>
-          <!-- <div class="col-md-6">
+           <div class="col-md-6">
             <div class="form-group">
-              <label for="">Unique Code </label>
-              <input type="text" class="form-control" value="4d434df32">
+              <label for="">Flat discount</label>
+              <input type="number" class="form-control" formControlName="maxDiscount" placeholder="Amount" min="0" max="100" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+              <mat-error *ngIf="submitted && addPromocode.controls['maxDiscount'].hasError('required')">
+                *Flat discount is required!
+              </mat-error>
             </div>
           </div>
 
-          <div class="col-md-12">
+         <!-- <div class="col-md-12">
             <div class="form-group">
               <label for="">Usage Limit Per Coupan </label>
               <input type="number" placeholder="Add No" class="form-control">

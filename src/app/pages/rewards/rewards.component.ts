@@ -41,7 +41,8 @@ export class RewardsComponent implements OnInit ,AfterViewInit{
       startTime:['',Validators.required],
       endDate:['',Validators.required],
       startDate:['',Validators.required],
-      discountType:['',Validators.required]
+      discountType:['',Validators.required],
+      discount:['',Validators.required]
     })
   }
 
@@ -54,12 +55,14 @@ export class RewardsComponent implements OnInit ,AfterViewInit{
   }
 ngAfterViewInit(){
   this.addPromocode.controls['discountType'].setValue('PERCENTAGE')
+  this.addPromocode.controls['maxDiscount'].disable()
+  this.addPromocode.controls['discount'].enable()
 }
   promocodeModal(promocode,obj) {
     this.editId = undefined
-    obj=='add'?(this.editId=undefined):this.editId=obj._id
+    obj=='add'?(this.editId=undefined,this.ngAfterViewInit()):this.editId=obj._id
     this.submitted = false
-    obj=='add'?(this.addPromocode.reset(),this.addPromocode.controls['discountType'].setValue('PERCENTAGE')):this.addPromocode.patchValue(obj)
+    obj=='add'?(this.addPromocode.reset(),this.addPromocode.controls['discountType'].setValue('PERCENTAGE')):(this.addPromocode.patchValue(obj),obj.discount && obj.maxDiscount?(this.addPromocode.controls['discount'].enable(),this.addPromocode.controls['maxDiscount'].enable()):(obj.maxDiscount?(this.addPromocode.controls['maxDiscount'].enable(),this.addPromocode.controls['discount'].disable()):(this.addPromocode.controls['maxDiscount'].disable(),this.addPromocode.controls['discount'].enable())))
     this.modalService.open(promocode, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
   }
   couponModal(coupon,id) {
@@ -69,7 +72,7 @@ ngAfterViewInit(){
   SaveCoupon(){
     this.submitted = true
     this.toast.clear()
-    if(this.addPromocode.value.startTime==this.addPromocode.value.endTime){
+    if(this.addPromocode.value.startTime==this.addPromocode.value.endTime && this.addPromocode.valid){
       this.addPromocode.controls['startTime'].reset()
       this.addPromocode.controls['endTime'].reset()
       this.IsEqual = true
@@ -95,7 +98,7 @@ ngAfterViewInit(){
 UpdateCoupon(){
   this.submitted = true
   this.toast.clear()
-  if(this.addPromocode.value.startTime==this.addPromocode.value.endTime){
+  if(this.addPromocode.value.startTime==this.addPromocode.value.endTime && this.addPromocode.valid){
     this.addPromocode.controls['startTime'].reset()
     this.addPromocode.controls['endTime'].reset()
     this.IsEqual = true
@@ -197,5 +200,31 @@ let url = `/api/v1/Admin/getAllCoupons`
           this.toast.success(res.message)
           this.DataList();
         }
-        }); }
+        });}
+Onchange(e){
+if(e=='PERCENTAGE'){
+this.addPromocode.controls['discount'].setValidators(Validators.required)
+this.addPromocode.controls['discount'].updateValueAndValidity()
+this.addPromocode.controls['discount'].enable()
+this.addPromocode.controls['maxDiscount'].reset()
+this.addPromocode.controls['maxDiscount'].disable()
+this.addPromocode.controls['maxDiscount'].clearValidators()
+this.addPromocode.controls['maxDiscount'].updateValueAndValidity()
+}else if(e=='FLAT'){
+this.addPromocode.controls['maxDiscount'].setValidators(Validators.required)
+this.addPromocode.controls['maxDiscount'].updateValueAndValidity()
+this.addPromocode.controls['discount'].disable()
+this.addPromocode.controls['maxDiscount'].enable()
+this.addPromocode.controls['discount'].reset()
+this.addPromocode.controls['discount'].clearValidators()
+this.addPromocode.controls['discount'].updateValueAndValidity()
+}else if(e=='BOTH'){
+  this.addPromocode.controls['maxDiscount'].setValidators(Validators.required)
+  this.addPromocode.controls['maxDiscount'].updateValueAndValidity()
+  this.addPromocode.controls['discount'].setValidators(Validators.required)
+  this.addPromocode.controls['discount'].updateValueAndValidity()
+  this.addPromocode.controls['maxDiscount'].enable()
+this.addPromocode.controls['discount'].enable()
+}
+}       
 }
