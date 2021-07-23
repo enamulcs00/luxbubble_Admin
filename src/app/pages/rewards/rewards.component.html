@@ -11,12 +11,12 @@
       <div class="col-md-8 d-flex  justify-content-end">
         <div ngbDropdown class="d-inline-block mb-2 mr-2">
           <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-            {{filter?filter:'All'}}
+            {{IsFilter?IsFilter:'All'}}
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <button value="" class="dropdown-item" (click)="filterSelected(null)">All</button>
-                                <button value="true" class="dropdown-item" (click)="filterSelected(true)">Active</button>
-                                <button value="false" class="dropdown-item"(click)="filterSelected(false)">Inactive</button>
+            <button value="" class="dropdown-item" (click)="filterSelected(null,'All')">All</button>
+                                <button value="true" class="dropdown-item" (click)="filterSelected(true,'Active')">Active</button>
+                                <button value="false" class="dropdown-item"(click)="filterSelected(false,'Inactive')">Inactive</button>
           </div>
         </div>
         <!-- <div ngbDropdown class="d-inline-block mb-2 mr-2">

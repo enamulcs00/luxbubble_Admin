@@ -29,6 +29,7 @@ export class RewardsComponent implements OnInit ,AfterViewInit{
   timer: number;
   editId: any;
   pageSize: any=10;
+  IsFilter: any;
   constructor(private modalService: NgbModal,private fb:FormBuilder,public service:ApiService,private toast:ToastrService) {}
 
   ngOnInit(): void {
@@ -178,8 +179,8 @@ let url = `/api/v1/Admin/getAllCoupons`
   exportToCsv(){
     window.open(this.csvUrl,'Coupons details')
   }
-  filterSelected(body:any){
-    
+  filterSelected(body:any,ref){
+    this.IsFilter = ref
     clearTimeout(this.timer);
     this.timer=setTimeout(()=>{
       this.filter=body
@@ -188,11 +189,12 @@ let url = `/api/v1/Admin/getAllCoupons`
   }
   onChangeBlockStatus(status,id)
   {
-    let body={"isActive" : !status.toString()}
+    this.toast.clear()
+    let body={"isActive" : !status}
   let url = `/api/v1/Admin/coupons/${id}`
   this.service.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){
-       //   this.toaster.success(res.message)
+          this.toast.success(res.message)
           this.DataList();
         }
         }); }

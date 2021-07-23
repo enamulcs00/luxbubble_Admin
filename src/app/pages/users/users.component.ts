@@ -55,6 +55,7 @@ submitted:boolean = false
   lat: any;
   address: any;
   selectedCountry : any = CountryISO.India;
+  IsFilter: any;
   constructor(private modalService: NgbModal,private apiservice: ApiService,private toaster:ToastrService,private fb:FormBuilder) {
   //  var regx = /^[\w',\-\.]+( [\w',\-\.]+)*$/u
     this.UpdateUser=this.fb.group({
@@ -102,8 +103,8 @@ let url = `/api/v1/admin/getUsers`
       this.DataList();
     },500);
   }
-  filterSelected(body:any){
-    
+  filterSelected(body:any,ref){
+    this.IsFilter = ref
     clearTimeout(this.timer);
     this.timer=setTimeout(()=>{
       this.filter=body
