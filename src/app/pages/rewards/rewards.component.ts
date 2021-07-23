@@ -155,21 +155,40 @@ setTimeout(() => {
   }
  DataList()
   {
-let url = `/api/v1/Admin/coupons?search=${this.search}&limit=${this.pageSize}&page=${this.page}`
-    this.service.getApi(url).subscribe((res:any)=>{
+    let body=
+    {
+     search:this.search,
+     limit:this.pageSize,
+     isActive:this.filter?.toString(),
+     page:this.page
+    }
+let url = `/api/v1/Admin/getAllCoupons`
+    this.service.postApi(url,body).subscribe((res:any)=>{
       console.log('Get cupon',res);
     if(res.statusCode==200){
       this.dataSource = res.data.doc
       this.totalsize=res.data.totalcount;
-    //  this.csvUrl = res.data.exportToCsv
+     this.csvUrl = res.data.exportLink
+     
     }else{
       this.totalsize = 0
     }
      });
   }
+  exportToCsv(){
+    window.open(this.csvUrl,'Coupons details')
+  }
+  filterSelected(body:any){
+    
+    clearTimeout(this.timer);
+    this.timer=setTimeout(()=>{
+      this.filter=body
+      this.ngOnInit();
+    },500);
+  }
   onChangeBlockStatus(status,id)
   {
-    let body={"isActive" : !status}
+    let body={"isActive" : !status.toString()}
   let url = `/api/v1/Admin/coupons/${id}`
   this.service.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){

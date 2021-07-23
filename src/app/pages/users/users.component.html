@@ -15,7 +15,7 @@
                     <div class="col-md-8  d-flex justify-content-end">
                         <div ngbDropdown class="d-inline-block mb-2 mr-2">
                             <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-                                All
+                                {{filter?filter:'All'}}
                             </button>
                             <div  ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                 <button value="" class="dropdown-item" (click)="filterSelected(null)">All</button>
