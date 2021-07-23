@@ -4,7 +4,7 @@
       <div class="col-md-4">
         <form>
           <div class="mb-2">
-            <input type="text" class="form-control" id="prenametext" placeholder="Search">
+            <input type="text" class="form-control" id="prenametext" placeholder="Search" (keyup)="applyFilter($event)">
           </div>
         </form>
       </div>
@@ -31,7 +31,7 @@
             </div>
           </div> -->
         <button class="btn btn-primary mb-2 mr-2"><i class="sl-icon-cloud-download"></i> Export CSV</button>
-        <button class="btn btn-seconadary mb-2" (click)="promocodeModal(promocode)"><i class="sl-icon-plus"></i> Add
+        <button class="btn btn-seconadary mb-2" (click)="promocodeModal(promocode,'add')"><i class="sl-icon-plus"></i> Add
           Coupon</button>
       </div>
     </div>
@@ -42,40 +42,48 @@
           <th>Discount Type</th>
           <th>Start Date</th>
           <th>End Date</th>
-          <th>Vendors</th>
-          <th>Category Type</th>
+          <!-- <th>Vendors</th>
+          <th>Category Type</th> -->
           <th>Discount/Flat</th>
-          <th>Description</th>
-          <th class="text-nowrap">Free Delivery</th>
+          <!-- <th>Description</th> -->
+          <!-- <th class="text-nowrap">Free Delivery</th> -->
+          <th class="text-nowrap">Status</th>
           <th>Action</th>
         </tr>
-        <tr>
-          <td>34d4d453</td>
-          <td>Percentage</td>
-          <td class="text-nowrap">12-05-2021/13:00</td>
-          <td class="text-nowrap">13-05-2021/15:00</td>
-          <td>All</td>
-          <td>Mains</td>
-          <td>20%</td>
-          <td class="text-nowrap"><span> Lorem ipsum, dolor sit amet <br> consectetur adipisicing elit.</span></td>
-          <td>Yes</td>
+        <tr *ngFor="let item of dataSource">
+          <td>{{item?.code}}</td>
+          <td>{{item?.discountType}}</td>
+          <td class="text-nowrap">{{item?.startDate}}</td>
+          <td class="text-nowrap">{{item?.endDate}}</td>
+          <!-- <td>All</td>
+          <td>Mains</td> -->
+          <td>{{item?.maxDiscount}}%</td>
+          <!-- <td class="text-nowrap"><span> Lorem ipsum, dolor sit amet <br> consectetur adipisicing elit.</span></td>
+          <td>Yes</td> -->
+          <td>
+            <mat-slide-toggle [checked]="item.isActive===true?'true':'false'" (change)="onChangeBlockStatus(item.isActive,item._id)">
+              {{item.isActive===true?'Active':'Inactive'}}
+          </mat-slide-toggle>
+          </td> 
           <td>
             <div ngbDropdown container="body">
               <button class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
               <div ngbDropdownMenu>
-                <button ngbDropdownItem (click)="promocodeModal(promocode)">Edit</button>
-                <button ngbDropdownItem (click)="couponModal(coupon)">Delete</button>
+                <button ngbDropdownItem (click)="promocodeModal(promocode,item)">Edit</button>
+                <button ngbDropdownItem (click)="couponModal(coupon,item?._id)">Delete</button>
 
               </div>
             </div>
           </td>
         </tr>
+        <tr *ngIf="!totalsize">Data not found!</tr>
       </table>
     </div>
-
-
-
-
+    <mat-paginator  #paginator
+                [length]="totalsize"
+               
+                [pageSizeOptions]="[10, 25, 100]"
+                (page)="pageEvent = productListAfterPageSizeChanged($event)"></mat-paginator>
   </div>
 </div>
 <ng-template #promocode let-modal>
@@ -87,7 +95,7 @@
           <div class="col-md-6 ">
             <div class="form-group">
               <label>Promo Code</label>
-              <input type="text" class="form-control" formControlName="code" (keydown.space)="$event.preventDefault()">
+              <input type="text" class="form-control" formControlName="code" (keydown.space)="$event.preventDefault()" oninput="this.value = this.value.toUpperCase()">
               <mat-error *ngIf="submitted && addPromocode.controls['code'].hasError('required')">
                 *Promo code is required!
               </mat-error>
@@ -100,9 +108,9 @@
             <div class="form-group">
               <label>Discount type</label>
               <select class="custom-select col-12" id="example-month-input2" formControlName="discountType">
-                <option value="Percentage">Percentage</option>
-                <option value="Flat">Flat</option>
-                <option value="Both">Both Percentage and Flat amount</option>
+                <option value="PERCENTAGE">Percentage</option>
+                <option value="FLAT">Flat</option>
+                <option value="BOTH">Both Percentage and Flat amount</option>
               </select>
               <mat-error *ngIf="submitted && addPromocode.controls['discountType'].hasError('required')">
                 *Discount type is required!
@@ -277,17 +285,19 @@
       </div>
       </form>
     </div>
-    <button type="submit" class="btn btn-success mr-3" (click)="SaveCoupon()">
+    <button type="submit" class="btn btn-success mr-3" (click)="SaveCoupon()" *ngIf="!editId">
       <i class="fa fa-check"></i> Save</button>
+      <button type="submit" class="btn btn-success mr-3" (click)="UpdateCoupon()" *ngIf="editId">
+        <i class="fa fa-check"></i>Update</button>
   </div>
 </ng-template>
 
 <ng-template #coupon let-modal>
   <div class="modal-body">
-    <p>Are You Sure want to delete?</p>
+    <p>Are you want to delete?</p>
     <div class="btn-group">
       <button type="button" class="btn btn-primary mr-2" aria-label="Close"
-        (click)="modal.dismiss('Cross click')">Yes</button>
+        (click)="deleteUser()">Yes</button>
       <button type="button" class="btn btn-seconadary" aria-label="Close"
         (click)="modal.dismiss('Cross click')">No</button>
     </div>
