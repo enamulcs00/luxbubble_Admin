@@ -11,10 +11,11 @@ import { Observable, of, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private accountService: ApiService,private toastr:ToastrService) {}
+  constructor(private accountService: ApiService,private toastr:ToastrService,private modalService: NgbModal) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
@@ -29,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               timeOut: 3000,
             })
             this.accountService.logout();
-            
+            this.modalService.dismissAll()
         }else if(![401, 403,200].includes(evt.body.statusCode)){
           this.toastr.clear()
           this.toastr.error(evt.body.message || evt.statusText)

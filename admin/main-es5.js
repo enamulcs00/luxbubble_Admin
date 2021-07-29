@@ -2207,13 +2207,20 @@
       var _api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
       /*! ./api.service */
       "./src/app/services/api.service.ts");
+      /* harmony import */
+
+
+      var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! @ng-bootstrap/ng-bootstrap */
+      "./node_modules/@ng-bootstrap/ng-bootstrap/__ivy_ngcc__/fesm2015/ng-bootstrap.js");
 
       var ErrorInterceptor = /*#__PURE__*/function () {
-        function ErrorInterceptor(accountService, toastr) {
+        function ErrorInterceptor(accountService, toastr, modalService) {
           _classCallCheck(this, ErrorInterceptor);
 
           this.accountService = accountService;
           this.toastr = toastr;
+          this.modalService = modalService;
         }
 
         _createClass(ErrorInterceptor, [{
@@ -2233,6 +2240,8 @@
                   });
 
                   _this2.accountService.logout();
+
+                  _this2.modalService.dismissAll();
                 } else if (![401, 403, 200].includes(evt.body.statusCode)) {
                   _this2.toastr.clear();
 
@@ -2247,7 +2256,7 @@
       }();
 
       ErrorInterceptor.ɵfac = function ErrorInterceptor_Factory(t) {
-        return new (t || ErrorInterceptor)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_api_service__WEBPACK_IMPORTED_MODULE_4__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"]));
+        return new (t || ErrorInterceptor)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_api_service__WEBPACK_IMPORTED_MODULE_4__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__["NgbModal"]));
       };
 
       ErrorInterceptor.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
@@ -2264,6 +2273,8 @@
             type: _api_service__WEBPACK_IMPORTED_MODULE_4__["ApiService"]
           }, {
             type: ngx_toastr__WEBPACK_IMPORTED_MODULE_2__["ToastrService"]
+          }, {
+            type: _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_5__["NgbModal"]
           }];
         }, null);
       })();

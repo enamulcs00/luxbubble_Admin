@@ -62,16 +62,16 @@ export class VendorsComponent implements OnInit {
     },500);
   }
   
-  Accept()
+  Accept(id)
   {
     let body={
       "status":"ACCEPTED",
     // "isApproved":true,
-      "commissionType": this.acceptform.controls['commissionType'].value,
-      "commission": this.acceptform.controls['commission'].value.toString(),
+      // "commissionType": this.acceptform.controls['commissionType'].value,
+      // "commission": this.acceptform.controls['commission'].value.toString(),
   }
-    let url = `/api/v1/admin/updateServiceprovider/${this.statusId}`
-    if(this.acceptform.valid){
+    let url = `/api/v1/admin/updateServiceprovider/${id}`
+
       this.apiservice.putApi(url,body).subscribe((res:any)=>{
         if(res.statusCode==200){
           this.toaster.success(res.message)
@@ -79,7 +79,7 @@ export class VendorsComponent implements OnInit {
           this.modalService.dismissAll()
         }
       });
-    }
+    
    }
   onChangeBlockStatus(status,id)
   {
@@ -136,16 +136,16 @@ userDetailModal(userDetail) {
 addUserModal(addUser) {
   this.modalService.open(addUser, {backdropClass: 'light-blue-backdrop',centered: true,size: 'lg'});
 }
-vendorConfirmModal(vendorConfirm,obj) {
-  this.statusId = obj._id
-  this.acceptform=this.fb.group({
-    commission:['',Validators.required],
-    commissionType:['',Validators.required],
-  });
-  this.modalService.open(vendorConfirm, {backdropClass: 'light-blue-backdrop',centered: true,size: 'sm'});
-this.acceptform.controls['commission'].setValue(obj.commission)
-this.acceptform.controls['commissionType'].setValue(obj.commissionType) 
-}
+// vendorConfirmModal(vendorConfirm,obj) {
+//   this.statusId = obj._id
+//   this.acceptform=this.fb.group({
+//     commission:['',Validators.required],
+//     commissionType:['',Validators.required],
+//   });
+//   this.modalService.open(vendorConfirm, {backdropClass: 'light-blue-backdrop',centered: true,size: 'sm'});
+// this.acceptform.controls['commission'].setValue(obj.commission)
+// this.acceptform.controls['commissionType'].setValue(obj.commissionType) 
+// }
 vendorUnconfirmModal(vendorUnconfirm,id) {
   this.rejectId = id
   this.rejectForm=this.fb.group({
