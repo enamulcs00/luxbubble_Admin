@@ -845,29 +845,29 @@ export const ROUTES: RouteInfo[] = [
     //     submenu: []
     // },
 
-//      {
-//         path: '',
-//         title: 'CMS Pages',
-//         icon: 'icon-Car-Wheel',
-//         class: 'has-arrow',
-//         extralink: false,
-//         submenu: [
-//             {
-//                             path: '/pages/about',
-//                             title: 'About',
-//                             icon: '',
-//                             class: '',
-//                             extralink: false,
-//                             submenu: []
-//             },
-//             {
-//                 path: '/pages/contact',
-//                 title: 'Contact',
-//                 icon: '',
-//                 class: '',
-//                 extralink: false,
-//                 submenu: []
-//         },
+     {
+        path: '',
+        title: 'CMS Pages',
+        icon: 'icon-Car-Wheel',
+        class: 'has-arrow',
+        extralink: false,
+        submenu: [
+            {
+                            path: '/pages/about',
+                            title: 'About',
+                            icon: '',
+                            class: '',
+                            extralink: false,
+                            submenu: []
+            },
+            {
+                path: '/pages/contact',
+                title: 'Contact',
+                icon: '',
+                class: '',
+                extralink: false,
+                submenu: []
+        },
 //         {
 //             path: '/pages/faq',
 //             title: 'Faq',
@@ -876,24 +876,24 @@ export const ROUTES: RouteInfo[] = [
 //             extralink: false,
 //             submenu: []
 // },
-// {
-//     path: '/pages/privacy',
-//     title: 'Privcay',
-//     icon: '',
-//     class: '',
-//     extralink: false,
-//     submenu: []
-// },
-// {
-//     path: '/pages/terms',
-//     title: 'Terms',
-//     icon: '',
-//     class: '',
-//     extralink: false,
-//     submenu: []
-// },
-//         ]
-//     },
+{
+    path: '/pages/privacy',
+    title: 'Privcay',
+    icon: '',
+    class: '',
+    extralink: false,
+    submenu: []
+},
+{
+    path: '/pages/terms',
+    title: 'Terms',
+    icon: '',
+    class: '',
+    extralink: false,
+    submenu: []
+},
+        ]
+    },
 
     // {
     //     path: '',
