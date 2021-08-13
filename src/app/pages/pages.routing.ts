@@ -482,10 +482,10 @@ export const PagesRoutes: Routes = [
         path: 'privacy',
         component: PrivacyComponent,
         data: {
-          title: 'Privacy',
+          title: 'Privacy Policy',
           urls: [
             { title: 'Dashboard', url: '/privacy' },
-            { title: 'Privacy' }
+            { title: 'Privacy Policy' }
           ]
         }
       },
@@ -493,10 +493,10 @@ export const PagesRoutes: Routes = [
         path: 'terms',
         component: TermsComponent,
         data: {
-          title: 'Terms',
+          title: 'Terms & Conditions',
           urls: [
             { title: 'Dashboard', url: '/terms' },
-            { title: 'terms' }
+            { title: 'Terms & Conditions' }
           ]
         }
       },

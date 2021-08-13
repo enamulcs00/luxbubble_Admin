@@ -87,7 +87,7 @@ export const ROUTES: RouteInfo[] = [
     //     path: '',
     //     title: 'Trucks',
     //     icon: 'icon-Car-Wheel',
-    //     class: 'has-arrow',
+    //     class: 'has-arropagesw',
     //     extralink: false,
     //     submenu: [
     //         {
@@ -878,7 +878,7 @@ export const ROUTES: RouteInfo[] = [
 // },
 {
     path: '/pages/privacy',
-    title: 'Privcay',
+    title: 'Privacy Policy',
     icon: '',
     class: '',
     extralink: false,
@@ -886,7 +886,7 @@ export const ROUTES: RouteInfo[] = [
 },
 {
     path: '/pages/terms',
-    title: 'Terms',
+    title: 'Terms & Conditions',
     icon: '',
     class: '',
     extralink: false,

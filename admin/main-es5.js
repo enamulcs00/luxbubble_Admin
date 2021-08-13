@@ -2973,7 +2973,7 @@
       //     path: '',
       //     title: 'Trucks',
       //     icon: 'icon-Car-Wheel',
-      //     class: 'has-arrow',
+      //     class: 'has-arropagesw',
       //     extralink: false,
       //     submenu: [
       //         {
@@ -3751,14 +3751,14 @@
         // },
         {
           path: '/pages/privacy',
-          title: 'Privcay',
+          title: 'Privacy Policy',
           icon: '',
           "class": '',
           extralink: false,
           submenu: []
         }, {
           path: '/pages/terms',
-          title: 'Terms',
+          title: 'Terms & Conditions',
           icon: '',
           "class": '',
           extralink: false,

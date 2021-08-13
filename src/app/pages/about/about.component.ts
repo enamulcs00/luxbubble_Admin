@@ -61,7 +61,7 @@ export class AboutComponent implements  OnInit {
         this.Srvc.updateAbout(body).subscribe((res: any) => {
           if (res.statusCode == 200) {
             this.submitted = false;
-            Swal.fire("Updated", "About Data Successfully Updated", "success");
+            Swal.fire("Updated", "Details Updated Successfully", "success");
             this.getData();
             // this.Srvc.searchdata();
           } else {
