@@ -48,11 +48,11 @@ export class CmsService {
 
   // Get Terms
   getTerms(){
-    return this.http.get<any>(`${this.baseURL}admin/pages/terms`);
+    return this.http.get<any>(`${this.baseURL}admin/pages/legal`);
   }
 
   // Update Terms
   updateTerms(data){
-    return this.http.put<any>(`${this.baseURL}admin/pages/terms`, data)
+    return this.http.put<any>(`${this.baseURL}admin/pages/legal`, data)
   }
 }
