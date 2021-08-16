@@ -17,7 +17,7 @@
                             <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="loginForm.get('email').hasError('required') && loginForm.controls['email'].touched">
                                 *Email is <strong>required</strong>
                             </mat-error>
-                            <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="loginForm.get('email').hasError('email') &&
+                            <mat-error class="text-danger font-weight-bold bg-white px-1 w-100" *ngIf="loginForm.get('email').hasError('pattern') &&
                                   !loginForm.get('email').hasError('required')">
                             *Email is <strong>not valid</strong>
                         </mat-error>

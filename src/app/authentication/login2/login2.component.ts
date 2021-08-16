@@ -26,7 +26,8 @@ export class Login2Component {
   }
     onLogin()
     {
-         let data=this.loginForm.value;
+      if(this.loginForm.valid){
+        let data=this.loginForm.value;
          delete data.rememberMe;
          let rememberMe=this.loginForm.controls['rememberMe'].value;
        this.apiservice.httplogin(data).subscribe(res=>{
@@ -43,8 +44,10 @@ export class Login2Component {
            sessionStorage.setItem("accessToken",res.data.accessToken);
              this.router.navigate(['dashboard']);
          }
-         
        });
+      }else{
+        this.loginForm.markAllAsTouched()
+      }
     }
 
   showRecoverForm() {
